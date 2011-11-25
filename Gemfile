@@ -60,6 +60,7 @@ gem 'bootstrap-rails', :require => 'bootstrap-rails',
   :git => 'git://github.com/xdite/bootstrap-rails.git'                   
 
 gem "airbrake"
+gem 'newrelic_rpm'
 
 group :assets do
   gem 'sass-rails', "  ~> 3.1.4"
