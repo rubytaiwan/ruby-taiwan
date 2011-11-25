@@ -1,5 +1,7 @@
 # coding: utf-8
-require "bundler/capistrano"
+require './config/boot'
+require 'airbrake/capistrano'
+require "airbrake/capistrano"
 default_environment["RAILS_ENV"] = "production"
 default_environment["PATH"] = "/usr/local/bin:/usr/bin:/bin"
 
@@ -50,4 +52,6 @@ task :compile_assets, :roles => :web do
 end
 
 after "deploy:symlink", :init_shared_path, :link_shared_config_yaml, :install_gems, :compile_assets
+
+
 
