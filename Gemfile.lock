@@ -70,6 +70,9 @@ GEM
     activesupport (3.1.1)
       multi_json (~> 1.0)
     addressable (2.2.6)
+    airbrake (3.0.5)
+      activesupport
+      builder
     arel (2.2.1)
     aws-ses (0.4.3)
       builder
@@ -298,6 +301,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   aws-ses (~> 0.4.3)
   bootstrap-rails!
   bson (= 1.3.1)
