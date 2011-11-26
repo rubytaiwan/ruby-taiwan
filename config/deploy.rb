@@ -6,7 +6,7 @@ default_environment["PATH"] = "/usr/local/bin:/usr/bin:/bin"
 
 set :application, "ruby-taiwan"
 set :repository,  "git://github.com/xdite/ruby-taiwan.git"
-set :branch, "remote_production"
+set :branch, "production"
 set :scm, :git
 set :user, "apps"
 set :deploy_to, "/home/apps/#{application}"
