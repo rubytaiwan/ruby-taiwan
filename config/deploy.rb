@@ -1,13 +1,12 @@
 # coding: utf-8
 require './config/boot'
 require 'airbrake/capistrano'
-require "airbrake/capistrano"
 default_environment["RAILS_ENV"] = "production"
 default_environment["PATH"] = "/usr/local/bin:/usr/bin:/bin"
 
 set :application, "ruby-taiwan"
 set :repository,  "git://github.com/xdite/ruby-taiwan.git"
-set :branch, "production"
+set :branch, "remote_production"
 set :scm, :git
 set :user, "apps"
 set :deploy_to, "/home/apps/#{application}"
