@@ -7,6 +7,7 @@ class Topic
   include Mongoid::CounterCache
   include Redis::Search
   include Redis::Objects
+  include Tanker
 
   field :title
   field :body
@@ -30,6 +31,12 @@ class Topic
   attr_protected :user_id
   validates_presence_of :user_id, :title, :body, :node_id
 
+  
+  tankit Setting.tanker_index_name do
+    indexes :title
+    indexes :body
+  end
+  
   index :node_id
   index :user_id
   index :replied_at
