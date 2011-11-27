@@ -3,7 +3,7 @@
 <%= content_for :open_graph do %>
     <%= og_title(@topic.title)%>
     <%= og_description(@topic.body)%>
-    <%= og_image(asset_path(big_log.png))%>
+    <%= og_image(asset_path("big_logo.png"))%>
     def og_image(content)
       tag(:meta, { :property => "og:image", :content => content }, true)
     end
