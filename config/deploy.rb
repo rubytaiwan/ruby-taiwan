@@ -51,6 +51,10 @@ namespace :remote_rake do
   end
 end
 
+task :install_gems, :roles => :web do
+  run "cd #{deploy_to}/current/; bundle install"
+end
+
 # 编译 assets
 task :compile_assets, :roles => :web do
   run "cd #{deploy_to}/current/; bundle exec rake assets:precompile"
