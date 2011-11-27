@@ -34,9 +34,12 @@ class TopicsController < ApplicationController
   end
 
   def search
-    result = Redis::Search.query("Topic", params[:key], :limit => 500)
-    ids = result.collect { |r| r["id"] }
-    @topics = Topic.where(:_id.in => ids).limit(50).includes(:node,:user, :last_reply_user)
+    #result = Redis::Search.query("Topic", params[:key], :limit => 500)
+    #ids = result.collect { |r| r["id"] }
+    #@topics = Topic.where(:_id.in => ids).limit(50).includes(:node,:user, :last_reply_user)
+    
+    @topics = Topic.search_tank(params[:key])
+    
     set_seo_meta("#{t("common.search")}#{params[:s]} &raquo; #{t("menu.topics")}")
     drop_breadcrumb("#{t("common.search")} #{params[:key]}")
     render :action => "index", :stream => true
