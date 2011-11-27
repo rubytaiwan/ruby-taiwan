@@ -1,4 +1,14 @@
 <%= render 'base' %>
+
+<%= content_for :open_graph do %>
+    <%= og_title(@topic.title)%>
+    <%= og_description(@topic.body)%>
+    <%= og_image(asset_path(big_log.png))%>
+    def og_image(content)
+      tag(:meta, { :property => "og:image", :content => content }, true)
+    end
+<% end %>
+
 <div class="sidebar">
     <%= render_cell :topics, :sidebar_for_new_topic_node, { :action => params[:action], :node => @node } %>
 </div>
@@ -55,3 +65,4 @@
       <%= render :partial => "topics/translation/need_login_to_reply" %>
   <% end %>
 </div>
+

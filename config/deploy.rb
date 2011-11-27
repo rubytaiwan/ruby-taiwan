@@ -13,6 +13,7 @@ set :deploy_to, "/home/apps/#{application}"
 set :runner, "apps"
 set :deploy_via, :remote_cache
 set :git_shallow_clone, 1
+set :use_sudo, false
 
 role :web, "ruby-taiwan.org"                          # Your HTTP server, Apache/etc
 role :app, "ruby-taiwan.org"                          # This may be the same as your `Web` server
@@ -53,6 +54,7 @@ end
 task :install_gems, :roles => :web do
   run "cd #{deploy_to}/current/; bundle install"
 end
+
 
 # 编译 assets
 task :compile_assets, :roles => :web do
