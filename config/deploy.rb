@@ -6,7 +6,8 @@ default_environment["PATH"] = "/usr/local/bin:/usr/bin:/bin"
 
 set :application, "ruby-taiwan"
 set :repository,  "git://github.com/xdite/ruby-taiwan.git"
-set :branch, "production"
+set :branch, "remote_production"
+
 set :scm, :git
 set :user, "apps"
 set :deploy_to, "/home/apps/#{application}"
@@ -64,6 +65,4 @@ task :mongoid_create_indexes, :roles => :web do
 end
 
 after "deploy:symlink", :init_shared_path, :link_shared_config_yaml, :install_gems, :compile_assets, :mongoid_create_indexes
-
-
 
