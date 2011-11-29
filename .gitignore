@@ -22,3 +22,4 @@ public/topics/**/*
 *.swp
 *.swo
 .rvmrc
+vendor/ruby

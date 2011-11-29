@@ -57,6 +57,7 @@ gem "unicorn"
 gem "sprite-factory", "1.4.1"
 
 gem 'tanker'
+
 gem "open_graph_helper"
 gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
 gem 'bootstrap-rails', :require => 'bootstrap-rails',
@@ -85,6 +86,5 @@ end
 
 group :test do
   gem 'factory_girl_rails'
-  gem 'turn',      :require => false
   gem 'simplecov', :require => false
 end

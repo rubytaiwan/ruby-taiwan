@@ -116,7 +116,7 @@ class TopicsController < ApplicationController
     @topic.body = pt[:body]
 
     if @topic.save
-      redirect_to(topic_path(@topic.id), :notice =>  t("topics.edit_topic_success"))
+      redirect_to(topic_path(@topic.id), :notice =>  t("topics.update_topic_success"))
     else
       render :action => "edit"
     end

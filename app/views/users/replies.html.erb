@@ -3,7 +3,6 @@
 <div class="box">
   <%= render "menu" %>
   <div class="replies">
-
     <ul>
       <% @replies.each do |reply|
         next if reply.topic.blank? %>
