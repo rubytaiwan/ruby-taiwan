@@ -5,7 +5,7 @@ default_environment["RAILS_ENV"] = "production"
 default_environment["PATH"] = "/usr/local/bin:/usr/bin:/bin"
 
 set :application, "ruby-taiwan"
-set :repository,  "git://github.com/xdite/ruby-taiwan.git"
+set :repository,  "git://github.com/rubytaiwan/ruby-taiwan.git"
 
 set :branch, "production_apply_tanker"
 set :scm, :git
