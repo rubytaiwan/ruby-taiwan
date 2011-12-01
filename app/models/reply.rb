@@ -76,5 +76,7 @@ class Reply
       next if recipient == nil
       TopicMailer.notify_reply(recipient, topic, self).deliver
     end
+    
+    return true
   end
 end
