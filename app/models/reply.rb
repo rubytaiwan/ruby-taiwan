@@ -55,7 +55,7 @@ class Reply
     end
   end
 
-  after_create :async_send_notify_reply_mail
+  #after_create :async_send_notify_reply_mail
  
   def async_send_notify_reply_mail
     Resque.enqueue(ReplyMailing,id)
