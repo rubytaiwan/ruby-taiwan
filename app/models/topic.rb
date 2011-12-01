@@ -8,7 +8,6 @@ class Topic
   include Mongoid::Search
   include Redis::Search
   include Redis::Objects
-  include Tanker
 
   field :title
   field :body
