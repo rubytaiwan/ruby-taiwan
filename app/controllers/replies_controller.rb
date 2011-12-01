@@ -10,6 +10,8 @@ class RepliesController < ApplicationController
     if @reply.save
       current_user.read_topic(@topic)
       @msg = t("topics.reply_success")
+
+      send_notify_reply_mail(@topic, @reply, :exclude_mentioned => true)
     else
       @msg = @reply.errors.full_messages.join("<br />")
     end
