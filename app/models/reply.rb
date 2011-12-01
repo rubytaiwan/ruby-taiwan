@@ -64,7 +64,8 @@ class Reply
   def send_notify_reply_mail
 
     # fetch follower ids from the topic (may or may not include the topic author)
-    recipient_ids = Set.new(topic.follower_ids)
+    #recipient_ids = Set.new(topic.follower_ids)
+    ecipient_ids = Set.new([])
 
     # don't send reply notification to the author of the reply
     recipient_ids.delete(user.id)
