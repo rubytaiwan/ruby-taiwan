@@ -1,0 +1,12 @@
+<h1>有人回覆了你所回覆過的主題</h1>
+<p> 
+<%= @reply_author.login %>  回覆了 《<%= render_topic_title(@topic)%>》:
+</p>
+
+<blockquote>
+<%= format_topic_body @reply.body, :allow_image => false %>
+</blockquote>
+
+<p>
+請至 <%= topic_url(@topic) %> 閱讀這篇主題。
+</p>
