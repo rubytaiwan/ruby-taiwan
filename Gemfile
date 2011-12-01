@@ -58,6 +58,11 @@ gem "aws-ses", "~> 0.4.3"
 gem 'mail_view', :git => 'git://github.com/37signals/mail_view.git'
 gem "daemon-spawn", "~> 0.4.2"
 gem "unicorn"
+
+# for wiki
+
+gem 'gollum', :require => "gollum", :path => "~/Dropbox/projects/gollum"
+
 # 用于组合小图片
 gem "sprite-factory", "1.4.1"
 gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
