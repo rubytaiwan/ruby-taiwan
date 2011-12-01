@@ -55,12 +55,8 @@ class Reply
     end
   end
 
-  after_create :async_send_notify_reply_mail
- 
-  def async_send_notify_reply_mail
-    Resque.enqueue(ReplyMailing,id)
-  end
-  
+  after_create :send_notify_reply_mail
+
   def send_notify_reply_mail
 
     # fetch follower ids from the topic (may or may not include the topic author)
@@ -81,7 +77,7 @@ class Reply
 
     recipients.each do |recipient|
       next if recipient == nil
-      TopicMailer.notify_reply(recipient, topic, self).deliver!
+      TopicMailer.notify_reply(recipient, topic, self).deliver
       # use deliver! to raise error when delivery failed
     end
   end
