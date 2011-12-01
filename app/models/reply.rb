@@ -1,5 +1,6 @@
 # coding: utf-8  
 require "digest/md5"
+require "reply_mailing"
 class Reply
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -54,7 +55,12 @@ class Reply
     end
   end
 
-  after_create :send_notify_reply_mail
+  after_create :async_send_notify_reply_mail
+ 
+  def async_send_notify_reply_mail
+    Resque.enqueue(ReplyMailing,id)
+  end
+  
   def send_notify_reply_mail
 
     # fetch follower ids from the topic (may or may not include the topic author)
