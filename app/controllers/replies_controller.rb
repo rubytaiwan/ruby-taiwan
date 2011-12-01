@@ -12,6 +12,18 @@ class RepliesController < ApplicationController
     if @reply.save
       current_user.read_topic(@topic)
       @msg = t("topics.reply_success")
+
+      # HINT: In Reply model,
+      #       there is an after_create hook :send_mention_notification
+      #       to send notifications to users who are mentioned in this reply.
+
+      # Hint: In Reply model, 
+      #       there is an after_create hook :update_parent_topic
+      #       to update the topic record that the new reply belongs to,
+      #       in which updates topic's last update time, 
+      #       the latest reply and its author,
+      #       and adds the reply author to the followers list.
+
     else
       @msg = @reply.errors.full_messages.join("<br />")
     end
@@ -38,5 +50,5 @@ class RepliesController < ApplicationController
   def find_topic
     @topic = Topic.find(params[:topic_id])
   end
-  
+
 end
