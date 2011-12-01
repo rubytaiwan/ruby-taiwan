@@ -74,7 +74,8 @@ class Reply
 
     recipients.each do |recipient|
       next if recipient == nil
-      TopicMailer.notify_reply(recipient, topic, self).deliver
+      TopicMailer.notify_reply(recipient, topic, self).deliver!
+      # use deliver! to raise error when delivery failed
     end
     
     return true
