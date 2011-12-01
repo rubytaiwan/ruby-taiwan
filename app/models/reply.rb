@@ -63,11 +63,11 @@ class Reply
     # don't send reply notification to the author of the reply
     recipient_ids.delete(user.id)
 
-    # prevent duplicated mail sent to users mentioned in the reply
-    recipient_ids.subtract(mentioned_user_ids)
-
     # add the topic author to the recipients, if he is not the reply author
     recipient_ids.add(topic.user.id) if topic.user.id != user.id
+
+    # prevent duplicated mail sent to users mentioned in the reply
+    recipient_ids.subtract(mentioned_user_ids)
 
     # find recipient users
     recipients = User.find(recipient_ids.to_a)
