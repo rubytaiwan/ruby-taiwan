@@ -1,6 +1,5 @@
 # coding: utf-8  
 require "digest/md5"
-require "reply_mailing"
 class Reply
   include Mongoid::Document
   include Mongoid::Timestamps
