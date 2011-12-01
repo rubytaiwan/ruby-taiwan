@@ -65,11 +65,11 @@ class RepliesController < ApplicationController
     # prevent duplicated mail sent to users mentioned in the reply
     recipient_ids.subtract(reply.mentioned_user_ids) if options[:exclude_mentioned] == true
 
+    # add the topic author to the recipients, if he is not the reply author
+    recipient_ids.add(topic.user.id) if topic.user.id != reply.user.id
+
     # find recipient users
     recipients = User.find(recipient_ids.to_a)
-
-    # add the topic author to the recipients, if he is not the reply author
-    recipients << topic.user if topic.user != reply.user
 
     recipients.each do |recipient|
       next if recipient == nil
