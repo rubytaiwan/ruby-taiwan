@@ -25,9 +25,6 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
-  rescue_errors unless Rails.env.development?
-  # 在 Development 不要 render_optional_error_file, 很煩 -_-
-
 
   def notice_success(msg)
     flash[:notice] = msg
