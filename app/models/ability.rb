@@ -83,6 +83,7 @@ class Ability
     can :read,    Topic
     can :feed,    Topic
     can :node,    Topic
+    can :last,    Topic
     
     can :read  , Note do |note|
        note.publish == true
