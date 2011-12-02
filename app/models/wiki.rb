@@ -10,7 +10,7 @@ class Wiki
   # :path for .md path
   # change_desc for commit log
 
-  DATA = Gollum::Wiki.new(Setting.wiki_repo, :base_path => "/giki")
+  DATA = Gollum::Wiki.new(Setting.wiki_repo, :base_path => "/wiki")
 
   def initialize(attributes = {})
     attributes.each do |name, value|
