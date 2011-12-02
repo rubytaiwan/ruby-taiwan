@@ -71,10 +71,7 @@ class Reply
     # prevent duplicated mail sent to users mentioned in the reply
     recipient_ids.subtract(mentioned_user_ids)
 
-    # find recipient users
-    recipients = User.find(recipient_ids.to_a)
-
-    recipients.each do |recipient|
+    recipient_ids.each do |recipient_id|
       TopicMailer.notify_reply(recipient_id, topic.id, self.id).deliver
     end
     
