@@ -112,6 +112,14 @@ class TopicsController < ApplicationController
     end
   end
 
+  def preview
+    @body = params[:body]
+
+    respond_to do |format|
+      format.json
+    end
+  end
+
   def update
     @topic = current_user.topics.find(params[:id])
     pt = params[:topic]
