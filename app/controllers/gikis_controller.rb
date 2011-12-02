@@ -1,6 +1,6 @@
 # coding: utf-8
 class GikisController < ApplicationController
- 
+   
    def index
     @wiki = Wiki.find('Home')
     if @wiki
@@ -31,7 +31,10 @@ class GikisController < ApplicationController
   
   def update
     @wiki =  Wiki.find(params[:id])
-    if @wiki.update_attributes(params[:wiki])
+    
+    commit = { :name => current_user.login, :email => current_user.email, :message => params[:wiki][:change_desc]}
+    
+    if @wiki.update_attributes(params[:wiki], commit)
       redirect_to giki_path(@wiki.name)
     else
       render :edit
@@ -40,8 +43,10 @@ class GikisController < ApplicationController
   
   def create
     @wiki = Wiki.new(params[:wiki])
+    commit = { :name => current_user.login, :email => current_user.email, :message => "Create #{@wiki.name}"}
+    
     begin
-      @wiki.save
+      @wiki.save(commit)
       redirect_to giki_path(@wiki.name)
     rescue Gollum::DuplicatePageError => e
       render :text => "Duplicate page: #{e.message}"
