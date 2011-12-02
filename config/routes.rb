@@ -11,6 +11,10 @@ RubyChina::Application.routes.draw do
     member do 
       get :history
     end
+    
+    collection do 
+      get :list
+    end
   end
   
   resources :comments

@@ -71,6 +71,8 @@ class GikisController < ApplicationController
   
   def list
     @results = Wiki::DATA.pages
+    drop_breadcrumb("Wiki", gikis_path)  
+    drop_breadcrumb("所有頁面")
   end
   
 end

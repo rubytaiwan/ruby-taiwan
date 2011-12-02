@@ -7,6 +7,9 @@
 
 <div id="pages">
     <div class="tools">
+        <% if params[:action] == "index" %>
+            <%= link_to("所有頁面", list_gikis_path )%>
+        <% end %>
         <%= link_to(t("pages.create_page"), new_giki_path, :class => "btn primary")%>
     </div>
     <div id="page_show" class="box">

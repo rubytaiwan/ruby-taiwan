@@ -6,15 +6,14 @@
 <% end %>
 
 <div id="pages">
-    <h2 style="text-align:left;"> <%= @wiki.name %> 版本歷史 </h2>
+    <h2 style="text-align:left;">所有頁面</h2>
     <div class="tools">
         <%= link_to(t("pages.create_page"), new_giki_path, :class => "btn primary")%>
     </div>
     <div class="box">
-        <%= render_table(@wiki.versions, [
-          [ "Name",         lambda { |version| version.author }],   
-          [ "Commit",       lambda { |version| version.id[0..6] }],
-          [ "Message",      lambda { |version| version.message }],
+    
+        <%= render_table(@results, [
+          [ "Name",         lambda { |page| link_to(page.name,giki_path(page.name)) }],   
         ], {:class_name => "table"}) %>
     </div>
     
