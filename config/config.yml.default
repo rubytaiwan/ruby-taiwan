@@ -17,9 +17,7 @@ defaults: &defaults
   douban_token: "04fab3198986e6350ef0194c9c94b29f"
   douban_secret: "5c08eac53cfa1890"
   facebook_enable: true
-  tanker_api_url: ""
-  tanker_index_name: ""
-
+  wiki_repo : "doc/wiki_repo"
 
 development:
   <<: *defaults

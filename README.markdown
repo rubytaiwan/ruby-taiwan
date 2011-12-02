@@ -76,6 +76,17 @@ facekbook_enable: false by default
 * 重複用到的方法請隨手用 Helper 包
 * 永遠使用括號 () 包覆複雜 Helper
 
+## Wiki Repo
+
+* DEV:
+
+ln -s "absolute path" doc/wiki_repo
+
+* PRODUCTION:
+
+add in config/deploy.rb
+  run "ln -sf #{deploy_to}/shared/doc/wiki_repo #{deploy_to}/current/doc/wiki_repo"
+
 ## Contributors
 
 * [Contributors](https://github.com/huacnlee/ruby-china/contributors)

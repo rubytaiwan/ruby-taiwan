@@ -1,0 +1,20 @@
+<%= content_for :styles do %>
+  <%= stylesheet_link_tag "pages" %>
+<% end %>
+<%= content_for :scripts do %>
+  <%= javascript_include_tag "pages" %>
+<% end %>
+
+<div id="pages">
+    <h2 style="text-align:left;">所有頁面</h2>
+    <div class="tools">
+        <%= link_to(t("pages.create_page"), new_giki_path, :class => "btn primary")%>
+    </div>
+    <div class="box">
+    
+        <%= render_table(@results, [
+          [ "Name",         lambda { |page| link_to(page.name,giki_path(page.name)) }],   
+        ], {:class_name => "table"}) %>
+    </div>
+    
+</div>

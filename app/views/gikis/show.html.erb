@@ -1,0 +1,29 @@
+<%= content_for :styles do %>
+  <%= stylesheet_link_tag "pages" %>
+<% end %>
+<%= content_for :scripts do %>
+  <%= javascript_include_tag "pages" %>
+<% end %>
+
+<div id="pages">
+    <div class="tools">
+        <% if params[:action] == "index" %>
+            <%= link_to("所有頁面", list_gikis_path )%>
+        <% end %>
+        <%= link_to(t("pages.create_page"), new_giki_path, :class => "btn primary")%>
+    </div>
+    <div id="page_show" class="box">
+        <div class="info">
+            <%= link_to("版本",history_giki_path(@wiki.name))%>
+            <%= link_to("", edit_giki_path(@wiki.name), :class => "icon small_edit") %>
+        </div>
+        
+        <div style="text-align:right;">
+          <%= render "common/share", :title => @wiki.name %>
+        </div>
+        
+        <div class="wikistyle">
+          <%= raw @wiki.formatted_data %>
+        </div>
+    </div>
+</div>

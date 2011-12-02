@@ -1,0 +1,19 @@
+<div class="box">
+    <%= simple_form_for :wiki, :url => giki_path(@wiki.name), :wrapper => :inline, :html => { :method => :put }  do |f| -%>
+        <fieldset>
+        <%= f.input :name , :hint => "http://#{Setting.domain}/wiki/:slug"%>       
+        <%= f.input :raw_data, :as => :text,
+                       :input_html => { :class => "long", :rows => "30" },
+                       :hint => "請使用 Markdown 格式編寫,可以試試用 <a href='http://mouapp.com' target='_blank'>Mou</a> 這個 App 来編寫。".html_safe
+        %>
+        
+        <%= f.input :change_desc , :as => :text,
+                      :input_html => { :class => "long", :rows => "2" },
+                      :hint => t("pages.describe_this_time_change")
+        %>
+        </fieldset>
+        <div class="actions">
+               <%= f.submit t("common.save"), :class => "btn primary" %>
+        </div>
+    <% end %>
+</div>

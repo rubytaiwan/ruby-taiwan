@@ -6,6 +6,17 @@ RubyChina::Application.routes.draw do
       get :recent
     end
   end
+  
+  resources :gikis, :path => "giki" do 
+    member do 
+      get :history
+    end
+    
+    collection do 
+      get :list
+    end
+  end
+  
   resources :comments
   resources :notes
   match "/uploads/*path" => "gridfs#serve"
