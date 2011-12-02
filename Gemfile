@@ -61,7 +61,8 @@ gem "unicorn"
 
 # for wiki
 
-gem 'gollum', :require => "gollum", :path => "~/Dropbox/projects/gollum"
+gem 'grit', :git => "git://github.com/mojombo/grit.git"
+gem 'gollum', :require => "gollum", :git => "git://github.com/xdite/gollum.git"
 
 # 用于组合小图片
 gem "sprite-factory", "1.4.1"
