@@ -1,13 +1,13 @@
 RubyChina::Application.routes.draw do
 
   resources :posts
-  resources :pages, :path => "wiki" do
-    collection do
-      get :recent
-    end
-  end
+  #resources :pages, :path => "wiki" do
+  #  collection do
+  #    get :recent
+  #  end
+  #end
   
-  resources :gikis, :path => "giki" do 
+  resources :gikis, :path => "wiki" do 
     member do 
       get :history
     end

@@ -1,5 +1,6 @@
 # coding: utf-8
 class GikisController < ApplicationController
+   authorize_resource :wiki
    
    def index
     @wiki = Wiki.find('Home')
@@ -61,6 +62,7 @@ class GikisController < ApplicationController
   
   def edit
     @wiki =  Wiki.find(params[:id])
+    authorize! :edit, @wiki
     drop_breadcrumb("Wiki", gikis_path)  
     drop_breadcrumb("Edit > #{@wiki.name}")  
   end

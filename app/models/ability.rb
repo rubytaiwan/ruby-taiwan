@@ -44,17 +44,9 @@ class Ability
         note.user_id == note.id
       end
       
-      # Wiki
-      can :read, Page
-      can :create, Page
-      
-      # XXX: Lock page 鎖 update 的話 edit 不知道為什麼不會成功，只好以此法實作
-      can :edit, Page do |page|
-        page.locked == false
-      end
-      can :update, Page do |page|
-        page.locked == false
-      end 
+      can :read, Wiki
+      can :create, Wiki
+      can :update, Wiki
       
       # Photo
       
@@ -88,8 +80,9 @@ class Ability
        note.publish == true
     end
     
-    can :read,  Page
-    can :recent, Page
+    can :list, Wiki
+    can :read, Wiki
+    can :history, Wiki
     
     can :read, Photo
   end
