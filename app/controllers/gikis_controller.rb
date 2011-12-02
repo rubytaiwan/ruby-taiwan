@@ -65,4 +65,12 @@ class GikisController < ApplicationController
     drop_breadcrumb("Edit > #{@wiki.name}")  
   end
   
+  def history
+    @wiki = Wiki.find(params[:id])
+  end    
+  
+  def list
+    @results = Wiki::DATA.pages
+  end
+  
 end

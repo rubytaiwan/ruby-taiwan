@@ -1,10 +1,11 @@
 class Wiki
 
+  include ActiveModel::AttributeMethods
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-
-  attr_accessor :name, :raw_data, :formatted_data, :title, :path, :change_desc
+  
+  attr_accessor :name, :raw_data, :formatted_data, :title, :path, :change_desc, :versions
   # name, raw_data, :formatted_data, :title  for input
   # :path for .md path
   # change_desc for commit log
@@ -24,7 +25,12 @@ class Wiki
   def self.find(name)
     data = DATA.page(name)
     if data
-      new :name => data.name, :raw_data => data.raw_data, :formatted_data => data.formatted_data, :title => data.title, :path => data.path
+      new :name => data.name,
+          :raw_data => data.raw_data,
+          :formatted_data => data.formatted_data, 
+          :title => data.title, 
+          :path => data.path, 
+          :versions => data.versions
     end
   end
 

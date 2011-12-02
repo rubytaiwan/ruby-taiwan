@@ -7,7 +7,11 @@ RubyChina::Application.routes.draw do
     end
   end
   
-  resources :gikis, :path => "giki"
+  resources :gikis, :path => "giki" do 
+    member do 
+      get :history
+    end
+  end
   
   resources :comments
   resources :notes
