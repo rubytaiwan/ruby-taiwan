@@ -63,6 +63,7 @@ window.Topics =
     # put div#preview after textarea
     preview_box = $(document.createElement("div")).attr "id", "preview"
     $(textarea).after preview_box
+    preview_box.hide()
 
     $(switcher).click ->
       if Topics.duringPreview is true
