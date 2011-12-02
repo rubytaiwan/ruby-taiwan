@@ -60,6 +60,10 @@ gem 'mail_view', :git => 'git://github.com/37signals/mail_view.git'
 gem "daemon-spawn", "~> 0.4.2"
 gem "unicorn"
 
+# for opengraph
+
+gem 'open_graph_helper'
+
 # for wiki
 gem 'grit', :git => "git://github.com/mojombo/grit.git"
 gem 'gollum', :require => "gollum", :git => "git://github.com/xdite/gollum.git"

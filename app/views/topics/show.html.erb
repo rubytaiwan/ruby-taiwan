@@ -2,9 +2,10 @@
 
 <%= content_for :open_graph do %>
     <%= og_title(@topic.title)%>
-    <%= og_description(@topic.body)%>
+    <%= og_description(truncate(s(@topic.body), :length => 200))%>
     <%= og_image( Setting.domain + asset_path("big_logo.png"))%>
 <% end %>
+
 
 <div class="sidebar">
     <%= render_cell :topics, :sidebar_for_new_topic_node, { :action => params[:action], :node => @node } %>
@@ -63,4 +64,5 @@
       <%= render :partial => "topics/translation/need_login_to_reply" %>
   <% end %>
 </div>
+
 
