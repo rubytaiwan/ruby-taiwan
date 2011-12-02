@@ -49,6 +49,17 @@ window.Topics =
     $("#new_reply textarea").focus()
     $('#btn_reply').button('reset')    
     
+  preview: (callback) ->
+    body = $("#topic_body").val()
+    $("#preview").text "Loading..."
+
+    $.post "/topics/preview",
+      "body": body,
+      (data) ->
+        $("#preview").html data.body
+        callback.call()
+      "json"
+
 # pages ready
 $(document).ready ->
   $("textarea").bind "keydown","ctrl+return",(el) ->
