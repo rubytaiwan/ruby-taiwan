@@ -6,7 +6,7 @@ class GikisController < ApplicationController
     if @wiki
       @page_title = @wiki.title
       set_seo_meta("Wiki")
-      drop_breadcrumb(@page_title)
+      drop_breadcrumb("Wiki", gikis_path)  
       drop_breadcrumb("Home")
       render :action => :show
     else
@@ -18,13 +18,15 @@ class GikisController < ApplicationController
   
   def show
     @wiki = Wiki.find(params[:id])
-    unless @data
+    unless @wiki
       @wiki = Wiki.new(:name => params[:id])
       @page_title = "Create New Page"
+      drop_breadcrumb("Create New Page > #{@wiki.name}")
       render :new
-    else
-      @page_title = @data.title
+      return
     end
+    drop_breadcrumb("Wiki", gikis_path)  
+    drop_breadcrumb(@wiki.name)  
   end
   
   def update
@@ -48,10 +50,14 @@ class GikisController < ApplicationController
   
   def new
     @data = Wiki.new(:name => params[:id])
+    drop_breadcrumb("Wiki", gikis_path)  
+    drop_breadcrumb("New Page")
   end
   
   def edit
     @wiki =  Wiki.find(params[:id])
+    drop_breadcrumb("Wiki", gikis_path)  
+    drop_breadcrumb("Edit > #{@wiki.name}")  
   end
   
 end
