@@ -35,6 +35,7 @@ end
 
 task :link_shared_config_yaml, :roles => :web do
   run "ln -sf #{deploy_to}/shared/config/*.yml #{deploy_to}/current/config/"
+  run "ln -sf #{deploy_to}/shared/doc/wiki_repo #{deploy_to}/current/doc/wiki_repo"
 end
 
 task :restart_resque, :roles => :web do
