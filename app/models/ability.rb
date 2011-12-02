@@ -84,6 +84,7 @@ class Ability
     can :feed,    Topic
     can :node,    Topic
     can :recent,  Topic
+    can :node_feed, Topic
     can :search,  Topic
     
     can :read  , Note do |note|
