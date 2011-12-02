@@ -10,21 +10,19 @@ class ApplicationController < ActionController::Base
   def render_403
     render_optional_error_file(403)
   end
-  
+
   def render_optional_error_file(status_code)
-      status = status_code.to_s
-      if ["404","403", "422", "500"].include?(status)
-        render :template => "/errors/#{status}.html.erb", :status => status, :layout => "application"
-      else
-        render :template => "/errors/unknown.html.erb", :status => status, :layout => "application"
-      end
+    status = status_code.to_s
+    if ["404","403", "422", "500"].include?(status)
+      render :template => "/errors/#{status}.html.erb", :status => status, :layout => "application"
+    else
+      render :template => "/errors/unknown.html.erb", :status => status, :layout => "application"
+    end
   end
-
+  
   rescue_from CanCan::AccessDenied do |exception|  
-    flash[:error] = "你可能沒有權限 / 需要登入"  
-    redirect_to root_url
+    redirect_to topics_path, :alert => t("common.access_denied")
   end
-
 
   def notice_success(msg)
     flash[:notice] = msg
