@@ -7,7 +7,7 @@ RubyChina::Application.routes.draw do
     end
   end
   
-  resources :gikis
+  resources :gikis, :path => "giki"
   
   resources :comments
   resources :notes
