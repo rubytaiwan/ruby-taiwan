@@ -68,3 +68,25 @@ $(document).ready ->
     return false
 
   $("textarea").autogrow()
+
+  # put div#preview after #topic_body textarea
+  preview_box = $(document.createElement("div")).attr "id", "preview"
+  $("#topic_body").after preview_box
+
+  $("#switch-preview").click ->
+    if Topics.duringPreview is true
+      # turn off preview
+      $("#preview").hide()
+      $("#topic_body").show()
+      Topics.duringPreview = false
+      $("#switch-preview").text "預覽"
+    else
+      # turn on preview
+      $("#preview").show()
+      $("#topic_body").hide()
+      Topics.duringPreview = true
+      Topics.preview () ->
+        $("#switch-preview").text "撰寫"
+    false
+
+  return
