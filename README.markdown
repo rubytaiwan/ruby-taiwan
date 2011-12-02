@@ -78,7 +78,14 @@ facekbook_enable: false by default
 
 ## Wiki Repo
 
+* DEV:
+
 ln -s "absolute path" doc/wiki_repo
+
+* PRODUCTION:
+
+add in config/deploy.rb
+  run "ln -sf #{deploy_to}/shared/doc/wiki_repo #{deploy_to}/current/doc/wiki_repo"
 
 ## Contributors
 
