@@ -19,7 +19,7 @@
     <div id="page_show" class="box">
         <div class="info">
             <%= link_to("版本",history_giki_path(@wiki.name))%>
-            <%= link_to("", edit_giki_path(@wiki.name), :class => "icon small_edit")  if can? :edit, @page %>
+            <%= link_to("", edit_giki_path(@wiki.name), :class => "icon small_edit")  if can? :edit, @wiki %>
         </div>
         
         <div style="text-align:right;">
