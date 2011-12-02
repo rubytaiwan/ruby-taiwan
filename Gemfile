@@ -61,7 +61,7 @@ gem "daemon-spawn", "~> 0.4.2"
 gem "unicorn"
 
 # for wiki
-
+gem 'grit', :git => "git://github.com/mojombo/grit.git"
 gem 'gollum', :require => "gollum", :git => "git://github.com/xdite/gollum.git"
 
 # 用于组合小图片

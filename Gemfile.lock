@@ -5,6 +5,15 @@ GIT
     mail_view (1.0.1)
 
 GIT
+  remote: git://github.com/mojombo/grit.git
+  revision: ff015074ef35bd94cba943f9c0f98e161ab5851c
+  specs:
+    grit (2.4.1)
+      diff-lcs (~> 1.1)
+      mime-types (~> 1.15)
+      posix-spawn (~> 0.3.6)
+
+GIT
   remote: git://github.com/plataformatec/devise.git
   revision: 4243791b478b564b3cf4f0a7a5750b633bbfe2b8
   specs:
@@ -141,9 +150,6 @@ GEM
     fast-stemmer (1.0.0)
     ffi (1.0.11)
     github-markup (0.5.3)
-    grit (2.4.1)
-      diff-lcs (~> 1.1)
-      mime-types (~> 1.15)
     hashie (1.2.0)
     highline (1.6.8)
     hike (1.2.1)
@@ -351,6 +357,7 @@ DEPENDENCIES
   devise!
   factory_girl_rails
   gollum!
+  grit!
   hpricot
   jquery-rails (= 1.0.16)
   mail_view!
