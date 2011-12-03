@@ -1,0 +1,69 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler'
+Bundler.require :mailman
+
+require File.expand_path('../../app/helpers/mail_helper', __FILE__)
+require File.expand_path('../../app/models/reply_listener', __FILE__)
+include MailHelper
+
+require 'daemon_spawn'
+
+env = ENV['RAILS_ENV'] || 'development'
+config = YAML::load(open(File.expand_path('../../config/mailman.yml', __FILE__)))[env]
+Mailman.config.pop3 = {
+  :username => config["username"],
+  :password => config["password"],
+  :server   => config["server"],
+  :port     => config["port"],
+  :ssl      => config["ssl"]
+}
+
+redis_config = YAML.load_file(File.expand_path('../../config/redis.yml', __FILE__))[env]
+Resque.redis = Redis.new(:host => redis_config['host'], :port => redis_config['port'])
+Resque.redis.namespace = redis_config['redis_namespace']
+
+working_dir = File.expand_path('../../', __FILE__)
+logs = "#{working_dir}/log/mailman.log"
+pids = "#{working_dir}/tmp/pids/mailman.pid"
+
+class MailmanDaemon < DaemonSpawn::Base
+  def start(args)
+    Mailman::Application.run do
+      to('notification+%reply_id%-%key%@ruby-hk.org') do |reply_id, key|
+        begin
+          from_email = message.from.first
+          message_id = message.message_id
+          reply_text = extract_reply(plaintext_body(message), Setting.email_sender)
+          puts "receive email from #{from_email}, reply_id: #{reply_id}, key: #{key}"
+
+          Resque.enqueue(ReplyListener, reply_id, key, message_id, from_email, reply_text)
+        rescue StandardError => e
+          puts "ERROR: #{e.inspect}"
+          
+          # write mail to a file for debug
+          emailfile = "#{working_dir}/log/mailman-#{rand(100000)}.eml"
+          puts "Write file to debug: #{emailfile}"
+          File.open(emailfile, 'w') {|f| f.write(message) }
+        end
+      end
+    end
+  end
+
+  def stop
+    puts "Try to shutdown mailman"
+  end
+end
+
+
+MailmanDaemon.spawn!({
+  :processes   => 1,
+  :log_file    => logs,
+  :pid_file    => pids,
+  :sync_log    => true,
+  :working_dir => working_dir,
+  :singleton   => true
+})
+
+
+
