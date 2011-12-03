@@ -24,7 +24,7 @@ class Reply
   index :user_id
   index :topic_id
   
-  attr_protected :user_id, :topic_id
+  attr_protected :user_id, :topic_id, :email_key
 
   validates_presence_of :body
   
@@ -62,7 +62,6 @@ class Reply
   end
 
   after_create :send_notify_reply_mail
-
   def send_notify_reply_mail
 
     # fetch follower ids from the topic (may or may not include the topic author)
@@ -78,12 +77,10 @@ class Reply
     # prevent duplicated mail sent to users mentioned in the reply
     recipient_ids.subtract(mentioned_user_ids)
 
-    # find recipient users
-    recipients = User.find(recipient_ids.to_a)
-
-    recipients.each do |recipient|
+    recipient_ids.each do |recipient_id|
       TopicMailer.notify_reply(recipient_id, topic.id, self.id).deliver
-      # use deliver! to raise error when delivery failed
     end
+    
+    return true
   end
 end
