@@ -21,7 +21,9 @@ gem 'devise', :git => 'git://github.com/plataformatec/devise.git'
 gem 'will_paginate', '3.0.pre2'
 # 三方平台 OAuth 验证登陆
 
+
 gem "mongoid_search"
+
 gem "omniauth"
 gem 'omniauth-openid'
 gem "omniauth-github"
