@@ -44,5 +44,17 @@ class Wiki
   def save(commit)
     DATA.write_page(name, :markdown, raw_data, commit)
   end
+  
+  def self.search(keyword)
+    names = Wiki::DATA.search(keyword).map{ |data| data[:name]  }
+    results = []
+    
+    if names.present?
+      names.each do |name|
+        results << DATA.page(name)
+      end
+    end
+    return results
+  end
 
 end
