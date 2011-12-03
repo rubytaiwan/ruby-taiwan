@@ -72,6 +72,8 @@ window.Topics =
         $(textarea).show()
         Topics.duringPreview = false
         $(switcher).text "預覽"
+        $(switcher).removeClass "edit"
+        $(switcher).addClass "search"
       else
         # turn on preview
         $(preview_box).show()
@@ -80,6 +82,8 @@ window.Topics =
         Topics.preview $(textarea).val(),
           () ->
             $(switcher).text "撰寫"
+            $(switcher).removeClass "search"
+            $(switcher).addClass "edit"
       false
 
 # pages ready

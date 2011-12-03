@@ -71,6 +71,10 @@ gem 'grit', :git => "git://github.com/mojombo/grit.git"
 gem 'gollum', :require => "gollum", :git => "git://github.com/xdite/gollum.git"
 
 # 用于组合小图片
+
+# https://github.com/thetron/css3buttons_rails_helpers/pull/24
+gem 'css3buttons', :git => "git://github.com/thetron/css3buttons_rails_helpers.git"
+
 gem "sprite-factory", "1.4.1"
 
 gem 'tanker'

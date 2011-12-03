@@ -6,7 +6,7 @@
         <fieldset>
         <%= f.input :name , :hint => "http://#{Setting.domain}/wiki/:slug"%>     
         <div class="edit_tools">
-          <%= render "/topics/editor_toolbar" %>
+            <%= search_pill_button_link_to("預覽", "#", :id => "switch-preview") %>
         </div>  
         <%= f.input :raw_data, :as => :text,
                        :input_html => { :class => "topic_editor long", :rows => "30" },

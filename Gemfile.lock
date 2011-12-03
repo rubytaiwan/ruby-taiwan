@@ -31,6 +31,13 @@ GIT
       activemodel (~> 3.0)
 
 GIT
+  remote: git://github.com/thetron/css3buttons_rails_helpers.git
+  revision: e88e8353006c1d9fcd077a06c9cff43d032baf01
+  specs:
+    css3buttons (1.0.1)
+      actionpack (>= 3.0.0)
+
+GIT
   remote: git://github.com/xdite/bootstrap-rails.git
   revision: 7fe2d48ef0b01de7b16aa927465d83c768e3769e
   specs:
@@ -352,6 +359,7 @@ DEPENDENCIES
   chinese_pinyin (= 0.4.1)
   chunky_png (= 1.2.5)
   coffee-rails (~> 3.1.1)
+  css3buttons!
   daemon-spawn (~> 0.4.2)
   dalli (= 1.1.1)
   devise!
