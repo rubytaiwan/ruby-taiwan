@@ -29,24 +29,28 @@ pids = "#{working_dir}/tmp/pids/mailman.pid"
 
 class MailmanDaemon < DaemonSpawn::Base
   def start(args)
-    Mailman::Application.run do
-      to('notification+%reply_id%-%key%@ruby-hk.org') do |reply_id, key|
-        begin
-          from_email = message.from.first
-          message_id = message.message_id
-          reply_text = extract_reply(plaintext_body(message), Setting.email_sender)
-          puts "receive email from #{from_email}, reply_id: #{reply_id}, key: #{key}"
+    loop do
+      begin
+        Mailman::Application.run do
+          to('notification+%reply_id%-%key%@ruby-hk.org') do |reply_id, key|
+            begin
+              from_email = message.from.first
+              message_id = message.message_id
+              reply_text = extract_reply(plaintext_body(message), Setting.email_sender)
+              puts "receive email from #{from_email}, reply_id: #{reply_id}, key: #{key}"
 
-          Resque.enqueue(ReplyListener, reply_id, key, message_id, from_email, reply_text)
-        rescue StandardError => e
-          puts "ERROR: #{e.inspect}"
-          
-          # write mail to a file for debug
-          emailfile = "#{working_dir}/log/mailman-#{rand(100000)}.eml"
-          puts "Write file to debug: #{emailfile}"
-          File.open(emailfile, 'w') {|f| f.write(message) }
+              Resque.enqueue(ReplyListener, reply_id, key, message_id, from_email, reply_text)
+            rescue StandardError => e
+              puts "ERROR PARSING MAIL:\n#{e.inspect}\n#{message}"
+            end
+
+          end
         end
+
+      rescue StandardError => e
+        puts "SERVER CONNECTION ERROR:\n#{e.inspect}"
       end
+
     end
   end
 
