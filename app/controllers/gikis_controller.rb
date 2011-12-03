@@ -77,4 +77,14 @@ class GikisController < ApplicationController
     drop_breadcrumb("所有頁面")
   end
   
+  def preview
+    @body = params[:body]
+    
+    @content = Wiki::DATA.preview_page("Preview", @body, :markdown).formatted_data
+
+    respond_to do |format|
+      format.json
+    end
+  end
+  
 end

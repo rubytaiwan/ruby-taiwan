@@ -49,10 +49,11 @@ window.Topics =
     $("#new_reply textarea").focus()
     $('#btn_reply').button('reset')    
     
-  preview: (body, callback) ->
+  preview: (body, format, callback) ->
     $("#preview").text "Loading..."
-
-    $.post "/topics/preview",
+    preview_path = "/" + format + "/preview"  # /topics/preview
+    
+    $.post preview_path,
       "body": body,
       (data) ->
         $("#preview").html data.body
@@ -79,7 +80,11 @@ window.Topics =
         $(preview_box).show()
         $(textarea).hide()
         Topics.duringPreview = true
-        Topics.preview $(textarea).val(),
+        if $(textarea).hasClass("wiki")
+          format = "wiki"
+        else
+          format = "topics"
+        Topics.preview $(textarea).val(),format,
           () ->
             $(switcher).text "撰寫"
             $(switcher).removeClass "search"

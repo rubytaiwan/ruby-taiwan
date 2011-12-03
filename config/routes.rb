@@ -14,6 +14,7 @@ RubyChina::Application.routes.draw do
     
     collection do 
       get :list
+      post :preview
     end
   end
   
