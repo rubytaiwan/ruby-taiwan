@@ -1,9 +1,16 @@
+<%= content_for :scripts do %>
+  <%= javascript_include_tag "topics" %>
+<% end %>
+
 <div class="box">
     <%= simple_form_for :wiki, :url => giki_path(@wiki.name), :wrapper => :inline, :html => { :method => :put }  do |f| -%>
         <fieldset>
-        <%= f.input :name , :hint => "http://#{Setting.domain}/wiki/:slug"%>       
+        <%= f.input :name , :hint => "http://#{Setting.domain}/wiki/:slug"%>  
+        <div class="edit_tools">
+            <%= link_to("預覽", "#", :id => "switch-preview") %>
+        </div>     
         <%= f.input :raw_data, :as => :text,
-                       :input_html => { :class => "long", :rows => "30" },
+                       :input_html => { :class => "topic_editor long", :rows => "30" },
                        :hint => "請使用 Markdown 格式編寫,可以試試用 <a href='http://mouapp.com' target='_blank'>Mou</a> 這個 App 来編寫。".html_safe
         %>
         
