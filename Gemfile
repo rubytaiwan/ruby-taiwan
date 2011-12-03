@@ -53,7 +53,6 @@ gem "aws-ses", "~> 0.4.3"
 gem 'mail_view', :git => 'git://github.com/37signals/mail_view.git'
 gem "daemon-spawn", "~> 0.4.2"
 gem "unicorn"
-gem "rb-inotify"
 
 # 用于组合小图片
 gem "sprite-factory", "1.4.1"
