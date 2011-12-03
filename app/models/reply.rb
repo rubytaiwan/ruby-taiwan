@@ -53,4 +53,29 @@ class Reply
       Notification::Mention.create :user_id => user_id, :reply => self
     end
   end
+
+  after_create :send_notify_reply_mail
+  def send_notify_reply_mail
+
+    # fetch follower ids from the topic (may or may not include the topic author)
+    recipient_ids = Set.new(topic.follower_ids)
+
+    # don't send reply notification to the author of the reply
+    recipient_ids.delete(user.id)
+
+    # add the topic author to the recipients, if he is not the reply author
+    recipient_ids.add(topic.user.id) if topic.user.id != user.id
+
+    # prevent duplicated mail sent to users mentioned in the reply
+    recipient_ids.subtract(mentioned_user_ids)
+
+    # find recipient users
+    recipients = User.find(recipient_ids.to_a)
+
+    recipients.each do |recipient|
+      next if recipient == nil
+      TopicMailer.notify_reply(recipient, topic, self).deliver!
+      # use deliver! to raise error when delivery failed
+    end
+  end
 end
