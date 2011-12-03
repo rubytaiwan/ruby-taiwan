@@ -49,6 +49,39 @@ window.Topics =
     $("#new_reply textarea").focus()
     $('#btn_reply').button('reset')    
     
+  preview: (body, callback) ->
+    $("#preview").text "Loading..."
+
+    $.post "/topics/preview",
+      "body": body,
+      (data) ->
+        $("#preview").html data.body
+        callback.call()
+      "json"
+
+  hookPreview: (switcher, textarea) ->
+    # put div#preview after textarea
+    preview_box = $(document.createElement("div")).attr "id", "preview"
+    $(textarea).after preview_box
+    preview_box.hide()
+
+    $(switcher).click ->
+      if Topics.duringPreview is true
+        # turn off preview
+        $(preview_box).hide()
+        $(textarea).show()
+        Topics.duringPreview = false
+        $(switcher).text "預覽"
+      else
+        # turn on preview
+        $(preview_box).show()
+        $(textarea).hide()
+        Topics.duringPreview = true
+        Topics.preview $(textarea).val(),
+          () ->
+            $(switcher).text "撰寫"
+      false
+
 # pages ready
 $(document).ready ->
   $("textarea").bind "keydown","ctrl+return",(el) ->
@@ -57,3 +90,6 @@ $(document).ready ->
     return false
 
   $("textarea").autogrow()
+
+  Topics.hookPreview($("#switch-preview"), $(".topic_editor"))
+  return
