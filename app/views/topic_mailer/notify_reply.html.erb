@@ -7,6 +7,7 @@
 <%= format_topic_body @reply.body, :allow_image => false %>
 </blockquote>
 
-<p>
-請至 <%= topic_url(@topic) %> 閱讀這篇主題。
-</p>
+<% content_for :action_message do %>
+直接回覆這電郵或到以下網址回應：<br />
+<%= topic_url(@topic) %> <%= Setting.app_name %>
+<% end %>

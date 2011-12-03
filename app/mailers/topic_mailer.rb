@@ -2,6 +2,7 @@
 require 'digest/sha2'
 
 class TopicMailer < BaseMailer
+  layout 'reply_mailer'
 
   def notify_reply(recipient_id, topic_id, reply_id)
     @topic = Topic.find(topic_id)
