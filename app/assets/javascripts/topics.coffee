@@ -79,6 +79,10 @@ window.Topics =
       $(this).parent().addClass("active")
       $(preview_box).show()
       $(textarea).hide()
+      if $(textarea).hasClass("wiki")
+        format = "wiki"
+      else
+        format = "topics"
       Topics.preview($(textarea).val(),format)
       false
 
