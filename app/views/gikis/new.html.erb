@@ -5,9 +5,15 @@
     <%= simple_form_for :wiki, :url => gikis_path, :wrapper => :inline do |f| -%>
         <fieldset>
         <%= f.input :name , :hint => "http://#{Setting.domain}/wiki/:slug"%>     
-        <div class="edit_tools">
-            <%= search_pill_button_link_to("預覽", "#", :id => "switch-preview") %>
-        </div>  
+        <div class="edit_tools input">
+            <div class="editor_toolbar">
+              <ul class="pills">
+                <li class="edit active"><%= link_to(t("common.editor_toolbar_edit"), "#") %></li>
+                <li class="preview"><%= link_to(t("common.editor_toolbar_preview"), "#") %></li>
+              </ul>
+            </div>
+          
+        </div>
         <%= f.input :raw_data, :as => :text,
                        :input_html => { :class => "topic_editor long", :rows => "30" },
                        :hint => "請使用 Markdown 格式編寫,可以試試用 <a href='http://mouapp.com' target='_blank'>Mou</a> 這個 App 来編寫。".html_safe
