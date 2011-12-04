@@ -141,10 +141,10 @@
 
 #reply {
   form {
-    .pull-right {
-      padding-top:16px;
-    }
   }
+  .editor_toolbar {
+    width:588px;
+  } 
 }
 
 .sidebar {
@@ -176,4 +176,3 @@
     }
   }
 }
-

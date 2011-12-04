@@ -1,2 +1,11 @@
-<%= link_to("", "#", :onclick => "return Topics.addImageClick();", :id => "add_image", :rel => "twipsy", :title => t("topics.add_image"), :class => "icon small_image")%>
-<span class="preview-button">  <%= search_pill_button_link_to("預覽", "#", :id => "switch-preview") %> </span>
+<div class="editor_toolbar">
+  <div class="icons pull-right">
+    <%= link_to("", "#", :onclick => "return Topics.addImageClick();", :id => "add_image", :rel => "twipsy", :title => t("topics.add_image"), :class => "icon small_image")%>
+  </div>
+  <ul class="pills">
+    <li class="edit active"><%= link_to(t("common.editor_toolbar_edit"), "#") %></li>
+    <li class="preview"><%= link_to(t("common.editor_toolbar_preview"), "#") %></li>
+  </ul>
+  
+  
+</div>

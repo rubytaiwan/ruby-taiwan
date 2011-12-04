@@ -1,4 +1,5 @@
 RubyChina::Application.routes.draw do
+  resources :sites
 
   resources :posts
   #resources :pages, :path => "wiki" do
@@ -25,8 +26,9 @@ RubyChina::Application.routes.draw do
  
 
   devise_for :users, :path => "account", :controllers => { 
-    :omniauth_callbacks => "users/omniauth_callbacks" 
-  }
+      :registrations => :account,
+      :omniauth_callbacks => "users/omniauth_callbacks" 
+    }
   
   match "account/auth/:provider/unbind", :to => "users#auth_unbind"
   
@@ -93,6 +95,8 @@ RubyChina::Application.routes.draw do
       end
     end
     resources :comments
+    resources :site_nodes
+    resources :sites
   end  
   
   if Rails.env.development?

@@ -42,53 +42,44 @@ window.Topics =
     $("#main .alert-message").remove()
     if success
       $("abbr.timeago",$("#replies .reply").last()).timeago()
+      $("abbr.timeago",$("#replies .total")).timeago()
       $("#new_reply textarea").val('')
       App.notice(msg,'#reply')
     else
       App.alert(msg,'#reply')
     $("#new_reply textarea").focus()
-    $('#btn_reply').button('reset')    
-    
-  preview: (body, format, callback) ->
+    $('#btn_reply').button('reset')
+
+  preview: (body, format) ->
     $("#preview").text "Loading..."
     preview_path = "/" + format + "/preview"  # /topics/preview
-    
+
     $.post preview_path,
       "body": body,
       (data) ->
         $("#preview").html data.body
-        callback.call()
       "json"
 
   hookPreview: (switcher, textarea) ->
     # put div#preview after textarea
     preview_box = $(document.createElement("div")).attr "id", "preview"
+
+    preview_box.addClass("body")
     $(textarea).after preview_box
     preview_box.hide()
 
-    $(switcher).click ->
-      if Topics.duringPreview is true
-        # turn off preview
-        $(preview_box).hide()
-        $(textarea).show()
-        Topics.duringPreview = false
-        $(switcher).text "預覽"
-        $(switcher).removeClass "edit"
-        $(switcher).addClass "search"
-      else
-        # turn on preview
-        $(preview_box).show()
-        $(textarea).hide()
-        Topics.duringPreview = true
-        if $(textarea).hasClass("wiki")
-          format = "wiki"
-        else
-          format = "topics"
-        Topics.preview $(textarea).val(),format,
-          () ->
-            $(switcher).text "撰寫"
-            $(switcher).removeClass "search"
-            $(switcher).addClass "edit"
+    $(".edit a",switcher).click ->
+      $(".preview",switcher).removeClass("active")
+      $(this).parent().addClass("active")
+      $(preview_box).hide()
+      $(textarea).show()
+      false
+    $(".preview a",switcher).click ->
+      $(".edit",switcher).removeClass("active")
+      $(this).parent().addClass("active")
+      $(preview_box).show()
+      $(textarea).hide()
+      Topics.preview($(textarea).val(),format)
       false
 
 # pages ready
@@ -100,5 +91,6 @@ $(document).ready ->
 
   $("textarea").autogrow()
 
-  Topics.hookPreview($("#switch-preview"), $(".topic_editor"))
+  Topics.hookPreview($(".editor_toolbar"), $(".topic_editor"))
+
   return
