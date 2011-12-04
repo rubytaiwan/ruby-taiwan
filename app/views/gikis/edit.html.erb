@@ -6,7 +6,6 @@
     <%= simple_form_for :wiki, :url => giki_path(@wiki.name), :wrapper => :inline, :html => { :method => :put }  do |f| -%>
         <fieldset>
         <%= f.input :name , :hint => "http://#{Setting.domain}/wiki/:slug"%>  
-
         
         <div class="edit_tools input">
             <div class="editor_toolbar">

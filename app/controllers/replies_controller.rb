@@ -51,3 +51,4 @@ class RepliesController < ApplicationController
     @topic = Topic.find(params[:topic_id])
   end
 
+end
