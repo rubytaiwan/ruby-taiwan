@@ -3,7 +3,7 @@
   <div class="box">
     <%= raw SiteConfig.site_index_html %>
     <% if can? :create, Site %>
-      <%= link_to(t("common.sites.create"), new_sites_path, :class => "btn small success")%>
+      <%= link_to(t("common.sites.create"), new_site_path, :class => "btn small success")%>
     <% end %>
   </div>
   <% @site_nodes.each do |node| %>
