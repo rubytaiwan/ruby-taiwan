@@ -1,5 +1,6 @@
 # coding: utf-8
-require './config/boot'
+require "./config/boot"
+require "bundler/capistrano"
 require 'airbrake/capistrano'
 default_environment["RAILS_ENV"] = "production"
 default_environment["PATH"] = "/usr/local/bin:/usr/bin:/bin"
@@ -52,15 +53,6 @@ namespace :remote_rake do
   end
 end
 
-task :install_gems, :roles => :web do
-  run "cd #{deploy_to}/current/; bundle install"
-end
-
-
-task :install_gems, :roles => :web do  	
-  run "cd #{deploy_to}/current/; bundle install"	  	
-end
-
 task :compile_assets, :roles => :web do	  	
   run "cd #{deploy_to}/current/; bundle exec rake assets:precompile"  	
 end
@@ -69,5 +61,7 @@ task :mongoid_create_indexes, :roles => :web do
   run "cd #{deploy_to}/current/; bundle exec rake db:mongoid:create_indexes"
 end
 
-after "deploy:symlink", :init_shared_path, :link_shared_config_yaml, :install_gems, :compile_assets, :mongoid_create_indexes
+after "deploy:finalize_update", :init_shared_path
+after "deploy:finalize_update", :link_shared_config_yaml
+after "deploy:finalize_update", :mongoid_create_indexes
 
