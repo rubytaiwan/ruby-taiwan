@@ -1,1 +1,0 @@
-RubyChina::Application.config.index_tank_url = Setting.tanker_api_url
