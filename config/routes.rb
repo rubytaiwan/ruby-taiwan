@@ -24,6 +24,7 @@ RubyChina::Application.routes.draw do
     member do 
       get :replies
       get :likes
+      get :notes
     end 
   end
   resources :notifications, :only => [:index, :destroy] do
