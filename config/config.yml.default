@@ -18,7 +18,7 @@ defaults: &defaults
   douban_secret: "5c08eac53cfa1890"
   facebook_enable: true
   wiki_repo : "doc/wiki_repo"
-  google_js_api_key: ""
+  google_js_api_key: "ABQIAAAAC-ble-vmy_g7-Qvem5P86xTX2XchcwgyHzp4Xo0DHRAzt2aLjhQnflwIyCJBOWYCE_rFuUkE0qEmhw"
   external_feed_url: "http://ruby-taiwan.org/topics/feed"
   external_feed_name: "Ruby Taiwan Group"
 

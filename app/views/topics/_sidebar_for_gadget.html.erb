@@ -10,7 +10,7 @@
 <script type="text/javascript">
   function showGadget() {
     var feeds = [
-     {title:'熱門討論',
+     {title:'<%= t("common.hot_topics") %>',
       url:'<%= Setting.external_feed_url%>'}];
 
     new GFdynamicFeedControl(feeds, 'feedGadget',
