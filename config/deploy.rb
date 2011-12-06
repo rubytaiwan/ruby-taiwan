@@ -29,23 +29,36 @@ namespace :deploy do
 end
 
 
-task :init_shared_path, :roles => :web do
-  run "mkdir -p #{deploy_to}/shared/log"
-  run "mkdir -p #{deploy_to}/shared/pids"
+namespace :my_tasks do
+  task :symlink, :roles => [:web] do
+    run "mkdir -p #{deploy_to}/shared/log"
+    run "mkdir -p #{deploy_to}/shared/pids"
+    
+    symlink_hash = {
+      "#{shared_path}/config/mongoid.yml"   => "#{release_path}/config/mongoid.yml",
+      "#{shared_path}/config/config.yml"    => "#{release_path}/config/config.yml",
+      "#{shared_path}/config/newrelic.yml"  => "#{release_path}/config/newrelic.yml",
+      "#{shared_path}/config/redis.yml"     => "#{release_path}/config/redis.yml",
+    }
+
+    symlink_hash.each do |source, target|
+      run "ln -sf #{source} #{target}"
+    end
+    run "ln -sf #{shared_path}/doc/wiki_repo #{release_path}/doc/wiki_repo"
+  end
+  
+  task :restart_resque, :roles => :web do
+    run "cd #{release_path}; RAILS_ENV=production ./script/resque stop; RAILS_ENV=production ./script/resque start"
+  end
+  
+  task :mongoid_create_indexes, :roles => :web do
+    run "cd #{release_path}; bundle exec rake db:mongoid:create_indexes"
+  end
+  
 end
 
-task :link_shared_config_yaml, :roles => :web do
-  run "ln -sf #{deploy_to}/shared/config/*.yml #{deploy_to}/current/config/"
-  run "ln -sf #{deploy_to}/shared/doc/wiki_repo #{deploy_to}/current/doc/wiki_repo"
-end
 
-task :restart_resque, :roles => :web do
-  run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/resque stop; RAILS_ENV=production ./script/resque start"
-end
 
-task :restart_resque, :roles => :web do
-  run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/resque stop; RAILS_ENV=production ./script/resque start"
-end
 namespace :remote_rake do
   desc "Run a task on remote servers, ex: cap staging rake:invoke task=cache:clear"
   task :invoke do
@@ -53,15 +66,7 @@ namespace :remote_rake do
   end
 end
 
-task :compile_assets, :roles => :web do	  	
-  run "cd #{deploy_to}/current/; bundle exec rake assets:precompile"  	
-end
-
-task :mongoid_create_indexes, :roles => :web do
-  run "cd #{deploy_to}/current/; bundle exec rake db:mongoid:create_indexes"
-end
-
-after "deploy:finalize_update", :init_shared_path
-after "deploy:finalize_update", :link_shared_config_yaml
-after "deploy:finalize_update", :mongoid_create_indexes
+after "deploy:finalize_update", "my_tasks:symlink"
+after "deploy:finalize_update", "my_tasks:mongoid_create_indexes"
+#after "deploy:restart", "my_tasks:restart_resque"
 
