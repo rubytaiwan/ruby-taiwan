@@ -50,7 +50,7 @@ task :start_mailman, :roles => :web do
   run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman start"
 end
 
-task :stopt_mailman, :roles => :web do
+task :stop_mailman, :roles => :web do
   run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman stop"
 end
 
