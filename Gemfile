@@ -53,6 +53,7 @@ gem "aws-ses", "~> 0.4.3"
 gem 'mail_view', :git => 'git://github.com/37signals/mail_view.git'
 gem "daemon-spawn", "~> 0.4.2"
 gem "unicorn"
+
 # 用于组合小图片
 gem "sprite-factory", "1.4.1"
 gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
@@ -63,6 +64,14 @@ group :assets do
   gem 'sass-rails', "  ~> 3.1.4"
   gem 'coffee-rails', "~> 3.1.1"
   gem 'uglifier'
+end
+
+group :mailman do
+  gem "rb-inotify"
+  gem "mailman"
+  gem "nokogiri", "1.5.0"
+  gem "daemon-spawn", "~> 0.4.2"
+  gem "resque", "~> 1.19.0", :require => "resque/server"
 end
 
 group :development do

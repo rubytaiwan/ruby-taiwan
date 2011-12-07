@@ -46,8 +46,16 @@ task :restart_resque, :roles => :web do
   run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/resque stop; RAILS_ENV=production ./script/resque start"
 end
 
-task :restart_resque, :roles => :web do
-  run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/resque stop; RAILS_ENV=production ./script/resque start"
+task :start_mailman, :roles => :web do
+  run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman start"
+end
+
+task :stopt_mailman, :roles => :web do
+  run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman stop"
+end
+
+task :restart_mailman, :roles => :web do
+  run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman stop; RAILS_ENV=production ./script/mailman start"
 end
 
 task :install_gems, :roles => :web do  	

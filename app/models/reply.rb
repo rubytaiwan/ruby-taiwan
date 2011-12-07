@@ -1,5 +1,6 @@
 # coding: utf-8  
 require "digest/md5"
+
 class Reply
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -8,8 +9,9 @@ class Reply
   include Mongoid::SoftDelete
 
   field :body
-  field :source  
+  field :source
   field :message_id
+  field :email_key
   field :mentioned_user_ids, :type => Array, :default => []
   
   belongs_to :user, :inverse_of => :replies
@@ -22,7 +24,7 @@ class Reply
   index :user_id
   index :topic_id
   
-  attr_protected :user_id, :topic_id
+  attr_protected :user_id, :topic_id, :email_key
 
   validates_presence_of :body
   
@@ -37,6 +39,11 @@ class Reply
     if logins.any?
       self.mentioned_user_ids = User.where(:login => /^(#{logins.join('|')})$/i, :_id.ne => user.id).limit(5).only(:_id).map(&:_id).to_a
     end
+  end
+
+  before_save :generate_email_key
+  def generate_email_key
+    self.email_key = Digest::MD5.hexdigest(rand.to_s)
   end
 
   def mentioned_user_logins
@@ -55,7 +62,6 @@ class Reply
   end
 
   after_create :send_notify_reply_mail
-
   def send_notify_reply_mail
 
     # fetch follower ids from the topic (may or may not include the topic author)
@@ -71,12 +77,10 @@ class Reply
     # prevent duplicated mail sent to users mentioned in the reply
     recipient_ids.subtract(mentioned_user_ids)
 
-    # find recipient users
-    recipients = User.find(recipient_ids.to_a)
-
-    recipients.each do |recipient|
+    recipient_ids.each do |recipient_id|
       TopicMailer.notify_reply(recipient_id, topic.id, self.id).deliver
-      # use deliver! to raise error when delivery failed
     end
+    
+    return true
   end
 end
