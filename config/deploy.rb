@@ -54,7 +54,6 @@ namespace :my_tasks do
   task :mongoid_create_indexes, :roles => :web do
     run "cd #{release_path}; bundle exec rake db:mongoid:create_indexes"
   end
-  
 end
 
 

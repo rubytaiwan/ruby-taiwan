@@ -7,13 +7,17 @@
     create: "Create"
     avatar: "Avatar"
     save: "Save"
+    saving: "Saving"
+    submitting: "Submitting"
     delete: "Delete"
     place_top: "Stick Top"
     un_top: "Un-Stick Top"
     upload: "Upload"
+    uploading: "Uploading"
     published_at: "Published At"
     register: "Register"
     login: "Sign In"
+    logining: "Sign In..."
     logout: "Sign Out"
     remember_me: "Remember Me"
     cancel: "Cancel"
@@ -67,6 +71,7 @@
     topic_location: 'Replied to'
   photos:
     upload_and_insert_code: "Upload and insert code"
+    uploading: "Uploading"
   sites:
     create: Submit a site
   menu:
@@ -89,7 +94,12 @@
     to_douban: "Share to Douban"
     to_facebook: "Share to Facebook"
   mail:
+    login_from: "Sign in from"
     this_is_a_notification_mail_please_do_not_reply: "This is an email notification. Please do not reply."
+    welcome_subject: "Welcome to %{app_name} community"
+    welcome_title: "Welcome to %{app_name}"
+    you_have_successfully: "You have successfully registered an account in"
+    registered_an_account: "."
   rss:
     recent_topics_description: "Recent Topics in %{name} Forum."
     recent_topics_title: "%{name} Forum"
