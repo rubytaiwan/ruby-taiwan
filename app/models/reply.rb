@@ -57,11 +57,14 @@ class Reply
   after_create :send_notify_reply_mail
 
   def send_notify_reply_mail
-
+    if topic.id == 4
+      # XXX: 避免歡迎信騷擾大家 need_refactor
+      return true
+      return 
+    end
     # fetch follower ids from the topic (may or may not include the topic author)
-    #recipient_ids = Set.new(topic.follower_ids)
-    recipient_ids = Set.new([])
-
+    recipient_ids = Set.new(topic.follower_ids)
+    
     # don't send reply notification to the author of the reply
     recipient_ids.delete(user.id)
 
