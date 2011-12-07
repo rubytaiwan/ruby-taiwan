@@ -26,7 +26,7 @@ module TopicsHelper
     # parse bbcode-style image [img]url[/img]
     text = parse_bbcode_image(text, options[:title]) if options[:allow_image]
     
-    text = parse_inline_styles(text)
+    text = parse_paragraph(text)
     
     # Auto Link
     text = auto_link(text,:all, :target => '_blank', :rel => "nofollow")
@@ -42,12 +42,72 @@ module TopicsHelper
 
   end
 
+  # **text** => <strong>text</strong>
+  def strongify!(text)
+    text.gsub!(/\*\*(.+?)\*\*/, '<strong>\1</strong>')
+  end
+
+  # *text* => <em>text</em>
+  def emphasize!(text)
+    text.gsub!(/\*(.+?)\*/, '<em>\1</em>')
+  end
+
+  # `text` => <code>text</code>
+  def codify!(text)
+    text.gsub!(/`(.+?)`/, '<code>\1</code>')
+  end
+
+  def parse_inline_styles(text)
+    # sample input and output:
+    # normal text                      =>  normal text
+    # `code` **bold**                  =>  <code>code</code> <strong>bold</strong>
+    # *italic* `code`                  =>  <em>italic</em> <code>code</code>
+    # *italic* `code` **bold**         =>  <em>italic</em> <code>code</code> <strong>bold</strong>
+    # `co*d*e` **bold** *italic`*      =>  <code>co*d*e</code> <strong>bold</strong> <em>italic`</em>
+    # *italic* `c**od**e` **`bold**    =>  <em>italic</em> <code>c**od**e</code> <strong>`bold</strong>
+    # *italic* `code` **bold**         =>  <em>italic</em> <code>code</code> <strong>bold</strong>
+
+    # Some syntax may not be parsed as expected by some people,
+    # but as long as the results is same as on Github, it is acceptible.
+    # e.g.:
+    # *ita`lic* `c**od**e` **`bold**   =>  *ita<code>lic*</code>c<strong>od</strong>e<code>**</code>bold**
+    # *i`talic* `code` **bo`ld**       =>  *i<code>talic*</code>code<code>**bo</code>ld**
+
+    # splitting by a Regexp with groups will get an array
+    # with the splitted strings as well as extracted groups
+    # at the corresponding position.
+    # e.g.:
+    # "some `code` here".split(/(`.+?`)/) => ["some", "`code`", "here"]
+    # "`code` only" => ["", "`code`", "only"]
+    # Since the matched group is also the whole tokenizer,
+    # we can assume that the first (0th) token is not `code`,
+    # and then `code`, and then not code, and then `code`, till the end.
+
+    in_code = false
+
+    tokens = text.split(/(`.+?`)/)
+    tokens.map! do |token|
+      if !in_code
+        strongify!(token)
+        emphasize!(token)
+        in_code = true
+      else
+        codify!(token)
+        in_code = false
+      end
+
+      token # return the manipulated token string
+    end
+
+    return tokens.join("")
+  end
+
   # parse_inline_styles assumes that:
   # - all the texts to be applied are already wrapped with <p>
   #   i.e. <p> is only one-level deep; and
   # - <pre> is in the top level, not in a <p>
   # the parse_inline_styles only applys on " > p" elements
-  def parse_inline_styles(text)
+  def parse_paragraph(text)
     doc = Hpricot(text)
 
     (doc.search('/p')).each do |paragraph|
@@ -56,26 +116,7 @@ module TopicsHelper
 
       source = String.new(paragraph.inner_html) # avoid SafeBuffer
 
-      # **text** => <strong>test</strong>
-      # **te st** => <strong>te st</strong>
-      source.gsub!(/\*\*(.+?)\*\*/, '<strong>\1</strong>')
-
-      # *text* => <em>
-      source.gsub!(/\*(.+?)\*/, '<em>\1</em>')
-
-      # _text_ => <u>
-      # source.gsub!(/[^|\s]_(.+?)_[$|\s]/, '<u>\1</u>')
-
-      # `text` => <code>
-      source.gsub!(/`(.+?)`/) do |matched|
-        code = $1
-        code.gsub!(/<\/?strong>/, "**")
-        code.gsub!(/<\/?em>/, "*")
-        # code.gsub!(/<\/?u>/, "_")
-        "<code>#{code}</code>"
-      end
-
-      paragraph.inner_html = source
+      paragraph.inner_html = parse_inline_styles(source)
     end
 
     doc.to_html
