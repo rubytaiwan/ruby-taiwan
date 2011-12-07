@@ -32,7 +32,7 @@ class MailmanDaemon < DaemonSpawn::Base
     loop do
       begin
         Mailman::Application.run do
-          to('notification+%reply_id%-%key%@ruby-hk.org') do |reply_id, key|
+          to("notification+%reply_id%-%key%@#{Setting.reply_domain}") do |reply_id, key|
             begin
               from_email = message.from.first
               message_id = message.message_id

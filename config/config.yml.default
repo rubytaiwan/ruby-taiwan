@@ -2,6 +2,7 @@ defaults: &defaults
   app_name: "Ruby China Group"
   foot_html: "&copy; Ruby China Group."
   domain: "127.0.0.1:3000"    
+  reply_domain: "ruby-taiwan.org" 
   admin_emails: 
     - "admin@admin.com"
   google_analytics_key: ""

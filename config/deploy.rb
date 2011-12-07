@@ -39,6 +39,7 @@ namespace :my_tasks do
       "#{shared_path}/config/config.yml"    => "#{release_path}/config/config.yml",
       "#{shared_path}/config/newrelic.yml"  => "#{release_path}/config/newrelic.yml",
       "#{shared_path}/config/redis.yml"     => "#{release_path}/config/redis.yml",
+      "#{shared_path}/config/mailman.yml"     => "#{release_path}/config/mailman.yml",
     }
 
     symlink_hash.each do |source, target|
