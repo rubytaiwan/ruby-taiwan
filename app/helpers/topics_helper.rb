@@ -22,21 +22,24 @@ module TopicsHelper
       code.gsub!(/<br\s?\/?>/, "")  # remove <br>
       code.gsub!(/<\/?p>/, "")      # remove <p>
     end
-    
-    # parse bbcode-style image [img]url[/img]
-    text = parse_bbcode_image(text, options[:title]) if options[:allow_image]
-    
-    text = parse_paragraph(text)
-    
-    # Auto Link
-    text = auto_link(text,:all, :target => '_blank', :rel => "nofollow")
-    
-    # mention floor by #
-    text = link_mention_floor(text)
-    
-    # mention user by @
-    text = link_mention_user(text, options[:mentioned_user_logins])
 
+    text = parse_paragraph(text) do |token|
+      # additional parsing here
+
+      # parse bbcode-style image [img]url[/img]
+      token = parse_bbcode_image(token, options[:title]) if options[:allow_image]
+
+      # Auto Link
+      token = auto_link(token,:all, :target => '_blank', :rel => "nofollow")
+
+      # mention floor by #
+      token = link_mention_floor(token)
+
+      # mention user by @
+      token = link_mention_user(token, options[:mentioned_user_logins])
+
+      token
+    end
 
     return raw(text)
 
