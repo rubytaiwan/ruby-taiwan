@@ -54,6 +54,18 @@ namespace :my_tasks do
   task :mongoid_create_indexes, :roles => :web do
     run "cd #{release_path}; bundle exec rake db:mongoid:create_indexes"
   end
+  
+  task :start_mailman, :roles => :web do
+    run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman start"
+  end
+
+  task :stop_mailman, :roles => :web do
+    run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman stop"
+  end
+
+  task :restart_mailman, :roles => :web do
+    run "cd #{deploy_to}/current/; RAILS_ENV=production ./script/mailman stop; RAILS_ENV=production ./script/mailman start"
+  end
 end
 
 

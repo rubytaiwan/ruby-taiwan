@@ -9,11 +9,13 @@ This is source code of [Ruby China Group](http://ruby-china.org)
   cp config/config.yml.default config/config.yml
   cp config/mongoid.yml.default config/mongoid.yml
   cp config/redis.yml.default config/redis.yml
+  cp config/mailman.yml.default config/mailman.yml
   bundle install
   bundle update rails
   rake assets:precompile
   thin start -O -C config/thin.yml
   ./script/resque start
+  ./script/mailman start
   easy_install pygments # 或者 pip install pygments
   ```
 
@@ -55,6 +57,12 @@ This is source code of [Ruby China Group](http://ruby-china.org)
 ## Memcached
 
 Dalli requires memcached 1.4.x +
+
+## Mailman
+
+如要啟動電郵回覆功能，請啟動 ./script/mailman
+
+要設定 ./config/mailman.yml 到適當的 pop3 電郵，如果使用 gmail ，請確認已啟動 pop3接收郵件功能。
 
 ## Helpers
 

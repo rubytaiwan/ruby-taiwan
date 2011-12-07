@@ -1,0 +1,20 @@
+defaults: &defaults
+  server: 'pop.gmail.com'
+  port: 995
+  ssl: true
+
+development:
+  <<: *defaults
+  username: ''
+  password: ''
+
+test:
+  <<: *defaults
+  username: ''
+  password: ''
+
+production:
+  <<: *defaults
+  username: ''
+  password: ''
+
