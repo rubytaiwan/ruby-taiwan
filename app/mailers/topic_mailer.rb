@@ -12,7 +12,7 @@ class TopicMailer < BaseMailer
 
     # generate a reply key for this email, so that we can identify user
     @reply_key = TopicMailer.reply_key(@reply.email_key, @recipient.email)
-    @reply_to = Setting.email_sender.gsub(/@/, "+#{reply_id}-#{@reply_key}@")
+    @reply_to = Setting.email_reply_to.gsub(/@/, "+#{reply_id}-#{@reply_key}@")
 
     mail(:to => @recipient.email, :subject => "[#{Setting.app_name}] 主題回覆通知： #{@topic.title}", :reply_to => @reply_to)
   end

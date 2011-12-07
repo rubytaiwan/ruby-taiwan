@@ -9,6 +9,7 @@ defaults: &defaults
   upload_url: "http://127.0.0.1:3000/uploads"
   google_group_email: "shanghaionrails@googlegroups.com"
   email_sender: 'no-reply@ruby-china.org'
+  email_reply_to: 'notification@ruby-china.org'
   aws_access_key_id: ''
   aws_secret_access_key: ''
   twitter_token: "uJ9fBa53SmqrHBqs1qq5cg"
