@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :require_user, :only => "auth_unbind"
   before_filter :init_base_breadcrumb
   before_filter :set_menu_active
-  before_filter :find_user, :only => [:show, :replies, :likes]
+  before_filter :find_user, :only => [:show, :replies, :likes, :notes]
   
   def index
     @total_user_count = User.count
@@ -26,6 +26,12 @@ class UsersController < ApplicationController
     @likes = @user.likes.recent.topics.paginate(:page => params[:page], :per_page => 20)
     drop_breadcrumb(@user.login, user_path(@user.login))
     drop_breadcrumb("喜欢")
+  end
+
+  def notes
+    @notes = @user.notes.public.paginate(:page => params[:page], :per_page => 20)
+    drop_breadcrumb(@user.login, user_path(@user.login))
+    drop_breadcrumb("公開記事")
   end
   
   def auth_unbind

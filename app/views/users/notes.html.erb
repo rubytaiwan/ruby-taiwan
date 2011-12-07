@@ -1,0 +1,15 @@
+<%= render "base" %>
+<%= render :partial => "info", :locals => {:user => @user } %>
+
+<div class="box">
+  <%= render "menu" %>
+  <div id="notes" class="box">
+    <div class="total">已有 <%= @notes.count %> 条记事</div>
+    <% if @notes.blank? %>
+      <div style="text-align:center; padding:60px 0;">（尚未有公開記事）</div>
+    <% else %>
+      <%= render :partial => "notes/list", :locals => { :notes => @notes } %>
+    <% end %>
+    <%= will_paginate1 @notes %>
+  </div>
+</div>
