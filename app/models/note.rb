@@ -18,6 +18,10 @@ class Note
 
   default_scope :order => "id desc"
 
+  def self.public
+    where(:publish => true) # XXX: wrong English
+  end
+
   before_save :auto_set_value
   def auto_set_value
     if !self.body.blank?

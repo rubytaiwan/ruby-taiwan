@@ -2,4 +2,6 @@
   li << link_to(t("users.menu.topics"), user_path(@user.login))
   li << link_to(t("users.menu.recent_reply_topics"), replies_user_path(@user.login))
   li << link_to(t("users.menu.like"), likes_user_path(@user.login))
+  li << link_to("公開筆記", notes_user_path(@user.login))
 end %>
+
