@@ -57,7 +57,7 @@ module TopicsHelper
     text.gsub!(/`(.+?)`/, '<code>\1</code>')
   end
 
-  def parse_inline_styles(text)
+  def parse_inline_styles(text, &block)
     # sample input and output:
     # normal text                      =>  normal text
     # `code` **bold**                  =>  <code>code</code> <strong>bold</strong>
@@ -90,6 +90,7 @@ module TopicsHelper
       if !in_code
         strongify!(token)
         emphasize!(token)
+        token = block.call(token) if block_given?
         in_code = true
       else
         codify!(token)
@@ -107,7 +108,7 @@ module TopicsHelper
   #   i.e. <p> is only one-level deep; and
   # - <pre> is in the top level, not in a <p>
   # the parse_inline_styles only applys on " > p" elements
-  def parse_paragraph(text)
+  def parse_paragraph(text, &block)
     doc = Hpricot(text)
 
     (doc.search('/p')).each do |paragraph|
@@ -116,7 +117,9 @@ module TopicsHelper
 
       source = String.new(paragraph.inner_html) # avoid SafeBuffer
 
-      paragraph.inner_html = parse_inline_styles(source)
+      paragraph.inner_html = parse_inline_styles(source) do |token|
+        token = block.call(token) if block_given?
+      end
     end
 
     doc.to_html
