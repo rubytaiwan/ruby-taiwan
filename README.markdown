@@ -19,6 +19,14 @@ This is source code of [Ruby China Group](http://ruby-china.org)
   easy_install pygments # 或者 pip install pygments
   ```
 
+  Initialize Gollum Repository:
+
+  ```
+  mkdir doc/wiki_repo
+  cd doc/wiki_repo
+  git init
+  ```
+
 ## Deploy
 
     $ cap deploy
