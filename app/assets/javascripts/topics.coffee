@@ -17,14 +17,14 @@ window.Topics =
       height: 145
       content: '<iframe src="/photos/tiny_new" frameborder="0" style="width:330px; height:145px;"></iframe>',
       close_on_body_click : false
-    
+
     $("#add_image").jDialog(opts)
     return false
 
   # 回复
   reply : (floor,login) ->
     reply_body = $("#reply_body")
-    new_text = "##{floor}楼 @#{login} "
+    new_text = "##{floor}樓 @#{login} "
     if reply_body.val().trim().length == 0
       new_text += ''
     else
