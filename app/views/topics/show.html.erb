@@ -3,7 +3,7 @@
 <%= content_for :open_graph do %>
     <%= og_title(@topic.title)%>
     <%= og_description(truncate(s(@topic.body), :length => 200))%>
-    <%= og_image( Setting.domain + asset_path("big_logo.png"))%>
+    <%= og_image( "http://#{Setting.domain}" + asset_path("big_logo.png"))%>
 <% end %>
 
 
@@ -35,7 +35,7 @@
           <%= link_to "", topic_path(@topic.id), :method => :delete, :confirm => t("common.confirm_delete"), :class => "icon small_delete", :title => "删除本帖" %>
         <% end %>
       </div>
-      <%= render :partial => "common/share", :locals => {:title => @topic.title, :url => Setting.domain + topic_path(@topic) } %>
+      <%= render :partial => "common/share", :locals => {:title => @topic.title, :url => "http://#{Setting.domain}" + topic_path(@topic) } %>
     </div>
   </div>
 
