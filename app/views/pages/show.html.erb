@@ -14,7 +14,7 @@
   <div style="text-align:right;">
     <%= render :partial => "common/share", :locals => {:title => @page.title,  :url => "http://#{Setting.domain}" + page_path(@page) } %>
   </div>
-  
+
   <div class="wikistyle">
     <%= raw @page.body_html %>
   </div>
