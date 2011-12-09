@@ -35,5 +35,5 @@
 <%= content_for :open_graph do %>
     <%= og_title(@wiki.name)%>
     <%= og_description(truncate(@wiki.raw_data, :length => 200))%>
-    <%= og_image( Setting.domain + asset_path("big_logo.png"))%>
+    <%= og_image( "http://#{Setting.domain}" + asset_path("big_logo.png"))%>
 <% end %>
