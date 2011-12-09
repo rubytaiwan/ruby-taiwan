@@ -13,24 +13,24 @@
         <% if !@user.location.blank? %>
              <li><span><%= t("users.city")%>:</span><%= render_user_location(@user) %></li>
         <% end %>
-        
+
         <li><span><%= t("users.join_time")%>:</span><%= render_user_join_time(@user) %></li>
-        
+
         <% if !@user.tagline.blank? %>
             <li><span><%= t("users.signature")%>:</span><%= render_user_tagline(@user) %></li>
         <% end %>
-        
+
         <% if !@user.github.blank? %>
             <li><span>Github:</span><%= render_user_github_url(@user) %> </li>
         <% end %>
-        
+
         <% if !@user.website.blank? %>
             <li><span><%= t("users.personal_website")%>:</span><%= render_user_personal_website(@user)%></li>
         <% end %>
     </ul>
   </div>
 
-  
+
 </div>
 
 <% if !@user.bio.blank? %>
