@@ -10,22 +10,22 @@
         <% if params[:action] == "index" %>
             <%= link_to("所有頁面", list_gikis_path )%>
         <% end %>
-        
+
         <% if can? :create, Wiki %>
           <%= link_to(t("pages.create_page"), new_giki_path, :class => "btn primary")%>
         <% end %>
-       
+
     </div>
     <div id="page_show" class="box">
         <div class="info">
             <%= link_to("版本",history_giki_path(@wiki.name))%>
             <%= link_to("", edit_giki_path(@wiki.name), :class => "icon small_edit")  if can? :edit, @wiki %>
         </div>
-        
+
         <div style="text-align:right;">
           <%= render "common/share", :title => @wiki.name %>
         </div>
-        
+
         <div class="wikistyle">
           <%= raw @wiki.formatted_data %>
         </div>
@@ -35,5 +35,5 @@
 <%= content_for :open_graph do %>
     <%= og_title(@wiki.name)%>
     <%= og_description(truncate(@wiki.raw_data, :length => 200))%>
-    <%= og_image( Setting.domain + asset_path("big_logo.png"))%>
+    <%= og_image( "http://#{Setting.domain}" + asset_path("big_logo.png"))%>
 <% end %>
