@@ -62,7 +62,8 @@ gem "unicorn"
 gem "sprite-factory", "1.4.1"
 # Simple form last commit: 2011-12-03 
 gem 'simple_form', :git => "git://github.com/plataformatec/simple_form.git"
-gem 'bootstrap-rails', :require => 'bootstrap-rails', :git => 'git://github.com/xdite/bootstrap-rails.git'
+gem 'anjlab-bootstrap-rails', :git => "git://github.com/anjlab/bootstrap-rails.git", :require => "bootstrap-rails"
+gem 'bootstrap_helper', :git => "git://github.com/xdite/bootstrap_helper.git"
 
 group :assets do
   gem 'sass-rails', "  ~> 3.1.4"
