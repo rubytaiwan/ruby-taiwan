@@ -18,7 +18,7 @@ gem 'mongoid_auto_increment_id', "0.2.2"
 # 用户系统
 gem 'devise', '1.5.2'
 # 分页
-gem 'will_paginate', '3.0.pre2'
+gem 'will_paginate', '3.0.pre4'
 # 三方平台 OAuth 验证登陆
 
 gem "mongoid_search"
@@ -79,8 +79,8 @@ gem "open_graph_helper"
 # Simple form last commit: 2011-12-03 
 gem 'simple_form', :git => "git://github.com/plataformatec/simple_form.git"
 gem 'anjlab-bootstrap-rails', :git => "git://github.com/anjlab/bootstrap-rails.git", :require => "bootstrap-rails"
-gem 'bootstrap_helper', :git => "git://github.com/xdite/bootstrap_helper.git"
-
+#gem 'bootstrap_helper', :git => "git://github.com/xdite/bootstrap_helper.git"
+gem 'bootstrap_helper' , :path => "~/projects/bootstrap-rails"
 gem "airbrake"
 gem 'newrelic_rpm'
 
