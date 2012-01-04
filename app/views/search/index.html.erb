@@ -3,15 +3,18 @@
 <div class="box">
   <%= render "menu" %>
   <div class="tab-content">
-    <% unless @topics.blank? %>
-      <%= render :partial => "topics_pane", :locals => { :topics => @topics} %>
+    <div class="tab-pane active" id="topics">
+    <% unless @search.results.blank? %>
+      <% @search.each_hit_with_result do |hit, result| %>
+        <%= render "topic", :topic => result, :hit => hit %>
+      <% end %>
     <% else %>
-      <div class="tab-pane active" id="topics">
-        <div class="topic">
-          <%= t("common.no_search_result") %>
-        </div>
+      <div class="topic">
+        <%= t("common.no_search_result") %>
       </div>
     <% end %>
+    </div>
+    <%= will_paginate @search.results %>
   </div>
 </div>
 
