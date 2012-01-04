@@ -8,7 +8,7 @@ class TopicsController < ApplicationController
   before_filter :init_base_breadcrumb
 
   def index
-    @topics = Topic.last_actived.limit(15).includes(:node,:user, :last_reply_user)
+    @topics = Topic.last_actived.limit(15).includes(:node,:user, :last_reply_user).paginate(:page => params[:page], :per_page => 15)
     set_seo_meta("","#{Setting.app_name}#{t("menu.topics")}")
     drop_breadcrumb(t("topics.hot_topic"))
     #render :stream => true
