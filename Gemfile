@@ -18,7 +18,7 @@ gem 'mongoid_auto_increment_id', "0.3.1"
 gem 'devise', '1.5.2'
 # 分页
 
-gem 'will_paginate', '3.0.2'
+gem 'will_paginate', '3.0.pre4'
 
 # 三方平台 OAuth 验证登陆
 

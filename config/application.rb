@@ -59,6 +59,5 @@ I18n.locale = 'zh-TW'
 require 'yaml'
 YAML::ENGINE.yamler= 'syck'
 
-
 WillPaginate::ViewHelpers.pagination_options[:renderer] = 'BootstrapHelper::PaginateRenderer'
 

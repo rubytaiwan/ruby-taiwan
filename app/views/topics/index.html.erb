@@ -53,8 +53,6 @@
       
     </div>
      
-     <%= will_paginate @topics %>
-      
     <% if action_name == "index" %>
       <div class="more">
         <%= link_to(t("topics.check_recent_topics"), recent_topics_path)%>
