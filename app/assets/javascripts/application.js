@@ -13,4 +13,5 @@
 //= require jquery.chosen
 //= require jquery.highlight
 //= require jquery.autogrow-textarea
+//= require social-share-button
 //= require app

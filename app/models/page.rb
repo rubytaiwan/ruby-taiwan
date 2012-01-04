@@ -7,6 +7,7 @@ class Page
   include Mongoid::Timestamps  
   include Mongoid::BaseModel
   include Mongoid::SoftDelete
+  
   # 页面地址
   field :slug
   field :title
@@ -32,7 +33,6 @@ class Page
   validates_presence_of :change_desc, :if => Proc.new { |p| p.version_enable == true and !p.new_record? }
   validates_uniqueness_of :slug
 
-  
   before_save :markdown_for_body_html
   def markdown_for_body_html
     return true if not self.body_changed?

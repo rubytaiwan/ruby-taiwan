@@ -78,7 +78,6 @@ Dalli requires memcached 1.4.x +
 
 ## Common Partial
 
-* common/share : for social share
 * common/user\_nav : user\_navigation_bar
 
 ## Facebook Share
