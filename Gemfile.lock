@@ -47,6 +47,14 @@ GIT
       actionpack (>= 3.0.0)
 
 GIT
+  remote: git://github.com/xdite/bootstrap_helper.git
+  revision: f1c57bcc663fca4b37af1f1c0ea734e6dfcbb302
+  specs:
+    bootstrap_helper (1.4.1)
+      railties (~> 3.0)
+      thor (~> 0.14)
+
+GIT
   remote: git://github.com/xdite/gollum.git
   revision: 7924e8c9a90a772d90da5f7c6a3366bfc5010fbb
   specs:
@@ -60,13 +68,6 @@ GIT
       redcarpet
       sanitize (~> 2.0.0)
       sinatra (~> 1.0)
-
-PATH
-  remote: ~/projects/bootstrap-rails
-  specs:
-    bootstrap_helper (1.4.1)
-      railties (~> 3.0)
-      thor (~> 0.14)
 
 GEM
   remote: http://rubygems.org/
