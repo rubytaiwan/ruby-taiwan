@@ -6,8 +6,6 @@ class SearchController < ApplicationController
      if @q.present?
        @topics = Topic.search(@q).paginate(:page => params[:page], :per_page => 20)
      end
-
-
      @current = ["/search/topics?q=#{params[:q]}"]
      
      render :action => "topics"
@@ -15,7 +13,6 @@ class SearchController < ApplicationController
      set_seo_meta("#{t("common.search")}: #{@q}")
      drop_breadcrumb("#{t("common.search")}: #{@q}")
   end
-
 
   def topics
     

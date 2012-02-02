@@ -25,7 +25,11 @@ This is source code of [Ruby China Group](http://ruby-china.org)
   mkdir doc/wiki_repo
   cd doc/wiki_repo
   git init
-  ```
+
+
+  ## Test
+
+  * before running RSpec, start sunspot:solr : ```RAILS_ENV=test bundle exec rake sunspot:solr:run```
 
 ## Deploy
 

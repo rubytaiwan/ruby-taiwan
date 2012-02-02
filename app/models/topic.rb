@@ -6,7 +6,6 @@ class Topic
   include Mongoid::SoftDelete
   include Mongoid::CounterCache
   include Mongoid::Search
-  include Redis::Search
   include Redis::Objects
 
   field :title
@@ -40,10 +39,6 @@ class Topic
   index :suggested_at
 
   counter :hits, :default => 0
-
-  redis_search_index(:title_field => :title,
-                     :score_field => :replied_at,
-                     :ext_fields => [:node_name,:replies_count])
 
   # scopes
   scope :last_actived, desc("replied_at").desc("created_at")
