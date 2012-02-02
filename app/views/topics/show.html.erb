@@ -20,7 +20,7 @@
 
       <%= render :partial => "topics/topic_info", :locals => { :topic => @topic} %>
 
-      <%= raw SiteConfig.before_topic_html %>
+      <%# raw SiteConfig.before_topic_html %>
 
       <div class="body">
         <%= format_topic_body(@topic.body) %>

@@ -10,6 +10,6 @@
     <% else %>
       <%= render :partial => "notes/list", :locals => { :notes => @notes } %>
     <% end %>
-    <%= will_paginate1 @notes %>
+    <%= will_paginate @notes %>
   </div>
 </div>
