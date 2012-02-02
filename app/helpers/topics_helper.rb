@@ -221,7 +221,7 @@ module TopicsHelper
 
   def render_topic_title(topic)
     return t("topics.topic_was_deleted") if topic.blank?
-    link_to(topic.title, topic_path(topic), :title => topic.title)
+    link_to(topic.title, topic_url(topic), :title => topic.title)
   end
   
   def render_topic_last_reply_time(topic)
