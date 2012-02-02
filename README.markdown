@@ -14,8 +14,13 @@ This is source code of [Ruby China Group](http://ruby-china.org)
   rake assets:precompile
   thin start -O -C config/thin.yml
   ./script/resque start
+  bundle exec rake sunspot:solr:start
   easy_install pygments # 或者 pip install pygments
   ```
+
+## Test
+
+* before running RSpec, start sunspot:solr : ```RAILS_ENV=test bundle exec rake sunspot:solr:run```
 
 ## Deploy
 

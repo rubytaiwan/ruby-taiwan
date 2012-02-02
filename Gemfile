@@ -1,6 +1,6 @@
-source 'http://ruby.taobao.org'
+source "http://rubygems.org"
 
-gem "rails", "3.1.3"
+gem "rails", "3.2.1"
 gem "bson_ext", "1.5.2"
 gem "mongoid", "2.3.4"
 
@@ -21,19 +21,15 @@ gem 'will_paginate', '3.0.2'
 gem 'bootstrap-will_paginate', '0.0.3'
 # 三方平台 OAuth 验证登陆
 
-gem "omniauth"
-gem 'omniauth-openid'
-gem "omniauth-github"
-gem "omniauth-twitter"
+gem "omniauth", "~> 1.0.1"
+gem 'omniauth-openid', "~> 1.0.1"
+gem "omniauth-github", "~> 1.0.0"
+gem "omniauth-twitter", "~> 0.0.7"
 gem "omniauth-douban", :git => "git://github.com/ballantyne/omniauth-douban.git"
 
 # permission
-gem "cancan"
+gem "cancan", "~> 1.6.7"
 
-# 搜索相关的组件
-gem 'chinese_pinyin', '0.4.1'
-gem "rmmseg-cpp-huacnlee", "0.2.8"
-gem 'redis-search', '0.6.3'
 # Rails I18n
 gem "rails-i18n","0.1.8"
 # Redis 命名空间
@@ -51,7 +47,7 @@ gem "jquery-rails", "1.0.16"
 gem "rails_autolink", ">= 1.0.4"
 # YAML 配置信息
 gem "settingslogic", "~> 2.0.6"
-gem "cells", "3.6.7"
+gem "cells", "3.7.1"
 gem "resque", "~> 1.19.0", :require => "resque/server"
 gem "resque_mailer", '2.0.2'
 gem "aws-ses", "~> 0.4.3"
@@ -61,7 +57,7 @@ gem "unicorn"
 # 用于组合小图片
 gem "sprite-factory", "1.4.1"
 # 分享功能
-gem "social-share-button", "~> 0.0.1"
+gem "social-share-button", "~> 0.0.3"
 # Simple form last commit: 2011-12-03 
 gem 'simple_form', :git => "git://github.com/plataformatec/simple_form.git"
 
@@ -71,9 +67,9 @@ gem 'sunspot_rails',  "~> 1.3.0"
 gem 'sunspot_solr'
 
 group :assets do
-  gem 'sass-rails', "  ~> 3.1.4"
-  gem 'coffee-rails', "~> 3.1.1"
-  gem 'uglifier'
+  gem 'sass-rails', "  ~> 3.2.3"
+  gem 'coffee-rails', "~> 3.2.1"
+  gem 'uglifier', '>= 1.0.3'
 end
 
 group :development do
@@ -83,7 +79,9 @@ group :development do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 2.7.0'
+  gem 'rspec-rails', '~> 2.8.1'
+  gem 'progress_bar'
+  gem 'quiet_assets', :git => 'git://github.com/AgilionApps/quiet_assets.git'
 end
 
 group :test do
