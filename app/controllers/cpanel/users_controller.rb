@@ -2,7 +2,7 @@
 class Cpanel::UsersController < Cpanel::ApplicationController
 
   def index
-    @users = User.desc(:_id).paginate :page => params[:page], :per_page => 30
+    @users = User.order("id DESC").paginate :page => params[:page], :per_page => 30
 
   end
 

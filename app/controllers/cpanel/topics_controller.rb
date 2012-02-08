@@ -2,7 +2,7 @@
 class Cpanel::TopicsController < Cpanel::ApplicationController
 
   def index
-    @topics = Topic.unscoped.desc(:_id).includes(:user).paginate :page => params[:page], :per_page => 30
+    @topics = Topic.unscoped.order("id DESC").includes(:user).paginate :page => params[:page], :per_page => 30
 
   end
 

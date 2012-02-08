@@ -12,7 +12,7 @@ class Section
   validates_uniqueness_of :name
   
   
-  default_scope desc(:sort)
+  default_scope order("sort DESC")
   
   after_save do
     # 记录节点变更时间，用于清除缓存

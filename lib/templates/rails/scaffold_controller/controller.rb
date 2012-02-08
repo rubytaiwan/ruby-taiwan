@@ -2,7 +2,7 @@
 class <%= controller_class_name %>Controller < <%= controller_class_name.include?('::') == true ? "#{controller_class_name.split('::').first}::" : ''  %>ApplicationController
   
   def index
-    @<%= plural_file_name %> = <%= file_name.camelize %>.desc('_id').paginate(:page => params[:page], :per_page => 20)
+    @<%= plural_file_name %> = <%= file_name.camelize %>.order("id DESC").paginate(:page => params[:page], :per_page => 20)
 
     respond_to do |format|
       format.html # index.html.erb

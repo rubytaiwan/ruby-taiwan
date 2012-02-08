@@ -5,7 +5,7 @@ class Cpanel::PageVersionsController < Cpanel::ApplicationController
   
   def index
     @page = Page.find(params[:page_id])
-    @page_versions = @page.versions.desc(:version).paginate(:page => params[:page], :per_page => 30)
+    @page_versions = @page.versions.order("version DESC").paginate(:page => params[:page], :per_page => 30)
   end
   
   def show

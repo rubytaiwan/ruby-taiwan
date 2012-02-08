@@ -41,9 +41,9 @@ class Topic
   counter :hits, :default => 0
 
   # scopes
-  scope :last_actived, desc("replied_at").desc("created_at")
+  scope :last_actived, order("replied_at DESC, created_at DESC")
   # 推荐的话题
-  scope :suggest, where(:suggested_at.ne => nil).desc(:suggested_at)
+  scope :suggest, where("suggested_at IS NOT NULL").order("suggested_at DESC")
   before_save :set_replied_at
   def set_replied_at
     self.replied_at = Time.now

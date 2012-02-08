@@ -19,8 +19,8 @@ class Node
   
   has_and_belongs_to_many :followers, :class_name => 'User', :inverse_of => :following_nodes
 
-  scope :hots, desc(:topics_count)
-  scope :sorted, desc(:sort)
+  scope :hots, order("topics_count DESC")
+  scope :sorted, order("sort DESC")
   
   after_save do
     # 记录节点变更时间，用于清除缓存

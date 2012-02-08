@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   
   def location
     @location = params[:id]
-    @users = User.where(:location => @location).desc('replies_count').paginate(:page => params[:page], :per_page => 30)
+    @users = User.where(:location => @location).order("replies_count DESC").paginate(:page => params[:page], :per_page => 30)
     if @users.count == 0
       render_404
     end

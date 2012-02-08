@@ -2,7 +2,7 @@
 class Cpanel::PostsController < Cpanel::ApplicationController
 
   def index
-    @posts = Post.unscoped.desc(:_id).includes(:user).paginate :page => params[:page], :per_page => 30
+    @posts = Post.unscoped.order("id DESC").includes(:user).paginate :page => params[:page], :per_page => 30
   end
 
   def show

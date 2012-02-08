@@ -59,7 +59,7 @@ class User
   has_and_belongs_to_many :following, :class_name => 'User', :inverse_of => :followers
   has_and_belongs_to_many :followers, :class_name => 'User', :inverse_of => :following
 
-  scope :hot, desc(:replies_count, :topics_count)
+  scope :hot, order("replies_count DESC, topics_count DESC")
 
   def self.locations
     locations_map = <<MAP
