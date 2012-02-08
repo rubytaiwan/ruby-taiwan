@@ -35,6 +35,7 @@ namespace :my_tasks do
     run "mkdir -p #{deploy_to}/shared/pids"
     
     symlink_hash = {
+      "#{shared_path}/config/database.yml"   => "#{release_path}/config/database.yml",
       "#{shared_path}/config/config.yml"    => "#{release_path}/config/config.yml",
       "#{shared_path}/config/newrelic.yml"  => "#{release_path}/config/newrelic.yml",
       "#{shared_path}/config/redis.yml"     => "#{release_path}/config/redis.yml",

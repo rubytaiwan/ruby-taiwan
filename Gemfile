@@ -2,6 +2,8 @@ source "http://rubygems.org"
 
 gem "rails", "3.2.1"
 
+gem 'mysql2'
+
 # 上传组件
 gem 'carrierwave', '0.5.6'
 # 图像处理

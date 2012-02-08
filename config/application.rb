@@ -2,12 +2,7 @@
 require File.expand_path('../boot', __FILE__)
 APP_VERSION = '0.6'
 
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "active_resource/railtie"
-require "rails/test_unit/railtie"
-require "sprockets/railtie"
-
+require 'rails/all'
 
 if defined?(Bundler)
   Bundler.require *Rails.groups(:assets => %w(production development test))
@@ -41,6 +36,7 @@ module RubyChina
     config.assets.version = '1.0'
 
     config.generators do |g|
+      g.orm :active_record
       g.test_framework :rspec
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
     end
