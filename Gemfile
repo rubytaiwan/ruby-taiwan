@@ -1,18 +1,11 @@
 source "http://rubygems.org"
 
 gem "rails", "3.2.1"
-gem "bson_ext", "1.5.2"
-gem "mongoid", "2.3.4"
 
 # 上传组件
 gem 'carrierwave', '0.5.6'
-gem 'carrierwave-mongoid', '0.1.2', :require => 'carrierwave/mongoid'
 # 图像处理
 gem 'mini_magick','3.3'
-# Mongoid 辅助插件
-gem 'mongo-rails-instrumentation','0.2.4'
-# Mongoid 使用自增整形ID
-gem 'mongoid_auto_increment_id', "0.3.1"
 
 # 用户系统
 gem 'devise', '1.5.2'
@@ -22,7 +15,6 @@ gem 'will_paginate', '3.0.pre4'
 
 # 三方平台 OAuth 验证登陆
 
-gem "mongoid_search"
 gem "omniauth", "~> 1.0.1"
 gem 'omniauth-openid', "~> 1.0.1"
 gem "omniauth-github", "~> 1.0.0"
