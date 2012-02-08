@@ -1,9 +1,8 @@
 # coding: utf-8  
-class User
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::BaseModel
+class User < ActiveRecord::Base
   include Redis::Objects
+
+  attr_accessible :email, :password, :password_confirmation, :remember_me
   extend OmniauthCallbacks   
 
   devise :database_authenticatable, :registerable,
@@ -11,31 +10,11 @@ class User
          
     
 
-  field :login
-  field :email
-  field :location
-  field :bio
-  field :website
-  field :github
-  # 是否信任用户
-  field :verified, :type => Boolean, :default => true
-  field :state, :type => Integer, :default => 1
-  field :guest, :type => Boolean, :default => false
-  field :tagline  
-  field :topics_count, :type => Integer, :default => 0
-  field :replies_count, :type => Integer, :default => 0  
-  field :likes_count, :type => Integer, :default => 0
-  
-  index :login
-  index :email
-  index :location
-
-  has_many :topics, :dependent => :destroy  
+  has_many :topics, :dependent => :destroy, :inverse_of => :user
   has_many :notes
-  has_many :replies, :dependent => :destroy
-  embeds_many :authorizations
+  has_many :replies, :dependent => :destroy, :inverse_of => :user
   has_many :posts
-  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete
+  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all
   has_many :photos
   has_many :likes
 
@@ -59,6 +38,7 @@ class User
   has_and_belongs_to_many :following, :class_name => 'User', :inverse_of => :followers
   has_and_belongs_to_many :followers, :class_name => 'User', :inverse_of => :following
 
+  scope :recent, order("id DESC")
   scope :hot, order("replies_count DESC, topics_count DESC")
 
   def self.locations

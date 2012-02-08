@@ -12,7 +12,6 @@ class Cpanel::UsersController < Cpanel::ApplicationController
 
   def new
     @user = User.new
-    @user._id = nil
   end
 
   def edit
