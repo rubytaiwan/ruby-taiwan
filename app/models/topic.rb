@@ -41,6 +41,7 @@ class Topic
   counter :hits, :default => 0
 
   # scopes
+  scope :recent, order("id DESC")
   scope :last_actived, order("replied_at DESC, created_at DESC")
   # 推荐的话题
   scope :suggest, where("suggested_at IS NOT NULL").order("suggested_at DESC")

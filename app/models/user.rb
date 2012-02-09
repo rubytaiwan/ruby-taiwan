@@ -41,27 +41,29 @@ class User < ActiveRecord::Base
   scope :recent, order("id DESC")
   scope :hot, order("replies_count DESC, topics_count DESC")
 
-  def self.locations
-    locations_map = <<MAP
-        function() {
-          if (typeof this.location !== 'undefined' && this.location !== null)
-            emit(this.location, { logins: [this.login], count: 1 });
-        }
-MAP
+  # grab stats of locations:
+  #
+  # location_name | users_count
+  # --------------+-------------
+  # Taihoku       | 32
+  # Matsuyama     | 18
+  #
+  # and map it into a hash with
+  #  {:location => location_name, :count => users_count}
+  def self.locations(options={})
+    # We actually get User instances with location_name and users_count attributes
+    fake_users = User.select("location as location_name, COUNT(*) as users_count").group(:location)
 
-    locations_reduce = <<REDUCE
-        function(key, values) {
-          var count = 0;
-          var logins = [];
-          values.forEach(function(value) {
-              count += value.count;
-              logins.push(value.logins.pop());
-            });
-            return { logins: logins, count: count };
-          };
-REDUCE
+    fake_users = fake_users.order(options[:order]) if options[:order]
+    fake_users = fake_users.limit(options[:limit]) if options[:limit]
 
-    self.collection.map_reduce(locations_map, locations_reduce, :out => "user_locations")
+    fake_users.map { |fake_user|
+      {:location => fake_user.location_name, :count => fake_user.users_count}
+    }
+  end
+
+  def self.most_popular_locations(limit=12)
+    self.locations(:order => "users_count DESC", :limit => limit)
   end
 
   def self.find_for_database_authentication(conditions)
