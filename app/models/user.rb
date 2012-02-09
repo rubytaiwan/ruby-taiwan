@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :topics, :dependent => :destroy, :inverse_of => :user
   has_many :notes
   has_many :replies, :dependent => :destroy, :inverse_of => :user
+  has_many :authorizations
   has_many :posts
   has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all
   has_many :photos
