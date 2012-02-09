@@ -1,6 +1,6 @@
 # coding: utf-8
 # 喜欢
-# 多态设计，可以用于收藏 Topic, Page, Post ...
+# 多态设计，可以用于收藏 Topic, Post ...
 class Like
   include Mongoid::Document
   include Mongoid::Timestamps::Created

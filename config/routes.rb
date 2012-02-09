@@ -2,11 +2,6 @@ RubyChina::Application.routes.draw do
   resources :sites
 
   resources :posts
-  #resources :pages, :path => "wiki" do
-  #  collection do
-  #    get :recent
-  #  end
-  #end
   
   resources :gikis, :path => "wiki" do 
     member do 
@@ -90,13 +85,6 @@ RubyChina::Application.routes.draw do
     resources :users
     resources :photos
     resources :posts
-    resources :pages do
-      resources :versions, :controller => :page_versions do
-        member do
-          post :revert
-        end
-      end
-    end
     resources :comments
     resources :site_nodes
     resources :sites
