@@ -1,33 +1,19 @@
 # coding: utf-8  
 require "digest/md5"
 
-class Reply
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::BaseModel
-  include Mongoid::CounterCache
-  include Mongoid::SoftDelete
-
-  field :body
-  field :source
-  field :message_id
-  field :email_key
-  field :mentioned_user_ids, :type => Array, :default => []
+class Reply < ActiveRecord::Base
   
-  belongs_to :user, :inverse_of => :replies
-  belongs_to :topic, :inverse_of => :replies
-  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete
- 
-  counter_cache :name => :user, :inverse_of => :replies
-  counter_cache :name => :topic, :inverse_of => :replies
+  belongs_to :user,   :counter_cache => true, :inverse_of => :replies
+  belongs_to :topic,  :counter_cache => true, :inverse_of => :replies
+  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all
   
-  index :user_id
-  index :topic_id
-  
+  serialize :mentioned_user_ids, Array
   attr_protected :user_id, :topic_id, :email_key
 
   validates_presence_of :body
   
+  scope :recent, order("id DESC")
+
   after_create :update_parent_topic
   def update_parent_topic
     topic.update_last_reply(self)
@@ -37,7 +23,7 @@ class Reply
   def extract_mentioned_users
     logins = body.scan(/@(\w{3,20})/).flatten
     if logins.any?
-      self.mentioned_user_ids = User.where(:login => /^(#{logins.join('|')})$/i, :_id.ne => user.id).limit(5).only(:_id).map(&:_id).to_a
+      self.mentioned_user_ids = User.where(:login => logins).limit(5).map(&:id)
     end
   end
 
@@ -50,7 +36,7 @@ class Reply
     # 用于作为缓存 key
     ids_md5 = Digest::MD5.hexdigest(self.mentioned_user_ids.to_s)
     Rails.cache.fetch("reply:#{self.id}:mentioned_user_logins:#{ids_md5}") do
-      User.where(:_id.in => self.mentioned_user_ids).only(:login).map(&:login)
+      User.where(:id => self.mentioned_user_ids).map(&:login)
     end
   end
 

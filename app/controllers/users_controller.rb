@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   end
   
   def replies
-    @replies = @user.replies.only(:topic_id, :body, :created_at).recent.includes(:topic).limit(10)
+    @replies = @user.replies.recent.includes(:topic).limit(10)
     drop_breadcrumb(@user.login, user_path(@user.login))
     drop_breadcrumb("回帖")
   end
