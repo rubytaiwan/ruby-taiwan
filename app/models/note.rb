@@ -1,25 +1,15 @@
 # coding: utf-8  
 # 记事本
-class Note  
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::BaseModel
-  
-  field :title
-  field :body
-  field :word_count, :type => Integer
-  field :changes_count, :type =>  Integer, :default => 0
-  field :publish, :type => Boolean, :default => false
+class Note < ActiveRecord::Base
   belongs_to :user
   
-  index :user_id
 
   attr_protected :user_id, :changes_count, :word_count  
 
   default_scope :order => "id desc"
 
   def self.public
-    where(:publish => true) # XXX: wrong English
+    where(:is_public => true)
   end
 
   before_save :auto_set_value
