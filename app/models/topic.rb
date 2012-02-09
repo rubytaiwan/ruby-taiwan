@@ -14,7 +14,6 @@ class Topic < ActiveRecord::Base
 
   
 
-  counter :hits, :default => 0
 
   # scopes
   scope :recent, order("id DESC")
@@ -45,5 +44,9 @@ class Topic < ActiveRecord::Base
 
   def self.find_by_message_id(message_id)
     where(:message_id => message_id).first
+  end
+
+  def visit
+    self.class.increment_counter(:visit_count, self.id)
   end
 end

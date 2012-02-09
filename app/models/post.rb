@@ -10,8 +10,6 @@ class Post < ActiveRecord::Base
   belongs_to :user
   
   
-  counter :hits, :default => 0
-  
   attr_protected :state, :user_id
   attr_accessor :tag_list
   
@@ -33,4 +31,8 @@ class Post < ActiveRecord::Base
     STATE.collect { |s| [s[0], s[1]]}
   end
   
+  def visit
+    self.class.increment_counter(:visit_count, self.id)
+  end
+
 end

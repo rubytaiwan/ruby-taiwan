@@ -7,6 +7,8 @@ class TopicsController < ApplicationController
   caches_page :feed, :node_feed, :expires_in => 1.hours
   before_filter :init_base_breadcrumb
 
+  after_filter :add_visit, :only => [:show]
+
   def index
     @topics = Topic.last_actived.limit(15).includes(:node,:user).paginate(:page => params[:page], :per_page => 15)
     set_seo_meta("","#{Setting.app_name}#{t("menu.topics")}")
@@ -59,7 +61,6 @@ class TopicsController < ApplicationController
 
   def show
     @topic = Topic.includes(:user, :node).find(params[:id])
-    @topic.hits.incr(1)
     @node = @topic.node
     @replies = @topic.replies.includes(:user)
     if current_user
@@ -153,5 +154,8 @@ class TopicsController < ApplicationController
     end
     set_seo_meta(t("menu.topics"))
   end
-  
+
+  def add_visit
+    @topic.visit
+  end
 end

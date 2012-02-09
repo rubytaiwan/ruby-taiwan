@@ -2,6 +2,8 @@
 class PostsController < ApplicationController
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy]
   before_filter :set_menu_active
+  after_filter :add_visit, :only => [:show]
+
   def index
     scoped_posts = Post.normal
     if !params[:tag].blank?
@@ -20,7 +22,6 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
-    @post.hits.incr
     set_seo_meta("#{@post.title}")
     drop_breadcrumb("文章")
     drop_breadcrumb t("common.read")
@@ -61,5 +62,9 @@ class PostsController < ApplicationController
   
   def set_menu_active
     @current = @current = ['/posts']
+  end
+
+  def add_visit
+    @post.visit
   end
 end

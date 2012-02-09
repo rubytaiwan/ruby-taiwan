@@ -21,9 +21,7 @@ class Note < ActiveRecord::Base
   end
 
   before_update :update_changes_count
-  def update_changes_count    
-    self.changes_count = 0 if self.changes_count.blank?
-    self.inc(:changes_count,1)
+  def update_changes_count
+    self.class.increment_counter(:changes_count, self.id)
   end
-
 end
