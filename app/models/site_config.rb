@@ -4,17 +4,13 @@
 # 使用方法
 # SiteConfig.foo
 # SiteConfig.foo = "asdkglaksdg"
-class SiteConfig
-  include Mongoid::Document
+class SiteConfig < ActiveRecord::Base
   
-  field :key
-  field :value
-  
-  index :key
   
   validates_presence_of :key
   validates_uniqueness_of :key
-  
+
+  # XXX: really dirty thing
   def self.method_missing(method, *args)
     method_name = method.to_s
     super(method, *args)
@@ -44,10 +40,9 @@ class SiteConfig
     Rails.cache.write("site_config:#{self.key}", self.value)
   end
   
-  def self.find_by_key(key)
-    where(:key => key.to_s).first
-  end
-  
+  # Refactor Me:
+  # this should be in seeds.rb
+  # see also initializer/default_site_settings.rb
   def self.save_default(key, value)
     if not find_by_key(key)
       create(:key => key, :value => value.to_s)

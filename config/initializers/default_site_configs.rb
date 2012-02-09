@@ -1,4 +1,9 @@
 # coding: utf-8
+
+# Refactor Me:
+# this should be in seeds.rb
+# see also models/site_config.rb
+
 # 默认配置项
 # 如需新增设置项，请在这里初始化默认值，然后到后台修改
 
