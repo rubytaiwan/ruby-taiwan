@@ -40,12 +40,4 @@ class SiteConfig < ActiveRecord::Base
     Rails.cache.write("site_config:#{self.key}", self.value)
   end
   
-  # Refactor Me:
-  # this should be in seeds.rb
-  # see also initializer/default_site_settings.rb
-  def self.save_default(key, value)
-    if not find_by_key(key)
-      create(:key => key, :value => value.to_s)
-    end
-  end
 end
