@@ -16,7 +16,7 @@ class SitesController < ApplicationController
   
   def create
     @site = Site.new(params[:site])
-    @site.user_id = current_user.id
+    @site.user = current_user
     if @site.save
       redirect_to(sites_path, :notice => '提交成功。谢谢。')
     else
