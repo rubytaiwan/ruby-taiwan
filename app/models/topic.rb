@@ -7,6 +7,9 @@ class Topic < ActiveRecord::Base
 
   has_many :replies, :dependent => :destroy, :inverse_of => :topic
 
+  has_many :followings, :as => :followable
+  has_many :followers, :class_name => 'User', :through => :followings, :source => :user
+
   attr_protected :user_id
   validates_presence_of :user_id, :title, :body, :node_id
 
@@ -25,12 +28,12 @@ class Topic < ActiveRecord::Base
     node.try(:name) || ""
   end
 
-  def push_follower(user_id)
-    self.follower_ids << user_id if !self.follower_ids.include?(user_id)
+  def push_follower(user)
+    self.followers.push(user)
   end
 
-  def pull_follower(user_id)
-    self.follower_ids.delete(user_id)
+  def pull_follower(user)
+    self.followers.delete(user)
   end
 
   def last_reply

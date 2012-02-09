@@ -8,7 +8,8 @@ class Node < ActiveRecord::Base
   validates_presence_of :name, :summary, :section
   validates_uniqueness_of :name
   
-  has_and_belongs_to_many :followers, :class_name => 'User', :inverse_of => :following_nodes
+  has_many :followings, :as => :followable
+  has_many :followers, :through => :followings, :class_name => 'User', :inverse_of => :followings
 
   scope :hots, order("topics_count DESC")
   scope :sorted, order("sort DESC")

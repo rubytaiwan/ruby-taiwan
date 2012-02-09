@@ -27,10 +27,26 @@ class User < ActiveRecord::Base
   attr_protected :verified, :replies_count
   
   validates :login, :format => {:with => /\A\w+\z/, :message => '只允许数字、大小写字母和下划线'}, :length => {:in => 3..20}, :presence => true, :uniqueness => {:case_sensitive => false}
-  
-  has_and_belongs_to_many :following_nodes, :class_name => 'Node', :inverse_of => :followers
-  has_and_belongs_to_many :following, :class_name => 'User', :inverse_of => :followers
-  has_and_belongs_to_many :followers, :class_name => 'User', :inverse_of => :following
+
+  has_many :followings
+
+  # users who follow me
+  # TODO: Uncomment this when we're going to implement User-following feature
+  # has_many :followers, :class_name => "User", :through => :followings, :source => :user
+
+  # I follow users
+  # TODO: Uncomment this when we're going to implement User-following feature
+  # has_many :following_users,        :class_name => "User",  :uniq => true,
+  #          :through => :followings, :source => :followable, :source_type => :user
+
+  # I follow nodes
+  # TODO: Uncomment this when we're going to implement Node-following feature
+  # has_many :following_nodes,        :class_name => "Node",  :uniq => true,
+  #          :through => :followings, :source => :followable, :source_type => :node
+
+  # I follow topics
+  has_many :following_topics,       :class_name => "Topic", :uniq => true,
+           :through => :followings, :source => :followable, :source_type => :topic
 
   scope :recent, order("id DESC")
   scope :hot, order("replies_count DESC, topics_count DESC")
