@@ -1,9 +1,5 @@
 # coding: utf-8
-class Post
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::SoftDelete
-  include Mongoid::BaseModel
+class Post < ActiveRecord::Base
   include Redis::Objects
   
   STATE = {
@@ -11,21 +7,8 @@ class Post
     :normal => 1
   }
   
-  field :title, :type => String
-  field :body, :type => String
-  field :state, :type => Integer, :default => STATE[:draft]
-  field :tags, :type => Array, :default => []
-  # 来源名称
-  field :source
-  # 来源地址
-  field :source_url
-  field :comments_count, :type => Integer, :default => 0
   belongs_to :user
   
-  index :tags
-  index :user_id
-  index :state
-  index [:tags, :state]
   
   counter :hits, :default => 0
   
@@ -34,6 +17,7 @@ class Post
   
   validates_presence_of :title, :body, :tag_list
   
+  scope :recent, order("id DESC")
   scope :normal, where(:state => STATE[:normal])
   scope :by_tag, Proc.new { |t| where(:tags => t) }
   
