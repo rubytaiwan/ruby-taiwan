@@ -1,5 +1,5 @@
 <%
-  reply = notification.reply
+  reply = notification.source
   topic = reply.topic
 %>
 <td class="face">
@@ -11,7 +11,7 @@
     在
     <%= render_topic_title(topic) %>
     提及你：
-    <% if !notification.read? %>
+    <% if !notification.is_read? %>
       <span class="new label warning">新</span>
     <% end %>
   </h3>

@@ -5,7 +5,8 @@ class Reply < ActiveRecord::Base
   
   belongs_to :user,   :counter_cache => true, :inverse_of => :replies
   belongs_to :topic,  :counter_cache => true, :inverse_of => :replies
-  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all
+  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all, 
+           :foreign_key => :source_id
   
   serialize :mentioned_user_ids, Array
   attr_protected :user_id, :topic_id, :email_key
@@ -44,7 +45,7 @@ class Reply < ActiveRecord::Base
   after_create :send_mention_notification
   def send_mention_notification
     self.mentioned_user_ids.each do |user_id|
-      Notification::Mention.create :user_id => user_id, :reply => self
+      Notification::Mention.create :user_id => user_id, :source => self
     end
   end
 

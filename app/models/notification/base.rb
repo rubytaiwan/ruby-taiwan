@@ -1,19 +1,24 @@
-class Notification::Base
-  include Mongoid::Document
-  include Mongoid::Timestamps::Created
-  include Mongoid::BaseModel
+class Notification::Base < ActiveRecord::Base
 
-  store_in :notifications
+  set_table_name "notifications"
 
-  field :read, :default => false
+  scope :recent, order("id DESC")
+  scope :unread, where(:is_read => false)
 
-  scope :unread, where(:read => false)
+  # source could be reply, topic or something else
+  belongs_to :source, :polymorphic => true
 
   belongs_to :user
 
-  index [[:user_id, Mongo::ASCENDING], [:read, Mongo::ASCENDING]]
+  def self.for_user(user)
+    where(:user => user)
+  end
 
   def anchor
     "notification-#{id}"
+  end
+
+  def self.mark_all_as_read!
+    update_all(:is_read => true)
   end
 end

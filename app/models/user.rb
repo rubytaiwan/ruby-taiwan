@@ -20,14 +20,7 @@ class User < ActiveRecord::Base
   has_many :likes
 
   def read_notifications(notifications)
-    unread_ids = notifications.find_all{|notification| !notification.read?}.map(&:_id)
-    if unread_ids.any?
-      Notification::Base.where({
-        :user_id => id,
-        :_id.in  => unread_ids,
-        :read    => false
-      }).update_all(:read => true)
-    end
+    self.notifications.mark_all_as_read!
   end
 
   attr_accessor :password_confirmation
@@ -81,8 +74,6 @@ class User < ActiveRecord::Base
     return "" if self.github.blank?
     "http://github.com/#{self.github}"
   end
-  
-  
   
   # 是否是管理员
   def admin?

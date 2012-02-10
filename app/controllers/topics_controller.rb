@@ -65,7 +65,9 @@ class TopicsController < ApplicationController
     @replies = @topic.replies.includes(:user)
     if current_user
       current_user.read_topic(@topic)
-      current_user.notifications.where(:reply_id.in => @replies.map(&:id), :read => false).update_all(:read => true)
+
+      # Mark all notifications from replies in this topic as read
+      current_user.notifications.where(:source_id => @replies.map(&:id), :source_type => "Reply").mark_all_as_read!
     end
     set_seo_meta("#{@topic.title} &raquo; #{t("menu.topics")}")
     drop_breadcrumb("#{@node.name}", node_topics_path(@node.id))
