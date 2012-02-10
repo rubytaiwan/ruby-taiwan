@@ -16,7 +16,8 @@ class Reply < ActiveRecord::Base
 
   after_create :update_parent_topic
   def update_parent_topic
-    topic.update_last_reply(self)
+    topic.update_replied_at(self)
+    topic.push_follower(self.user)
   end
 
   before_save :extract_mentioned_users

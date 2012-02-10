@@ -23,8 +23,8 @@ describe Topic do
     topic = Factory :topic
     reply = Factory :reply, :topic => topic
     topic.replied_at.should == reply.created_at
-    topic.last_reply_id.should == reply.id
-    topic.last_reply_user_id.should == reply.user_id
+    topic.last_reply.id.should == reply.id
+    topic.last_reply.user_id.should == reply.user_id
     topic.follower_ids.include?(reply.user_id).should be_true
   end
 end

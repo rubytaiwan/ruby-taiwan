@@ -8,14 +8,14 @@ class TopicsController < ApplicationController
   before_filter :init_base_breadcrumb
 
   def index
-    @topics = Topic.last_actived.limit(15).includes(:node,:user, :last_reply_user).paginate(:page => params[:page], :per_page => 15)
+    @topics = Topic.last_actived.limit(15).includes(:node,:user).paginate(:page => params[:page], :per_page => 15)
     set_seo_meta("","#{Setting.app_name}#{t("menu.topics")}")
     drop_breadcrumb(t("topics.hot_topic"))
     #render :stream => true
   end
   
   def feed
-    @topics = Topic.recent.limit(20).includes(:node,:user, :last_reply_user)
+    @topics = Topic.recent.limit(20).includes(:node,:user)
     response.headers['Content-Type'] = 'application/rss+xml'
     render :layout => false
   end
@@ -43,7 +43,7 @@ class TopicsController < ApplicationController
   end
 
   def recent
-    # TODO: 需要 includes :node,:user, :last_reply_user,但目前用了 paginate 似乎会使得 includes 没有效果
+    # TODO: 需要 includes :node,:user, :last_reply ,但目前用了 paginate 似乎会使得 includes 没有效果
     @topics = Topic.recent.includes(:node,:user, :last_reply_user).paginate(:page => params[:page], :per_page => 50)
     drop_breadcrumb(t("topics.topic_list"))
     render :action => "index" #, :stream => true
