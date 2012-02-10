@@ -17,6 +17,7 @@ config/mailman.yml
 config/mailer_daemon.yml
 config/newrelic.yml
 public/uploads/**/*
+public/photo/
 public/topics
 public/topics/**/*
 .redcar
