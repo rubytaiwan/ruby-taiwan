@@ -10,6 +10,10 @@ Post:
   - class: Post::Archive
     table: archived_posts
 
+Comment:
+  - class: Comment::Archive
+    table: archived_comments
+
 # Doesn't work with Devise; don't use!
 # User:
 #   - class: User::Archive
