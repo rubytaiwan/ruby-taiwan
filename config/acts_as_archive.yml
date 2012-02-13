@@ -2,6 +2,10 @@ Topic:
   - class: Topic::Archive
     table: archived_topics
 
+Reply:
+  - class: Reply::Archive
+    table: archived_replies
+
 # Doesn't work with Devise; don't use!
 # User:
 #   - class: User::Archive

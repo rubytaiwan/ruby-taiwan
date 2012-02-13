@@ -2,7 +2,9 @@
 require "digest/md5"
 
 class Reply < ActiveRecord::Base
-  
+
+  acts_as_archive
+
   belongs_to :user,   :counter_cache => true, :inverse_of => :replies
   belongs_to :topic,  :counter_cache => true, :inverse_of => :replies
   has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all, 
