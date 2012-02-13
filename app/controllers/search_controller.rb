@@ -6,7 +6,8 @@ class SearchController < ApplicationController
      if @query_string.present?
        @topics = Topic.search(@query_string).paginate(:page => params[:page], :per_page => 20)
      end
-     @current = ["/search/topics?q=#{params[:q]}"]
+
+     @current = ["/search/topics?q=#{@query_string}"]
      
      render :action => "topics"
      
