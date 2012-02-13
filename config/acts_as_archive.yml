@@ -14,6 +14,10 @@ Comment:
   - class: Comment::Archive
     table: archived_comments
 
+Site:
+  - class: Site::Archive
+    table: archived_sites
+
 # Doesn't work with Devise; don't use!
 # User:
 #   - class: User::Archive
