@@ -46,6 +46,14 @@ GIT
       activemodel (~> 3.0)
 
 GIT
+  remote: git://github.com/stipple/acts_as_archive.git
+  revision: bbb25836183a8fb5e59b82c0cea4030990fb2fc5
+  specs:
+    acts_as_archive (0.4.0)
+      also_migrate (~> 0.3)
+      mover (= 0.3.6)
+
+GIT
   remote: git://github.com/thetron/css3buttons_rails_helpers.git
   revision: e88e8353006c1d9fcd077a06c9cff43d032baf01
   specs:
@@ -103,6 +111,7 @@ GEM
     airbrake (3.0.5)
       activesupport
       builder
+    also_migrate (0.3.6)
     arel (3.0.0)
     aws-ses (0.4.4)
       builder
@@ -184,6 +193,7 @@ GEM
     mime-types (1.17.2)
     mini_magick (3.3)
       subexec (~> 0.1.0)
+    mover (0.3.6)
     multi_json (1.0.4)
     multipart-post (1.1.4)
     mustache (0.99.4)
@@ -347,6 +357,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 2.2.2)
+  acts_as_archive!
   airbrake
   anjlab-bootstrap-rails!
   aws-ses (~> 0.4.3)
