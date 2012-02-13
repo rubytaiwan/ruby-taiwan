@@ -7,17 +7,16 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
-         
-    
 
   has_many :topics, :dependent => :destroy, :inverse_of => :user
-  has_many :notes
+  has_many :comments, :dependent => :destroy, :inverse_of => :user
+  has_many :notes, :dependent => :destroy
   has_many :replies, :dependent => :destroy, :inverse_of => :user
-  has_many :authorizations
-  has_many :posts
+  has_many :authorizations, :dependent => :destroy
+  has_many :posts, :dependent => :nullify
   has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all
-  has_many :photos
-  has_many :likes
+  has_many :photos, :dependent => :destroy
+  has_many :likes, :dependent => :destroy
 
   def read_notifications(notifications)
     self.notifications.mark_all_as_read!
@@ -28,7 +27,7 @@ class User < ActiveRecord::Base
   
   validates :login, :format => {:with => /\A\w+\z/, :message => '只允许数字、大小写字母和下划线'}, :length => {:in => 3..20}, :presence => true, :uniqueness => {:case_sensitive => false}
 
-  has_many :followings
+  has_many :followings, :dependent => :destroy
 
   # users who follow me
   # TODO: Uncomment this when we're going to implement User-following feature
