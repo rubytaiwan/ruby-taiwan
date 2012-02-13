@@ -2,6 +2,8 @@
 class Post < ActiveRecord::Base
   include Redis::Objects
   
+  acts_as_archive
+
   STATE = {
     :draft => 0,
     :normal => 1

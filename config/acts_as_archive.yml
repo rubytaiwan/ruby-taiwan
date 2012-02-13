@@ -6,6 +6,10 @@ Reply:
   - class: Reply::Archive
     table: archived_replies
 
+Post:
+  - class: Post::Archive
+    table: archived_posts
+
 # Doesn't work with Devise; don't use!
 # User:
 #   - class: User::Archive
