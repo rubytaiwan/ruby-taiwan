@@ -1,0 +1,4 @@
+# Doesn't work with Devise; don't use!
+# User:
+#   - class: User::Archive
+#     table: archived_users
