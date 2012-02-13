@@ -1,3 +1,7 @@
+Topic:
+  - class: Topic::Archive
+    table: archived_topics
+
 # Doesn't work with Devise; don't use!
 # User:
 #   - class: User::Archive

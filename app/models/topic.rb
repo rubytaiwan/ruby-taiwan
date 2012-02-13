@@ -2,12 +2,14 @@
 class Topic < ActiveRecord::Base
   include Redis::Objects
 
+  acts_as_archive
+
   belongs_to :user, :counter_cache => true, :inverse_of => :topics
   belongs_to :node, :counter_cache => true, :inverse_of => :topics
 
   has_many :replies, :dependent => :destroy, :inverse_of => :topic
 
-  has_many :followings, :as => :followable
+  has_many :followings, :as => :followable, :dependent => :destroy
   has_many :followers, :class_name => 'User', :through => :followings, :source => :user
 
   attr_protected :user_id
