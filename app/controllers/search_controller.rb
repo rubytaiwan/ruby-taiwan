@@ -4,7 +4,8 @@ class SearchController < ApplicationController
   before_filter :validate_search_key
    def index
      if @query_string.present?
-       @topics = Topic.search(@query_string).paginate(:page => params[:page], :per_page => 20)
+       search = Ransack::Search.new(Topic, @search_criteria)
+       @topics = search.result(:distinct => true).paginate(:page => params[:page], :per_page => 20)
      end
 
      @current = ["/search/topics?q=#{@query_string}"]
@@ -18,7 +19,8 @@ class SearchController < ApplicationController
   def topics
     
     if @query_string.present?
-      @topics = Topic.search(@query_string).paginate(:page => params[:page], :per_page => 20)
+      search = Ransack::Search.new(Topic, @search_criteria)
+      @topics = search.result(:distinct => true).paginate(:page => params[:page], :per_page => 20)
     end
     
     set_seo_meta("#{t("common.search")}: #{@query_string}")
@@ -39,5 +41,8 @@ class SearchController < ApplicationController
 
     def validate_search_key
       @query_string = params[:q].gsub(/\\|\'|-|\/|\.|\?/, "") if params[:q].present?
+      @search_criteria = {
+        :title_or_body_cont => @query_string
+      }
     end
 end
