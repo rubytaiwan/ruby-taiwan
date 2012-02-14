@@ -6,11 +6,11 @@ module PostsHelper
   end
   
   def post_tags_tag(post, opts = {})
-    return "" if post.blank? or post.tags.blank?
-    limit = 5
-    tags = post.tags
-    tags = tags[0..limit-1] if tags.count > limit
-    raw tags.collect { |tag| link_to(tag,posts_path(:tag => tag)) }.join(", ")
+    if post.present?
+      post.tags.limit(5).collect { |tag|
+        link_to("##{tag.name}", tagged_posts_path(tag.name))
+      }.join(", ").html_safe
+    end
   end
   
   def render_post_state_s(post)

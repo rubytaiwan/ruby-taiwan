@@ -5,19 +5,22 @@ class PostsController < ApplicationController
   after_filter :add_visit, :only => [:show]
 
   def index
-    scoped_posts = Post.normal
-    if !params[:tag].blank?
-      scoped_posts = scoped_posts.by_tag(params[:tag])
-    end
-    @posts = scoped_posts.recent.paginate :page => params[:page], :per_page => 20
+    @posts = Post.normal.recent.paginate :page => params[:page], :per_page => 20
     set_seo_meta("文章")
     
     drop_breadcrumb("文章")
-    if params[:tag]
-      drop_breadcrumb(params[:tag])
-    else
-      drop_breadcrumb t("posts.recent_publish_post")
-    end
+    drop_breadcrumb t("posts.recent_publish_post")
+  end
+
+  def tag_index
+    tag_name = params[:tag_name]
+    @posts = Post.normal.tagged_with(tag_name).recent.paginate(:page => params[:page], :per_page => 20)
+    set_seo_meta("文章 - ##{tag_name}")
+
+    drop_breadcrumb("文章")
+    drop_breadcrumb("##{tag_name}")
+
+    render :action => "index"
   end
 
   def show
@@ -33,7 +36,6 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find(params[:id])
-    @post.tag_list = @post.tags.join(", ")
     drop_breadcrumb("文章")
     drop_breadcrumb t("common.edit")
   end

@@ -20,7 +20,6 @@ class Cpanel::PostsController < Cpanel::ApplicationController
 
   def edit
     @post = Post.unscoped.find(params[:id])
-    @post.tag_list = @post.tags.join(", ")
 
   end
 

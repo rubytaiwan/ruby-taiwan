@@ -1,8 +1,12 @@
 RubyChina::Application.routes.draw do
   resources :sites
 
-  resources :posts
-  
+  resources :posts do
+    collection do
+      match "tag/:tag_name" => "posts#tag_index", :via => :get, :as => :tagged
+    end
+  end
+
   resources :gikis, :path => "wiki" do 
     member do 
       get :history
