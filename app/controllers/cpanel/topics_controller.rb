@@ -48,8 +48,8 @@ class Cpanel::TopicsController < Cpanel::ApplicationController
   end
   
   def undestroy
-    @topic = Topic.unscoped.find(params[:id])
-    @topic.update_attribute(:deleted_at, nil)
+    @topic = Topic::Archived.unscoped.find(params[:id])
+    @topic.destroy # restore to Topic
     redirect_to(cpanel_topics_path)
   end
   

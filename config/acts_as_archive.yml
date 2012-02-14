@@ -1,0 +1,24 @@
+Topic:
+  - class: Topic::Archive
+    table: archived_topics
+
+Reply:
+  - class: Reply::Archive
+    table: archived_replies
+
+Post:
+  - class: Post::Archive
+    table: archived_posts
+
+Comment:
+  - class: Comment::Archive
+    table: archived_comments
+
+Site:
+  - class: Site::Archive
+    table: archived_sites
+
+# Doesn't work with Devise; don't use!
+# User:
+#   - class: User::Archive
+#     table: archived_users

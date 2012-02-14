@@ -1,5 +1,6 @@
 # coding: utf-8
 class Site < ActiveRecord::Base
+  acts_as_archive
   
   belongs_to :site_node, :counter_cache => true, :inverse_of => :sites
   belongs_to :user

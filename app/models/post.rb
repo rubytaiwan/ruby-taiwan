@@ -2,13 +2,15 @@
 class Post < ActiveRecord::Base
   include Redis::Objects
   
+  acts_as_archive
+
   STATE = {
     :draft => 0,
     :normal => 1
   }
   
   belongs_to :user
-  
+  has_many :comments, :dependent => :destroy, :as => :commentable
   
   attr_protected :state, :user_id
 
