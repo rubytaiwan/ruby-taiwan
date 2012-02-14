@@ -24,7 +24,7 @@ class Topic < ActiveRecord::Base
   end
 
   def push_follower(user)
-    self.followers.push(user)
+    self.followers.push(user) unless self.followers.include? user
   end
 
   def pull_follower(user)
