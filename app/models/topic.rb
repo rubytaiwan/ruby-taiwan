@@ -13,11 +13,6 @@ class Topic < ActiveRecord::Base
   attr_protected :user_id
   validates_presence_of :user_id, :title, :body, :node_id
 
-  search_in :title, :body
-
-  
-
-
   # scopes
   scope :recent, order("id DESC")
   scope :last_actived, order("replied_at DESC, created_at DESC")

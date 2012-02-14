@@ -26,6 +26,8 @@ gem "omniauth-douban", :git => "git://github.com/ballantyne/omniauth-douban.git"
 # permission
 gem "cancan", "~> 1.6.7"
 
+# 搜索相关的组件
+gem "ransack"
 # Rails I18n
 gem "rails-i18n","0.1.8"
 # Redis 命名空间
