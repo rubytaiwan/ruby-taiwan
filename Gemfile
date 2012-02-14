@@ -56,6 +56,8 @@ gem "unicorn"
 gem 'acts-as-taggable-on', '~> 2.2.2'
 # Soft Delete
 gem 'acts_as_archive', :git => "git://github.com/stipple/acts_as_archive.git"
+# Finite-State Machine
+gem "state_machine"
 
 # for opengraph
 
