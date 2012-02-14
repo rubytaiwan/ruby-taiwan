@@ -13,7 +13,7 @@ gem 'mini_magick','3.3'
 gem 'devise', '1.5.2'
 # 分页
 
-gem 'will_paginate', '3.0.pre4'
+gem 'will_paginate', '~> 3.0'
 
 # 三方平台 OAuth 验证登陆
 
