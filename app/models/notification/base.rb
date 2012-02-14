@@ -1,6 +1,6 @@
 class Notification::Base < ActiveRecord::Base
 
-  set_table_name "notifications"
+  self.table_name = "notifications"
 
   scope :recent, order("id DESC")
   scope :unread, where(:is_read => false)
