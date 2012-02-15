@@ -1,7 +1,7 @@
 # coding: utf-8  
 # 记事本
 class Note < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, :inverse_of => :notes
   
 
   attr_protected :user_id, :changes_count, :word_count  

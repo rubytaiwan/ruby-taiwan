@@ -8,26 +8,19 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  has_many :topics, :dependent => :destroy, :inverse_of => :user
-  has_many :comments, :dependent => :destroy, :inverse_of => :user
-  has_many :notes, :dependent => :destroy
-  has_many :replies, :dependent => :destroy, :inverse_of => :user
+  # don't remove contents when the user is killed
+  has_many :topics,   :inverse_of => :user
+  has_many :replies,  :inverse_of => :user
+  has_many :posts,    :inverse_of => :user
+  has_many :comments, :inverse_of => :user
+  has_many :notes,    :inverse_of => :user
+  has_many :photos,   :inverse_of => :user
+
+  # remove likes, followings, authorizations and notifications when user is killed
+  has_many :likes,          :dependent => :destroy
+  has_many :followings,     :dependent => :destroy
   has_many :authorizations, :dependent => :destroy
-  has_many :posts, :dependent => :nullify
-  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all
-  has_many :photos, :dependent => :destroy
-  has_many :likes, :dependent => :destroy
-
-  def read_notifications(notifications)
-    self.notifications.mark_all_as_read!
-  end
-
-  attr_accessor :password_confirmation
-  attr_protected :verified, :replies_count
-  
-  validates :login, :format => {:with => /\A\w+\z/, :message => '只允许数字、大小写字母和下划线'}, :length => {:in => 3..20}, :presence => true, :uniqueness => {:case_sensitive => false}
-
-  has_many :followings, :dependent => :destroy
+  has_many :notifications,  :dependent => :delete_all, :class_name => 'Notification::Base'
 
   # users who follow me
   # TODO: Uncomment this when we're going to implement User-following feature
@@ -46,6 +39,15 @@ class User < ActiveRecord::Base
   # I follow topics
   has_many :following_topics,       :class_name => "Topic", :uniq => true,
            :through => :followings, :source => :followable, :source_type => :topic
+
+  def read_notifications(notifications)
+    self.notifications.mark_all_as_read!
+  end
+
+  attr_accessor :password_confirmation
+  attr_protected :verified, :replies_count
+  
+  validates :login, :format => {:with => /\A\w+\z/, :message => '只允许数字、大小写字母和下划线'}, :length => {:in => 3..20}, :presence => true, :uniqueness => {:case_sensitive => false}
 
   scope :recent, order("id DESC")
   scope :hot, order("replies_count DESC, topics_count DESC")

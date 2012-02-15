@@ -1,6 +1,6 @@
 # coding: utf-8  
 class Photo < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, :inverse_of => :photos
   
   attr_protected :user_id
   
