@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
 
   def self.find_for_database_authentication(conditions)
     login = conditions.delete(:login)
-    self.where(:login => /^#{login}$/i).first
+    self.where("lower(login) = ?", login.downcase).first
   end
 
   def password_required?
