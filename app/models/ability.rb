@@ -83,7 +83,7 @@ class Ability
     can :search,  Topic
     
     can :read  , Note do |note|
-       note.publish == true
+       note.is_public? == true
     end
     
     can :list, Wiki
