@@ -52,15 +52,29 @@
   <div class="clearfix">
     <%= f.label :state %>
     <div class="input">
-    <%= f.select :state, User::STATE.collect { |s| [s[0],s[1]] } %>
+      <%= render_user_state(@user, false) %>
     </div>
   </div>  
   <div class="actions">
-    <% if @user.state != User::STATE[:deleted] %>
-      <div class="pull-right">
-        <%= link_to '删除此用户', cpanel_user_path(@user), :confirm => '警告！此动作无法撤销，确定要删除么?', :method => :delete, :class => "btn danger"  %>
-      </div>
-    <% end %>
+    <div class="pull-right">
+
+      <% if @user.can_block? %>
+        <%= link_to t("cpanel.users.block_this_user"), block_cpanel_user_path(@user), :class => "btn danger", :method => :post  %>
+      <% end %>
+
+      <% if @user.can_unblock? %>
+        <%= link_to t("cpanel.users.unblock_this_user"), unblock_cpanel_user_path(@user), :class => "btn success", :method => :post  %>
+      <% end %>
+
+      <% if @user.can_soft_delete? %>
+        <%= link_to t("cpanel.users.delete_this_user"), cpanel_user_path(@user), :confirm => '警告！此动作无法撤销，确定要删除么?', :method => :delete, :class => "btn danger"  %>
+      <% end %>
+
+      <% if @user.can_restore? %>
+        <%= link_to t("cpanel.users.restore_this_user"), restore_cpanel_user_path(@user), :method => :post, :class => "btn danger" %>
+      <% end %>
+
+    </div>
     <%= f.submit t("common.save"), :class => "btn primary", :disable_with => t("common.saving") %>
     或者
     <%= link_to 'Back', cpanel_users_path %>

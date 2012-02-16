@@ -86,7 +86,13 @@ RubyChina::Application.routes.draw do
     end
     resources :nodes
     resources :sections
-    resources :users
+    resources :users do
+      member do
+        post :block
+        post :unblock
+        post :restore # from deleted state
+      end
+    end
     resources :photos
     resources :posts
     resources :comments

@@ -44,13 +44,45 @@ class User < ActiveRecord::Base
     self.notifications.mark_all_as_read!
   end
 
+  # State machine definition
+  state_machine :initial => :normal do
+    state :deleted
+    state :blocked
+
+    before_transition any => [:blocked, :deleted], :do => :revoke_verified!
+    after_transition any => :deleted, :do => :remove_authorizations!
+
+    event :block do
+      transition :normal => :blocked
+    end
+
+    event :unblock do
+      transition :blocked => :normal
+    end
+
+    event :soft_delete do
+      transition [:normal, :blocked] => :deleted
+    end
+
+    event :restore do
+      transition :deleted => :normal
+    end
+  end
+
   attr_accessor :password_confirmation
-  attr_protected :verified, :replies_count
+  attr_protected :replies_count
   
   validates :login, :format => {:with => /\A\w+\z/, :message => '只允许数字、大小写字母和下划线'}, :length => {:in => 3..20}, :presence => true, :uniqueness => {:case_sensitive => false}
 
   scope :recent, order("id DESC")
   scope :hot, order("replies_count DESC, topics_count DESC")
+
+  scope :normal,  with_state(:normal)
+  scope :deleted, with_state(:deleted)
+  scope :not_deleted, without_state(:deleted)
+  scope :blocked, with_state(:blocked)
+
+  default_scope not_deleted
 
   # grab stats of locations:
   #
@@ -92,6 +124,15 @@ class User < ActiveRecord::Base
     "http://github.com/#{self.github}"
   end
   
+  def revoke_verified!
+    self.verified = false
+    self.save
+  end
+
+  def remove_authorizations!
+    self.authorizations.destroy_all
+  end
+
   # 是否是管理员
   def admin?
     return true if Setting.admin_emails.include?(self.email)
@@ -119,26 +160,12 @@ class User < ActiveRecord::Base
     end
   end
   
-  before_create :default_value_for_create
-  def default_value_for_create
-    self.state = STATE[:normal]
-  end
-  
+
   # 注册邮件提醒
   after_create :send_welcome_mail
   def send_welcome_mail
     UserMailer.welcome(self.id).deliver
   end
-
-  STATE = {
-    # 软删除
-    :deleted => -1,
-    # 正常
-    :normal => 1,
-    # 屏蔽
-    :blocked => 2,
-    
-  }
   
   # 用邮件地址创建一个用户
   def self.find_or_create_guest(email)
@@ -206,20 +233,4 @@ class User < ActiveRecord::Base
                                      :likeable_type => likeable.class,
                                      :user_id => self.id})
   end
-  
-  # 软删除
-  # 只是把用户信息修改了
-  def soft_delete
-    # assuming you have deleted_at column added already
-    self.email = "#{self.login}_#{self.id}@ruby-china.org"
-    self.login = "Guest"
-    self.bio = ""
-    self.website = ""
-    self.github = ""
-    self.tagline = ""
-    self.location = ""
-    self.state = STATE[:deleted]
-    self.save(:validate => false)
-  end
-
 end
