@@ -3,8 +3,10 @@ class UsersController < ApplicationController
   before_filter :require_user, :only => "auth_unbind"
   before_filter :init_base_breadcrumb
   before_filter :set_menu_active
-  before_filter :find_user, :only => [:show, :replies, :likes, :notes]
-  
+  load_and_authorize_resource :find_by => :login,
+                              :except => [:auth_unbind, :location]
+  skip_authorize_resource :only => :index
+
   def index
     @total_user_count = User.count
     drop_breadcrumb t("common.index")
@@ -55,9 +57,6 @@ class UsersController < ApplicationController
   end
   
   protected
-  def find_user
-    @user = User.find_by_login!(params[:id])
-  end
   
   def set_menu_active
     @current = @current = ['/users']

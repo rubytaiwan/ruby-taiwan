@@ -66,6 +66,20 @@ module UsersHelper
     end
   end
   
+  def render_user_state(user, abnormal_only=true)
+    if user.deleted?
+      content_tag(:span, t("users.state.deleted"), :class => "label important")
+    elsif user.blocked?
+      content_tag(:span, t("users.state.blocked"), :class => "label important")
+    elsif user.normal?
+      unless abnormal_only == true
+        content_tag(:span, t("users.state.normal"), :class => "label success")
+      end
+    else
+      content_tag(:span, "?", :class => "label default")
+    end
+  end
+
   private
   
   def user_popover_info(user)

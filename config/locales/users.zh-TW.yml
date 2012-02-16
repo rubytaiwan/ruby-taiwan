@@ -32,4 +32,7 @@
       topics: "文章" 
       recent_reply_topics: "最近回應"
       like: "喜歡"
-
+    state:
+      blocked: 已封鎖
+      deleted: 已刪除
+      normal: 一般會員

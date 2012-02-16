@@ -24,5 +24,9 @@
       edit_setting: "Edit Settings"
     users:
       trust_user_can_modify_wiki: "Allow user to modify Wiki"
+      block_this_user: "Block this User"
+      unblock_this_user: "Unblock this User"
+      delete_this_user: "Delete this User"
+      restore_this_user: "Restore this User"
     topic_list: "Topic List"
     check_photo: "View Photo"
