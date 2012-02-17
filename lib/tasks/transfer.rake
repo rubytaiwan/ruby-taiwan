@@ -26,7 +26,7 @@ namespace :transfer do
         assignments[:updated_at] = resource.try(:updated_at) rescue nil
         insert_resource(table, resource, assignments)
 
-        $stdout.puts("#{ar_model.table_name} ##{resource.id}")
+        $stdout.puts("#{ar_model.name} ##{resource.id}")
       end
     end
   end
