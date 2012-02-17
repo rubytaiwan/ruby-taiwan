@@ -1,5 +1,5 @@
 "zh-TW":
-  mongoid:
+  activerecord:
     models:
       user: "使用者"
       topic: "話題"

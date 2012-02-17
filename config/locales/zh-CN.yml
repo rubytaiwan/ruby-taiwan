@@ -1,5 +1,5 @@
 "zh-CN":
-  mongoid:
+  activerecord:
     models:
       user: "用户"
       topic: "话题"
