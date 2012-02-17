@@ -1,6 +1,6 @@
 namespace :transfer do
   desc "Transfer all data from Mongoid to ActiveRecord"
-  task :all => [:site_config, :site_node]
+  task :all => [:site_config, :site_node, :node]
 
   desc "SiteConfig"
   task :site_config => [:environment] do
@@ -11,6 +11,13 @@ namespace :transfer do
   task :site_node => [:environment] do
     transfer! Mongodb::SiteNode, SiteNode, :override => {
       :sites_count => lambda {|site_node| site_node.sites_count || 0}
+    }
+  end
+
+  desc "Node"
+  task :node => [:environment] do
+    transfer! Mongodb::Node, Node, :override => {
+      :topics_count => lambda { |node| node.topics_count || 0 }
     }
   end
 
