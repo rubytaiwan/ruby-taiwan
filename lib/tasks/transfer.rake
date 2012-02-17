@@ -1,26 +1,206 @@
-namespace :transfer do
-  desc "Transfer all data from Mongoid to ActiveRecord"
-  task :all => [:site_config, :site_node, :node]
+task :transfer => ["transfer:all"]
 
-  desc "SiteConfig"
+namespace :transfer do
+
+  desc "Transfer all data from Mongoid to ActiveRecord"
+  task :all => [:system, :members, :websites, :forum, :interactions]
+
+  desc "Transfer System (SiteConfig)"
+  task :system => [:site_config]
+
+  desc "Transfer Member (User, Authorization, Note)"
+  task :members => [:user, :note]
+
+  desc "Transfer Website List (SiteNode, Site)"
+  task :websites => [:site_node, :site]
+
+  desc "Transfer Forum (Section, Node, Topic, Reply)"
+  task :forum => [:section, :node, :topic, :reply]
+
+  desc "Transfer Interactions (Like, Following, Notification)"
+  task :interactions => [:like, :following, :notification]
+
+  # System-wide
+
+  desc "Transfer SiteConfig"
   task :site_config => [:environment] do
     transfer! Mongodb::SiteConfig, SiteConfig
   end
 
-  desc "SiteNode"
+  # Member System
+
+  desc "Transfer User and Authorization"
+  task :user => [:environment] do
+
+    override = {
+      :state => lambda {|mongodb_user|
+        if mongodb_user.respond_to? :deleted_at
+          :deleted
+        else
+          case mongodb_user.state
+          when -1
+            :deleted
+          when 1
+            :normal
+          when 2
+            :blocked
+          end
+        end
+      }, 
+      :email => lambda {|mongodb_user|
+        # dirty hack for user "u1325774919" who has no email
+        mongodb_user.email || "guest@example.com"
+      }
+    }
+    authorizations_table = Arel::Table.new(Authorization.table_name)
+    Authorization.unscoped.delete_all!
+
+    transfer! Mongodb::User, User, :override => override do |mongodb_user|
+
+      # also transfers authorizations
+      mongodb_user.authorizations.each do |mongodb_authorization|
+        insert_row(authorizations_table, {
+          :provider   => mongodb_authorization.provider,
+          :uid        => mongodb_authorization.uid,
+          :created_at => mongodb_authorization.created_at,
+          :updated_at => mongodb_authorization.updated_at,
+          :user_id    => mongodb_user._id
+        })
+      end
+    end
+
+  end
+
+  desc "Transfer Note"
+  task :note => [:environment] do
+    transfer! Mongodb::Note, Note, :override => { :publish => :is_public }
+  end
+
+  # Websites
+
+  desc "Transfer SiteNode"
   task :site_node => [:environment] do
     transfer! Mongodb::SiteNode, SiteNode, :default => {
       :sites_count => 0
     }
   end
 
-  desc "Node"
+  desc "Transfer Site"
+  task :site => [:environment] do
+    zombie_site_ids = []
+
+    transfer! Mongodb::Site, Site do |mongodb_site|
+      zombie_site_ids << mongodb_site._id if mongodb_site.respond_to? :deleted_at
+    end
+
+    Site.destroy_all(:id => zombie_site_ids)
+  end
+
+  # Forum
+
+  desc "Transfer Section"
+  task :section => [:environment] do
+    transfer! Mongodb::Section, Section
+  end
+
+  desc "Transfer Node"
   task :node => [:environment] do
     transfer! Mongodb::Node, Node, :default => {
       :topics_count => 0
     }
   end
 
+  desc "Transfer Topic"
+  task :topic => [:environment] do
+    override = {
+      :visit_count => lambda { |mongodb_topic| mongodb_topic.hits.to_i }
+    }
+
+    zombie_topic_ids = []
+
+    transfer! Mongodb::Topic, Topic, :override => override do |mongodb_topic|
+      zombie_topic_ids << mongodb_topic._id if mongodb_topic.respond_to? :deleted_at
+    end
+
+    Topic.destroy_all(:id => zombie_topic_ids)
+  end
+
+  desc "Transfer Reply"
+  task :reply => [:environment] do
+
+    zombie_reply_ids = []
+
+    transfer! Mongodb::Reply, Reply, :skip => [:mentioned_user_ids] do |mongodb_reply|
+      Reply.find(mongodb_reply._id).update_attributes!(:mentioned_user_ids => mongodb_reply.mentioned_user_ids)
+
+      zombie_reply_ids << mongodb_reply._id if mongodb_reply.respond_to? :deleted_at
+    end
+
+    Reply.destroy_all(:id => zombie_reply_ids)
+  end
+
+  # Interactions
+  desc "Transfer Like"
+  task :like => [:environment] do
+    transfer! Mongodb::Like, Like
+  end
+
+  desc "Transfer Notification"
+  task :notification => [:environment] do
+    transfer! Mongodb::Notification::Base, Notification::Base, :override => {
+      :is_read     => :read,
+      :type        => lambda {|mongodb_notification_base|
+        mongodb_notification_base.class.to_s
+      },
+      :source_id   => lambda {|mongodb_notification_base|
+        case mongodb_notification_base
+        when Notification::Mention
+          mongodb_notification_base.reply_id
+        end
+      },
+      :source_type => lambda {|mongodb_notification_base|
+        case mongodb_notification_base
+        when Notification::Mention
+          "Reply"
+        end
+      }
+    }
+
+    # Skip Notifications other than Mention
+  end
+
+  desc "Transfer All Following"
+  task :following => ["following:node"]
+
+  namespace :following do
+    desc "Transfer Node Followers"
+    task :node => [:environment] do
+      transfer_following!(Mongodb::Node, "Node")
+      transfer_following!(Mongodb::User, "User")
+      transfer_following!(Mongodb::Topic, "Topic")
+    end
+
+    def transfer_following!(mongodb_model, followable_type, follower_field=:follower_ids)
+
+      followings_table = Arel::Table.new(Following.table_name)
+
+      ActiveRecord::Base.connection.transaction do
+        Following.unscoped.delete_all(:followable_type => followable_type)
+
+        mongodb_model.all.each do |resource|
+          $stdout.puts("#{mongodb_model}##{resource._id} has #{resource.send(follower_field).size} followers")
+
+          resource.send(follower_field).each do |user_id|
+            insert_row(followings_table, {
+              :followable_type => followable_type,
+              :followable_id   => resource._id,
+              :user_id => user_id
+            })
+          end
+        end
+      end
+    end
+  end
 
   def transfer!(mongodb_model, ar_model, options={}, &callback)
 
@@ -37,7 +217,7 @@ namespace :transfer do
 
     ActiveRecord::Base.connection.transaction do
 
-      ar_model.delete_all!
+      ar_model.unscoped.delete_all!
 
       mongodb_model.all.each do |resource|
         $stdout.puts("#{ar_model.name} ##{resource.id}")
