@@ -6,7 +6,7 @@ namespace :transfer do
   task :site_config => [:environment] do
     transfer! Mongodb::SiteConfig, SiteConfig do |site_config|
       {
-        :id     => site_config.id,
+        :id     => site_config._id,
         :key    => site_config.key,
         :value  => site_config.value
       }
