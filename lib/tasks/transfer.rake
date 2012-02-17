@@ -9,15 +9,15 @@ namespace :transfer do
 
   desc "SiteNode"
   task :site_node => [:environment] do
-    transfer! Mongodb::SiteNode, SiteNode, :override => {
-      :sites_count => lambda {|site_node| site_node.sites_count || 0}
+    transfer! Mongodb::SiteNode, SiteNode, :default => {
+      :sites_count => 0
     }
   end
 
   desc "Node"
   task :node => [:environment] do
-    transfer! Mongodb::Node, Node, :override => {
-      :topics_count => lambda { |node| node.topics_count || 0 }
+    transfer! Mongodb::Node, Node, :default => {
+      :topics_count => 0
     }
   end
 
