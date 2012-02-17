@@ -1,11 +1,11 @@
 <%%= render 'base' %>
-<h1><%%= t("mongoid.models.<%= file_name %>") %></h1>
+<h1><%%= t("menu.<%= file_name %>") %></h1>
 <div id="<%= plural_table_name %>">
   <table class="grid">
     <tr class="head">
       <td>编号</td>
 <% attributes.each do |attr| -%>
-      <td><%%= t("mongoid.attributes.<%= file_name %>.<%= attr.name %>") %></td>
+      <td><%%= t("activerecord.attributes.<%= file_name %>.<%= attr.name %>") %></td>
 <% end -%>
       <td>创建时间</td>
       <td class="opts"></td>
