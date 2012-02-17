@@ -26,6 +26,7 @@ namespace :transfer do
 
     skip_columns         = options[:skip]      # ActiveRecord columns
     override_assignments = options[:override]  # ActiveRecord => MongoDB
+    default_values       = options[:default]   # default value of a column when exception raised
 
     table       = Arel::Table.new(ar_model.table_name)
 
@@ -42,7 +43,9 @@ namespace :transfer do
         $stdout.puts("#{ar_model.name} ##{resource.id}")
 
         # build assignments for INSERT sql query
-        assignments = build_assignments(resource, ar_columns, :override => override_assignments)
+        assignments = build_assignments(resource, ar_columns,
+                                        :override => override_assignments, 
+                                        :default => default_values)
 
         # directly issue INSERT query to MySQL
         insert_row(table, assignments)
@@ -68,6 +71,8 @@ namespace :transfer do
     override = { :id => :_id }
     override.merge!(options[:override]) if options[:override]
 
+    default_values = options[:default_values] || {}
+
     assignments = {}
 
     ar_columns.each do |ar_column|
@@ -85,7 +90,12 @@ namespace :transfer do
         begin
           value = resource.send(ar_column)
         rescue => e
-          $stderr.puts "`#{ar_column}' field doesn't exist in #{resource}; it will fallback to default value (might be NULL)"
+          # fallback to default value if possible
+          if default_values[ar_column]
+            value = default_values[ar_column]
+          else
+            $stderr.puts "`#{ar_column}' field doesn't exist in #{resource}; it will fallback to default value of database (might be NULL)"
+          end
         end
       end
 
