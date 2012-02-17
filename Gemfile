@@ -2,10 +2,6 @@ source "http://rubygems.org"
 
 gem "rails", "3.2.1"
 
-# temoprarily add these gems
-gem "bson_ext", "1.5.2"
-gem "mongoid", "2.3.4"
-
 gem 'mysql2'
 
 # 上传组件
