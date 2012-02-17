@@ -4,50 +4,88 @@ namespace :transfer do
 
   desc "SiteConfig"
   task :site_config => [:environment] do
-    transfer! Mongodb::SiteConfig, SiteConfig do |site_config|
-      {
-        :id     => site_config._id,
-        :key    => site_config.key,
-        :value  => site_config.value
-      }
-    end
+    transfer! Mongodb::SiteConfig, SiteConfig
   end
 
   desc "SiteNode"
   task :site_node => [:environment] do
-    transfer! Mongodb::SiteNode, SiteNode do |site_node|
-      {
-        :id => site_node._id,
-        :name => site_node.name,
-        :sites_count => (site_node.sites_count || 0), # may be NULL
-        :sort => site_node.sort
-      }
-    end
+    transfer! Mongodb::SiteNode, SiteNode, :override => {
+      :sites_count => lambda {|site_node| site_node.sites_count || 0}
+    }
   end
 
-  def transfer!(mongodb_model, ar_model, &block)
-    ar_model.delete_all!
+
+  def transfer!(mongodb_model, ar_model, options={}, &callback)
+
+    skip_columns         = options[:skip]      # ActiveRecord columns
+    override_assignments = options[:override]  # ActiveRecord => MongoDB
+
+    table       = Arel::Table.new(ar_model.table_name)
+
+    ar_columns  = table.columns.map {|column| column.name }
+
+    # skip some columns
+    ar_columns -= skip_columns if skip_columns
 
     ActiveRecord::Base.connection.transaction do
 
-      table = Arel::Table.new(ar_model.table_name)
+      ar_model.delete_all!
 
       mongodb_model.all.each do |resource|
-        assignments = block.call(resource)
-        assignments[:created_at] = resource.try(:created_at) rescue nil
-        assignments[:updated_at] = resource.try(:updated_at) rescue nil
-        insert_resource(table, resource, assignments)
-
         $stdout.puts("#{ar_model.name} ##{resource.id}")
+
+        # build assignments for INSERT sql query
+        assignments = build_assignments(resource, ar_columns, :override => override_assignments)
+
+        # directly issue INSERT query to MySQL
+        insert_row(table, assignments)
+
+        # some further process to do
+        callback.call(resource) if callback
       end
     end
   end
 
-  def insert_resource(table, resource, assignments)
+  def insert_row(table, assignments)
 
     stmt = build_statement(table, assignments)
 
     ActiveRecord::Base.connection.insert(stmt)
+  end
+
+  # should fetch actual values, i.e.
+  # {
+  #   :id => 3, :name => "John", :email => "john@appleseed.com"
+  # }
+  def build_assignments(resource, ar_columns, options={})
+    override = { :id => :_id }
+    override.merge!(options[:override]) if options[:override]
+
+    assignments = {}
+
+    ar_columns.each do |ar_column|
+      overrider = override[ar_column]
+      if overrider
+        case overrider
+        when Proc # lambda or Proc
+          value = overrider.call(resource)
+        when Symbol, String # column name
+          value = resource.send(overrider.to_sym)
+        else
+          raise "cannot override field #{ar_column}: you should pass a lambda or field name of MongoDB"
+        end
+      else
+        begin
+          value = resource.send(ar_column)
+        rescue => e
+          $stderr.puts "`#{ar_column}' field doesn't exist in #{resource}; it will fallback to default value (might be NULL)"
+        end
+      end
+
+      assignments[ar_column] = value
+    end
+
+    assignments
   end
 
   def build_statement(table, assignments)
