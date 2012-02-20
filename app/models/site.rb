@@ -19,9 +19,9 @@ class Site < ActiveRecord::Base
     end
     
     if !self.url.blank?
-      if self.url.match(/:\/\//).blank?
-        self.url = "http://#{self.url}"
-      end
+
+      url = self.url.gsub(/http[s]{0,1}:\/\//,'').split('/').join("/")
+      self.url = "http://#{url}"
     end
   end
   
