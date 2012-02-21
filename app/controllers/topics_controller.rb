@@ -21,7 +21,6 @@ class TopicsController < ApplicationController
     @topics = @node.topics.last_actived.paginate(:page => params[:page],:per_page => 50)
     set_seo_meta("#{@node.name} &raquo; #{t("menu.topics")}","#{Setting.app_name}#{t("menu.topics")}#{@node.name}",@node.summary)
     drop_breadcrumb("#{@node.name}")
-    render :action => "index"
   end
 
   
