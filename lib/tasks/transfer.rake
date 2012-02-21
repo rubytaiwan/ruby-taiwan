@@ -256,7 +256,7 @@ namespace :transfer do
     override = { :id => :_id }
     override.merge!(options[:override]) if options[:override]
 
-    default_values = options[:default_values] || {}
+    default_values = options[:default] || {}
 
     assignments = {}
 
