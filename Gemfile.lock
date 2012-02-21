@@ -351,7 +351,7 @@ GEM
       rack (>= 1.0.0)
     warden (1.1.0)
       rack (>= 1.0)
-    will_paginate (3.0.3)
+    will_paginate (3.0.pre4)
     xml-simple (1.1.1)
 
 PLATFORMS
@@ -415,4 +415,4 @@ DEPENDENCIES
   state_machine
   uglifier (>= 1.0.3)
   unicorn
-  will_paginate (~> 3.0)
+  will_paginate (= 3.0.pre4)

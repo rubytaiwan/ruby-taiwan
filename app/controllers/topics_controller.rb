@@ -26,7 +26,7 @@ class TopicsController < ApplicationController
   
   def recent
     # TODO: 需要 includes :node,:user,但目前用了 paginate 似乎会使得 includes 没有效果
-    @topics = Topic.recent.includes(:node,:user).paginate(:page => params[:page], :per_page => 50)
+    @topics = Topic.recent.paginate(:page => params[:page], :per_page => 50)
     drop_breadcrumb(t("topics.topic_list"))
   end
   
