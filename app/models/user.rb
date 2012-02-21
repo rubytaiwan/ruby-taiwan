@@ -234,3 +234,35 @@ class User < ActiveRecord::Base
                                      :user_id => self.id})
   end
 end
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id                   :integer(4)      not null, primary key
+#  login                :string(255)     not null
+#  location             :string(255)
+#  tagline              :string(255)
+#  bio                  :text
+#  website              :string(255)
+#  github               :string(255)
+#  verified             :boolean(1)      default(TRUE)
+#  guest                :boolean(1)      default(FALSE)
+#  topics_count         :integer(4)      default(0)
+#  replies_count        :integer(4)      default(0)
+#  likes_count          :integer(4)      default(0)
+#  created_at           :datetime        not null
+#  updated_at           :datetime        not null
+#  email                :string(255)     default(""), not null
+#  encrypted_password   :string(128)     default(""), not null
+#  reset_password_token :string(255)
+#  remember_token       :string(255)
+#  remember_created_at  :datetime
+#  sign_in_count        :integer(4)      default(0)
+#  current_sign_in_at   :datetime
+#  last_sign_in_at      :datetime
+#  current_sign_in_ip   :string(255)
+#  last_sign_in_ip      :string(255)
+#  state                :string(255)     default("normal")
+#
+

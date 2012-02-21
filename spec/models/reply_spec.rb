@@ -37,3 +37,20 @@ describe Reply do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: replies
+#
+#  id                 :integer(4)      not null, primary key
+#  body               :text            default(""), not null
+#  topic_id           :integer(4)
+#  user_id            :integer(4)
+#  mentioned_user_ids :text
+#  source             :string(255)
+#  message_id         :string(255)
+#  email_key          :string(255)
+#  created_at         :datetime        not null
+#  updated_at         :datetime        not null
+#
+

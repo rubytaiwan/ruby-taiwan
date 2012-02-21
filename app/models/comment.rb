@@ -8,3 +8,17 @@ class Comment < ActiveRecord::Base
 
   scope :recent, order("id DESC")
 end
+
+# == Schema Information
+#
+# Table name: comments
+#
+#  id               :integer(4)      not null, primary key
+#  body             :text
+#  user_id          :integer(4)
+#  commentable_id   :integer(4)
+#  commentable_type :string(255)
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#
+

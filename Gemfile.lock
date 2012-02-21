@@ -112,6 +112,7 @@ GEM
       activesupport
       builder
     also_migrate (0.3.6)
+    annotate (2.4.0)
     arel (3.0.1)
     aws-ses (0.4.4)
       builder
@@ -361,6 +362,7 @@ DEPENDENCIES
   acts_as_archive!
   airbrake
   anjlab-bootstrap-rails!
+  annotate
   aws-ses (~> 0.4.3)
   bootstrap_helper (= 1.4.1)
   cancan (~> 1.6.7)

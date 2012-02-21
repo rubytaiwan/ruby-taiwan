@@ -11,3 +11,15 @@ class Photo < ActiveRecord::Base
   mount_uploader :image, PhotoUploader
   
 end
+
+# == Schema Information
+#
+# Table name: photos
+#
+#  id         :integer(4)      not null, primary key
+#  image      :string(255)
+#  user_id    :integer(4)
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
+

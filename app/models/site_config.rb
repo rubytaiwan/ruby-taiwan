@@ -41,3 +41,14 @@ class SiteConfig < ActiveRecord::Base
   end
   
 end
+# == Schema Information
+#
+# Table name: site_configs
+#
+#  id         :integer(4)      not null, primary key
+#  key        :string(255)     not null
+#  value      :text
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
+

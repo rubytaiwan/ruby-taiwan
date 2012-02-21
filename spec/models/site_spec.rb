@@ -19,3 +19,18 @@ describe Site do
     site.url.should == "http://foobar3.com"
   end
 end
+
+# == Schema Information
+#
+# Table name: sites
+#
+#  id           :integer(4)      not null, primary key
+#  name         :string(255)     not null
+#  url          :string(255)     not null
+#  desc         :text
+#  favicon      :string(255)
+#  site_node_id :integer(4)
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
+#
+

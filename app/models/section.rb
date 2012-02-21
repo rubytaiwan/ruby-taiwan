@@ -14,3 +14,15 @@ class Section < ActiveRecord::Base
     CacheVersion.section_node_updated_at = Time.now
   end
 end
+
+# == Schema Information
+#
+# Table name: sections
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  sort       :integer(4)      default(0)
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
+

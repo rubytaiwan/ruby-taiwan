@@ -26,3 +26,18 @@ class Node < ActiveRecord::Base
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: nodes
+#
+#  id           :integer(4)      not null, primary key
+#  name         :string(255)     not null
+#  section_id   :integer(4)      not null
+#  sort         :integer(4)      default(0), not null
+#  summary      :string(255)
+#  topics_count :integer(4)      default(0)
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
+#
+

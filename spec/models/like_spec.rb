@@ -29,3 +29,16 @@ describe Like do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: likes
+#
+#  id            :integer(4)      not null, primary key
+#  likeable_id   :integer(4)
+#  likeable_type :string(255)
+#  user_id       :integer(4)
+#  created_at    :datetime        not null
+#  updated_at    :datetime        not null
+#
+

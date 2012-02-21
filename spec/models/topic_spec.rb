@@ -28,3 +28,24 @@ describe Topic do
     topic.follower_ids.include?(reply.user_id).should be_true
   end
 end
+
+# == Schema Information
+#
+# Table name: topics
+#
+#  id            :integer(4)      not null, primary key
+#  title         :string(255)     not null
+#  body          :text            default(""), not null
+#  source        :string(255)
+#  node_id       :integer(4)
+#  user_id       :integer(4)
+#  message_id    :integer(4)
+#  replies_count :integer(4)      default(0)
+#  likes_count   :integer(4)      default(0)
+#  visit_count   :integer(4)      default(0)
+#  created_at    :datetime        not null
+#  updated_at    :datetime        not null
+#  suggested_at  :datetime
+#  replied_at    :datetime
+#
+
