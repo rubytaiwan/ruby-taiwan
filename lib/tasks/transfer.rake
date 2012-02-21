@@ -278,6 +278,7 @@ namespace :transfer do
           # fallback to default value if possible
           if default_values[ar_column]
             value = default_values[ar_column]
+            $stdout.puts "`#{ar_column}' is fallen-back to #{value}"
           else
             $stderr.puts "`#{ar_column}' field doesn't exist in #{resource}; it will fallback to default value of database (might be NULL)"
           end
