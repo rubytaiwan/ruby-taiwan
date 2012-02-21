@@ -31,6 +31,7 @@ gem "cancan", "~> 1.6.7"
 gem "ransack"
 # Rails I18n
 gem "rails-i18n","0.1.8"
+
 # Redis 命名空间
 gem "redis-namespace","~> 1.0.2"
 # 将一些数据存放入 Redis
@@ -47,7 +48,7 @@ gem "rails_autolink", ">= 1.0.4"
 # YAML 配置信息
 gem "settingslogic", "~> 2.0.6"
 gem "cells", "3.7.1"
-gem "resque", "~> 1.19.0", :require => "resque/server"
+gem "resque", :require => "resque/server"
 gem "resque_mailer", "2.0.2"
 gem "aws-ses", "~> 0.4.3"
 gem "mail_view", :git => "git://github.com/37signals/mail_view.git"
@@ -79,11 +80,12 @@ gem "social-share-button", "~> 0.0.3"
 gem "open_graph_helper"
 
 # Simple form last commit: 2011-12-03 
+
 gem "simple_form", :git => "git://github.com/plataformatec/simple_form.git"
 gem "anjlab-bootstrap-rails", :git => "git://github.com/anjlab/bootstrap-rails.git", :require => "bootstrap-rails"
 gem "bootstrap_helper", "1.4.1"
 gem "airbrake"
-gem "newrelic_rpm"
+
 
 
 group :assets do
@@ -97,7 +99,7 @@ group :mailman do
   gem "mailman"
   gem "nokogiri", "1.5.0"
   gem "daemon-spawn", "~> 0.4.2"
-  gem "resque", "~> 1.19.0", :require => "resque/server"
+  gem "resque", :require => "resque/server"
 end
 
 group :development do
@@ -119,4 +121,5 @@ end
 
 group :production do
   gem "dalli", "1.1.1"
+  gem "newrelic_rpm"
 end
