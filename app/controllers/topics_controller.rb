@@ -30,16 +30,6 @@ class TopicsController < ApplicationController
     drop_breadcrumb(t("topics.topic_list"))
   end
   
-  
-
-  def search
-    @topics = Topic.search_tank(params[:key])
-    
-    set_seo_meta("#{t("common.search")}#{params[:s]} &raquo; #{t("menu.topics")}")
-    drop_breadcrumb("#{t("common.search")} #{params[:key]}")
-    render :action => "index"
-  end
-
 
   def feed
     @topics = Topic.recent.limit(20).includes(:node,:user)
