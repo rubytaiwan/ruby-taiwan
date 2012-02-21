@@ -65,7 +65,7 @@ class Reply < ActiveRecord::Base
     recipient_ids.delete(user.id)
 
     # add the topic author to the recipients, if he is not the reply author
-    recipient_ids.add(topic.user.id) if topic.user.id != user.id
+    recipient_ids.add(topic.user.id) if topic.user.present? && topic.user.id != user.id
 
     # prevent duplicated mail sent to users mentioned in the reply
     recipient_ids.subtract(mentioned_user_ids)
