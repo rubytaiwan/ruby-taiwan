@@ -17,7 +17,8 @@ class Topic < ActiveRecord::Base
 
   # scopes
   scope :recent, order("id DESC")
-  scope :last_actived, order("updated_at DESC")
+  # last_actived should be order by replied_at; if replied_at is NULL, then order by created_at.
+  scope :last_actived, order("IFNULL(replied_at, created_at) DESC")
   # 推荐的话题
   scope :suggest, where("suggested_at IS NOT NULL").order("suggested_at DESC")
 
