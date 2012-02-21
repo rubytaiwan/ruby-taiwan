@@ -20,11 +20,16 @@ namespace :transfer do
   desc "Transfer Interactions (Like, Following, Notification)"
   task :interactions => [:like, :following, :notification]
 
+  DEFAULT_TIMESTAMPS = {
+    :created_at => Time.now,
+    :updated_at => Time.now
+  }
+
   # System-wide
 
   desc "Transfer SiteConfig"
   task :site_config => [:environment] do
-    transfer! Mongodb::SiteConfig, SiteConfig
+    transfer! Mongodb::SiteConfig, SiteConfig, :default => DEFAULT_TIMESTAMPS
   end
 
   # Member System
@@ -73,7 +78,7 @@ namespace :transfer do
 
   desc "Transfer Note"
   task :note => [:environment] do
-    transfer! Mongodb::Note, Note, :override => { :publish => :is_public }
+    transfer! Mongodb::Note, Note, :override => { :publish => :is_public }, :default => DEFAULT_TIMESTAMPS
   end
 
   # Websites
@@ -82,14 +87,14 @@ namespace :transfer do
   task :site_node => [:environment] do
     transfer! Mongodb::SiteNode, SiteNode, :default => {
       :sites_count => 0
-    }
+    }.merge(DEFAULT_TIMESTAMPS)
   end
 
   desc "Transfer Site"
   task :site => [:environment] do
     zombie_site_ids = []
 
-    transfer! Mongodb::Site, Site do |mongodb_site|
+    transfer! Mongodb::Site, Site, :default => DEFAULT_TIMESTAMPS do |mongodb_site|
       zombie_site_ids << mongodb_site._id if mongodb_site.respond_to? :deleted_at
     end
 
@@ -100,14 +105,14 @@ namespace :transfer do
 
   desc "Transfer Section"
   task :section => [:environment] do
-    transfer! Mongodb::Section, Section
+    transfer! Mongodb::Section, Section, :default => DEFAULT_TIMESTAMPS
   end
 
   desc "Transfer Node"
   task :node => [:environment] do
     transfer! Mongodb::Node, Node, :default => {
       :topics_count => 0
-    }
+    }.merge(DEFAULT_TIMESTAMPS)
   end
 
   desc "Transfer Topic"
@@ -142,7 +147,7 @@ namespace :transfer do
   # Interactions
   desc "Transfer Like"
   task :like => [:environment] do
-    transfer! Mongodb::Like, Like
+    transfer! Mongodb::Like, Like, :default => DEFAULT_TIMESTAMPS
   end
 
   desc "Transfer Notification"
@@ -164,7 +169,7 @@ namespace :transfer do
           "Reply"
         end
       }
-    }
+    }, :default => DEFAULT_TIMESTAMPS
 
     # Skip Notifications other than Mention
   end
@@ -195,7 +200,7 @@ namespace :transfer do
               :followable_type => followable_type,
               :followable_id   => resource._id,
               :user_id => user_id
-            })
+            }.merge(DEFAULT_TIMESTAMPS))
           end
         end
       end
