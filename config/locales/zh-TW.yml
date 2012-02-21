@@ -69,30 +69,3 @@
         odd: "必須為奇數"
         even: "必須為偶數"
         record_invalid: "校驗失敗: %{errors}"
-        taken:
-          已佔用
-        document_not_found:
-          沒有發現類似%{klass} ID 是%{identifiers} 的文檔
-        invalid_database:
-          數據庫應該是Mongo::DB,而不是%{name}.
-        invalid_type:
-          在%{klass}類別中定義了字段,實際值是%{value}的%{other}.
-        unsupported_version:
-          MongoDB %{version} 版本已過期，請升級到%{mongo_version}.
-        validations:
-          校驗失敗 - %{errors}.
-        invalid_collection:
-          不允許直接訪問嵌入式的集合%{klass} , 請從文檔的根訪問集合.
-        invalid_field:
-          字段的名字不允許為%{name}. 你不應該定義跟Mongoid內部屬性或者方法相同的名字，詳細請看Use Document#instance_methods.
-        too_many_nested_attribute_records:
-          被關聯的%{association} 嵌入式屬性不能超過%{limit}.
-        embedded_in_must_have_inverse_of:
-          embedded_in的關聯屬性必須包含inverse_of.
-        dependent_only_references_one_or_many:
-          dependent => destroy|delete 選項只有在references_one或者references_many時候有效.
-        association_cant_have_inverse_of:
-          在當前的關聯中，不允許定義inverse_of去,其只有在embedded_in或者references_many是陣列的情況下使用
-        unsaved_document:
-          You cannot call create or create! through a relational association
-          relation (%{document}) who's parent (%{base}) is not already saved.
