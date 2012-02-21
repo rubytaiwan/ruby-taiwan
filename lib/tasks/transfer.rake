@@ -78,7 +78,7 @@ namespace :transfer do
 
   desc "Transfer Note"
   task :note => [:environment] do
-    transfer! Mongodb::Note, Note, :override => { :publish => :is_public }, :default => DEFAULT_TIMESTAMPS
+    transfer! Mongodb::Note, Note, :override => { :is_public => :publish }, :default => DEFAULT_TIMESTAMPS
   end
 
   # Websites
