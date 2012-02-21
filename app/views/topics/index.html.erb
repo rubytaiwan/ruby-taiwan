@@ -41,7 +41,7 @@
                 <% if topic.last_reply.blank? %>
                   <%= raw t("common.created_at", :time => timeago(topic.created_at))%>
                 <% else %>
-                  <%= t("common.last_by")%> <%= user_name_tag(topic.last_reply.user) %> <%= raw t("common.reply_at", :time => timeago(topic.replied_at))%>
+                  <%= t("common.last_by")%> <%= link_to(topic.last_reply.user_login, user_path(topic.last_reply.user_login)) %> <%= raw t("common.reply_at", :time => timeago(topic.replied_at))%>
 
                 <% end %>
               </div>

@@ -10,6 +10,8 @@ class Reply < ActiveRecord::Base
   has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete_all, 
            :foreign_key => :source_id
   
+  delegate :login , :to => :user , :prefix => true
+  
   serialize :mentioned_user_ids, Array
   attr_protected :user_id, :topic_id, :email_key
 
