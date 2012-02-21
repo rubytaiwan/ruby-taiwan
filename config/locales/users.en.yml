@@ -28,3 +28,11 @@
     users_joined: "users joined"
     hot_users: "Most active users"
     recent_joined: "Most recently joined users"
+    menu:
+      topics: Topics
+      recent_reply_topics: Replied Topics
+      like: Likes
+    state:
+      blocked: Blocked
+      deleted: Deleted
+      normal: Normal

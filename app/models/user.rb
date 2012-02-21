@@ -1,92 +1,117 @@
 # coding: utf-8  
-class User
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::BaseModel
+class User < ActiveRecord::Base
   include Redis::Objects
+
+  attr_accessible :email, :password, :password_confirmation, :remember_me
   extend OmniauthCallbacks   
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
-         
-    
 
-  field :login
-  field :email
-  field :location
-  field :bio
-  field :website
-  field :github
-  # 是否信任用户
-  field :verified, :type => Boolean, :default => true
-  field :state, :type => Integer, :default => 1
-  field :guest, :type => Boolean, :default => false
-  field :tagline  
-  field :topics_count, :type => Integer, :default => 0
-  field :replies_count, :type => Integer, :default => 0  
-  field :likes_count, :type => Integer, :default => 0
-  
-  index :login
-  index :email
-  index :location
+  # don't remove contents when the user is killed
+  has_many :topics,   :inverse_of => :user
+  has_many :replies,  :inverse_of => :user
+  has_many :posts,    :inverse_of => :user
+  has_many :comments, :inverse_of => :user
+  has_many :notes,    :inverse_of => :user
+  has_many :photos,   :inverse_of => :user
 
-  has_many :topics, :dependent => :destroy  
-  has_many :notes
-  has_many :replies, :dependent => :destroy
-  embeds_many :authorizations
-  has_many :posts
-  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete
-  has_many :photos
-  has_many :likes
+  # remove likes, followings, authorizations and notifications when user is killed
+  has_many :likes,          :dependent => :destroy
+  has_many :followings,     :dependent => :destroy
+  has_many :authorizations, :dependent => :destroy
+  has_many :notifications,  :dependent => :delete_all, :class_name => 'Notification::Base'
+
+  # users who follow me
+  # TODO: Uncomment this when we're going to implement User-following feature
+  # has_many :followers, :class_name => "User", :through => :followings, :source => :user
+
+  # I follow users
+  # TODO: Uncomment this when we're going to implement User-following feature
+  # has_many :following_users,        :class_name => "User",  :uniq => true,
+  #          :through => :followings, :source => :followable, :source_type => :user
+
+  # I follow nodes
+  # TODO: Uncomment this when we're going to implement Node-following feature
+  # has_many :following_nodes,        :class_name => "Node",  :uniq => true,
+  #          :through => :followings, :source => :followable, :source_type => :node
+
+  # I follow topics
+  has_many :following_topics,       :class_name => "Topic", :uniq => true,
+           :through => :followings, :source => :followable, :source_type => :topic
 
   def read_notifications(notifications)
-    unread_ids = notifications.find_all{|notification| !notification.read?}.map(&:_id)
-    if unread_ids.any?
-      Notification::Base.where({
-        :user_id => id,
-        :_id.in  => unread_ids,
-        :read    => false
-      }).update_all(:read => true)
+    self.notifications.mark_all_as_read!
+  end
+
+  # State machine definition
+  state_machine :initial => :normal do
+    state :deleted
+    state :blocked
+
+    before_transition any => [:blocked, :deleted], :do => :revoke_verified!
+    after_transition any => :deleted, :do => :remove_authorizations!
+
+    event :block do
+      transition :normal => :blocked
+    end
+
+    event :unblock do
+      transition :blocked => :normal
+    end
+
+    event :soft_delete do
+      transition [:normal, :blocked] => :deleted
+    end
+
+    event :restore do
+      transition :deleted => :normal
     end
   end
 
   attr_accessor :password_confirmation
-  attr_protected :verified, :replies_count
+  attr_protected :replies_count
   
   validates :login, :format => {:with => /\A\w+\z/, :message => '只允许数字、大小写字母和下划线'}, :length => {:in => 3..20}, :presence => true, :uniqueness => {:case_sensitive => false}
-  
-  has_and_belongs_to_many :following_nodes, :class_name => 'Node', :inverse_of => :followers
-  has_and_belongs_to_many :following, :class_name => 'User', :inverse_of => :followers
-  has_and_belongs_to_many :followers, :class_name => 'User', :inverse_of => :following
 
-  scope :hot, desc(:replies_count, :topics_count)
+  scope :recent, order("id DESC")
+  scope :hot, order("replies_count DESC, topics_count DESC")
 
-  def self.locations
-    locations_map = <<MAP
-        function() {
-          if (typeof this.location !== 'undefined' && this.location !== null)
-            emit(this.location, { logins: [this.login], count: 1 });
-        }
-MAP
+  scope :normal,  with_state(:normal)
+  scope :deleted, with_state(:deleted)
+  scope :not_deleted, without_state(:deleted)
+  scope :blocked, with_state(:blocked)
 
-    locations_reduce = <<REDUCE
-        function(key, values) {
-          var count = 0;
-          var logins = [];
-          values.forEach(function(value) {
-              count += value.count;
-              logins.push(value.logins.pop());
-            });
-            return { logins: logins, count: count };
-          };
-REDUCE
+  default_scope not_deleted
 
-    self.collection.map_reduce(locations_map, locations_reduce, :out => "user_locations")
+  # grab stats of locations:
+  #
+  # location_name | users_count
+  # --------------+-------------
+  # Taihoku       | 32
+  # Matsuyama     | 18
+  #
+  # and map it into a hash with
+  #  {:location => location_name, :count => users_count}
+  def self.locations(options={})
+    # We actually get User instances with location_name and users_count attributes
+    fake_users = User.select("location as location_name, COUNT(*) as users_count").group(:location)
+
+    fake_users = fake_users.order(options[:order]) if options[:order]
+    fake_users = fake_users.limit(options[:limit]) if options[:limit]
+
+    fake_users.map { |fake_user|
+      {:location => fake_user.location_name, :count => fake_user.users_count}
+    }
+  end
+
+  def self.most_popular_locations(limit=12)
+    self.locations(:order => "users_count DESC", :limit => limit)
   end
 
   def self.find_for_database_authentication(conditions)
     login = conditions.delete(:login)
-    self.where(:login => /^#{login}$/i).first
+    self.where("lower(login) = ?", login.downcase).first
   end
 
   def password_required?
@@ -99,8 +124,15 @@ REDUCE
     "http://github.com/#{self.github}"
   end
   
-  
-  
+  def revoke_verified!
+    self.verified = false
+    self.save
+  end
+
+  def remove_authorizations!
+    self.authorizations.destroy_all
+  end
+
   # 是否是管理员
   def admin?
     return true if Setting.admin_emails.include?(self.email)
@@ -128,26 +160,12 @@ REDUCE
     end
   end
   
-  before_create :default_value_for_create
-  def default_value_for_create
-    self.state = STATE[:normal]
-  end
-  
+
   # 注册邮件提醒
   after_create :send_welcome_mail
   def send_welcome_mail
     UserMailer.welcome(self.id).deliver
   end
-
-  STATE = {
-    # 软删除
-    :deleted => -1,
-    # 正常
-    :normal => 1,
-    # 屏蔽
-    :blocked => 2,
-    
-  }
   
   # 用邮件地址创建一个用户
   def self.find_or_create_guest(email)
@@ -191,14 +209,14 @@ REDUCE
   # 是否读过 topic 的最近更新
   def topic_read?(topic)
     # 用 last_reply_id 作为 cache key ，以便不热门的数据自动被 Memcached 挤掉
-    last_reply_id = topic.last_reply_id || -1
+    last_reply_id = topic.last_reply.id rescue -1
     Rails.cache.read("user:#{self.id}:topic_read:#{topic.id}") == last_reply_id
   end
 
   # 将 topic 的最后回复设置为已读
   def read_topic(topic)
     # 处理 last_reply_id 是空的情况
-    last_reply_id = topic.last_reply_id || -1
+    last_reply_id = topic.last_reply.id rescue -1
     Rails.cache.write("user:#{self.id}:topic_read:#{topic.id}", last_reply_id)
   end
   
@@ -215,20 +233,4 @@ REDUCE
                                      :likeable_type => likeable.class,
                                      :user_id => self.id})
   end
-  
-  # 软删除
-  # 只是把用户信息修改了
-  def soft_delete
-    # assuming you have deleted_at column added already
-    self.email = "#{self.login}_#{self.id}@ruby-china.org"
-    self.login = "Guest"
-    self.bio = ""
-    self.website = ""
-    self.github = ""
-    self.tagline = ""
-    self.location = ""
-    self.state = STATE[:deleted]
-    self.save(:validate => false)
-  end
-
 end

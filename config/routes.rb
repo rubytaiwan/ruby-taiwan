@@ -1,13 +1,12 @@
 RubyChina::Application.routes.draw do
   resources :sites
 
-  resources :posts
-  #resources :pages, :path => "wiki" do
-  #  collection do
-  #    get :recent
-  #  end
-  #end
-  
+  resources :posts do
+    collection do
+      match "tag/:tag_name" => "posts#tag_index", :via => :get, :as => :tagged
+    end
+  end
+
   resources :gikis, :path => "wiki" do 
     member do 
       get :history
@@ -87,16 +86,15 @@ RubyChina::Application.routes.draw do
     end
     resources :nodes
     resources :sections
-    resources :users
-    resources :photos
-    resources :posts
-    resources :pages do
-      resources :versions, :controller => :page_versions do
-        member do
-          post :revert
-        end
+    resources :users do
+      member do
+        post :block
+        post :unblock
+        post :restore # from deleted state
       end
     end
+    resources :photos
+    resources :posts
     resources :comments
     resources :site_nodes
     resources :sites

@@ -35,7 +35,7 @@ namespace :my_tasks do
     run "mkdir -p #{deploy_to}/shared/pids"
     
     symlink_hash = {
-      "#{shared_path}/config/mongoid.yml"   => "#{release_path}/config/mongoid.yml",
+      "#{shared_path}/config/database.yml"   => "#{release_path}/config/database.yml",
       "#{shared_path}/config/config.yml"    => "#{release_path}/config/config.yml",
       "#{shared_path}/config/newrelic.yml"  => "#{release_path}/config/newrelic.yml",
       "#{shared_path}/config/redis.yml"     => "#{release_path}/config/redis.yml",
@@ -50,10 +50,6 @@ namespace :my_tasks do
   
   task :restart_resque, :roles => :web do
     run "cd #{release_path}; RAILS_ENV=production ./script/resque stop; RAILS_ENV=production ./script/resque start"
-  end
-  
-  task :mongoid_create_indexes, :roles => :web do
-    run "cd #{release_path}; bundle exec rake db:mongoid:create_indexes"
   end
   
   task :start_mailman, :roles => :web do
@@ -80,6 +76,5 @@ end
 
 after "deploy:finalize_update", "my_tasks:symlink"
 after "deploy:finalize_update", "my_tasks:restart_mailman"
-#after "deploy:finalize_update", "my_tasks:mongoid_create_indexes"
 #after "deploy:restart", "my_tasks:restart_resque"
 

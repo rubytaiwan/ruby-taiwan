@@ -2,7 +2,7 @@
 class Cpanel::SitesController < Cpanel::ApplicationController
   
   def index
-    @sites = Site.desc('_id').paginate(:page => params[:page], :per_page => 20)
+    @sites = Site.order("id DESC").paginate(:page => params[:page], :per_page => 20)
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,18 +1,8 @@
 # coding: utf-8
-class Site
-  include Mongoid::Document
-  include Mongoid::BaseModel
-  include Mongoid::Timestamps
-  include Mongoid::SoftDelete
-  include Mongoid::CounterCache
+class Site < ActiveRecord::Base
+  acts_as_archive
   
-  field :name
-  field :url
-  field :desc
-  field :favicon
-  
-  belongs_to :site_node
-  counter_cache :name => :site_node, :inverse_of => :sites
+  belongs_to :site_node, :counter_cache => true, :inverse_of => :sites
   belongs_to :user
   
   validates_presence_of :url, :name, :site_node_id

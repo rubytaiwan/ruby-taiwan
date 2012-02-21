@@ -3,40 +3,46 @@ class SearchController < ApplicationController
   
   before_filter :validate_search_key
    def index
-     if @q.present?
-       @topics = Topic.search(@q).paginate(:page => params[:page], :per_page => 20)
+     if @query_string.present?
+       search = Ransack::Search.new(Topic, @search_criteria)
+       @topics = search.result(:distinct => true).paginate(:page => params[:page], :per_page => 20)
      end
-     @current = ["/search/topics?q=#{params[:q]}"]
+
+     @current = ["/search/topics?q=#{@query_string}"]
      
      render :action => "topics"
      
-     set_seo_meta("#{t("common.search")}: #{@q}")
-     drop_breadcrumb("#{t("common.search")}: #{@q}")
+     set_seo_meta("#{t("common.search")}: #{@query_string}")
+     drop_breadcrumb("#{t("common.search")}: #{@query_string}")
   end
 
   def topics
     
-    if @q.present?
-      @topics = Topic.search(@q).paginate(:page => params[:page], :per_page => 20)
+    if @query_string.present?
+      search = Ransack::Search.new(Topic, @search_criteria)
+      @topics = search.result(:distinct => true).paginate(:page => params[:page], :per_page => 20)
     end
     
-    set_seo_meta("#{t("common.search")}: #{@q}")
-    drop_breadcrumb("#{t("common.search")}: #{@q}")
+    set_seo_meta("#{t("common.search")}: #{@query_string}")
+    drop_breadcrumb("#{t("common.search")}: #{@query_string}")
 
    end
 
   def wiki
-    if @q.present?
-      @results = Wiki.search(@q)
+    if @query_string.present?
+      @results = Wiki.search(@query_string)
     end
     
-    set_seo_meta("#{t("common.search")}: #{@q}")
-    drop_breadcrumb("#{t("common.search")}: #{@q}")
+    set_seo_meta("#{t("common.search")}: #{@query_string}")
+    drop_breadcrumb("#{t("common.search")}: #{@query_string}")
   end
 
   protected
 
     def validate_search_key
-      @q = params[:q].gsub(/\\|\'|-|\/|\.|\?/, "") if params[:q].present?
+      @query_string = params[:q].gsub(/\\|\'|-|\/|\.|\?/, "") if params[:q].present?
+      @search_criteria = {
+        :title_or_body_cont => @query_string
+      }
     end
 end

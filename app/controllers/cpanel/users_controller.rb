@@ -1,30 +1,25 @@
 # coding: utf-8  
 class Cpanel::UsersController < Cpanel::ApplicationController
 
+  before_filter :find_user, :except => [:index, :new]
+
   def index
-    @users = User.desc(:_id).paginate :page => params[:page], :per_page => 30
+    @users = User.unscoped.order("id DESC").paginate :page => params[:page], :per_page => 30
 
   end
 
   def show
-    @user = User.find(params[:id])
   end
 
   def new
     @user = User.new
-    @user._id = nil
   end
 
   def edit
-    @user = User.find(params[:id])
   end
 
   def create
     @user = User.new(params[:user])    
-    @user.email = params[:user][:email]
-    @user.login = params[:user][:login]
-    @user.state = params[:user][:state]
-    @user.verified = params[:user][:verified]
 
     if @user.save
       redirect_to(cpanel_users_path, :notice => 'User was successfully created.')
@@ -34,12 +29,6 @@ class Cpanel::UsersController < Cpanel::ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    @user.email = params[:user][:email]
-    @user.login = params[:user][:login]
-    @user.state = params[:user][:state]
-    @user.verified = params[:user][:verified]
-    
     if @user.update_attributes(params[:user])
       redirect_to(cpanel_users_path, :notice => 'User was successfully updated.')
     else
@@ -47,10 +36,28 @@ class Cpanel::UsersController < Cpanel::ApplicationController
     end
   end
 
-  def destroy
-    @user = User.find(params[:id])
-    @user.soft_delete
+  def block
+    @user.block!
+    redirect_to edit_cpanel_user_url(@user)
+  end
 
-    redirect_to(cpanel_users_url) 
+  def unblock
+    @user.unblock!
+    redirect_to edit_cpanel_user_url(@user)
+  end
+
+  def destroy
+    @user.soft_delete!
+    redirect_to edit_cpanel_user_url(@user)
+  end
+
+  def restore
+    @user.restore!
+    redirect_to edit_cpanel_user_url(@user)
+  end
+
+  protected
+  def find_user
+    @user = User.unscoped.find(params[:id])
   end
 end

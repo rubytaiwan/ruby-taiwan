@@ -8,7 +8,7 @@ class RepliesController < ApplicationController
 
     @reply = @topic.replies.build(params[:reply])
 
-    @reply.user_id = current_user.id
+    @reply.user = current_user
     if @reply.save
       current_user.read_topic(@topic)
       @msg = t("topics.reply_success")

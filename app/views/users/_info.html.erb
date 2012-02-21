@@ -7,6 +7,7 @@
 
   <div class="userinfo span13">
     <%= render_user_level_tag(@user) %>
+    <%= render_user_state(@user) %>
     <ul>
         <li style="text-align:right;">第 <%= @user.id %> 位<%= t("menu.users")%></li>
         <li> <span>ID:</span><strong><%= @user.login %></strong></li>

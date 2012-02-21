@@ -11,7 +11,7 @@ class Ability
     elsif user.has_role?(:admin)
       # admin
       can :manage, :all
-    elsif user.has_role?(:member)
+    elsif user.has_role?(:member) && user.normal?
       
       can :create, Topic
       can :update, Topic do |topic|
@@ -83,7 +83,7 @@ class Ability
     can :search,  Topic
     
     can :read  , Note do |note|
-       note.publish == true
+       note.is_public? == true
     end
     
     can :list, Wiki
@@ -92,6 +92,10 @@ class Ability
     
     can :read, Photo
     can :read, Site
+
+    can :read, User do |user|
+      user.deleted? == false
+    end
   end
 end
 

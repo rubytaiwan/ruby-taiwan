@@ -1,8 +1,8 @@
 <div id="hot_locations" class="box">
   <h2><%=t("common.hot_locations")%></h2>
   <ul>
-  <% @hot_locations.each do |item| %>
-    <li class="name"><%= location_name_tag(item) %></li>
+  <% @hot_locations.each do |location| %>
+    <li class="name"><%= location_name_tag(location[:location]) %></li>
   <% end %>
   </ul>
 </div>

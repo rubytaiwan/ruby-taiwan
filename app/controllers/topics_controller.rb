@@ -7,15 +7,17 @@ class TopicsController < ApplicationController
   caches_page :feed, :node_feed, :expires_in => 1.hours
   before_filter :init_base_breadcrumb
 
+  after_filter :add_visit, :only => [:show]
+
   def index
-    @topics = Topic.last_actived.limit(15).includes(:node,:user, :last_reply_user).paginate(:page => params[:page], :per_page => 15)
+    @topics = Topic.last_actived.limit(15).includes(:node,:user).paginate(:page => params[:page], :per_page => 15)
     set_seo_meta("","#{Setting.app_name}#{t("menu.topics")}")
     drop_breadcrumb(t("topics.hot_topic"))
     #render :stream => true
   end
   
   def feed
-    @topics = Topic.recent.limit(20).includes(:node,:user, :last_reply_user)
+    @topics = Topic.recent.limit(20).includes(:node,:user)
     response.headers['Content-Type'] = 'application/rss+xml'
     render :layout => false
   end
@@ -43,17 +45,13 @@ class TopicsController < ApplicationController
   end
 
   def recent
-    # TODO: 需要 includes :node,:user, :last_reply_user,但目前用了 paginate 似乎会使得 includes 没有效果
+    # TODO: 需要 includes :node,:user, :last_reply ,但目前用了 paginate 似乎会使得 includes 没有效果
     @topics = Topic.recent.includes(:node,:user, :last_reply_user).paginate(:page => params[:page], :per_page => 50)
     drop_breadcrumb(t("topics.topic_list"))
     render :action => "index" #, :stream => true
   end
 
   def search
-    #result = Redis::Search.query("Topic", params[:key], :limit => 500)
-    #ids = result.collect { |r| r["id"] }
-    #@topics = Topic.where(:_id.in => ids).limit(50).includes(:node,:user, :last_reply_user)
-    
     @topics = Topic.search_tank(params[:key])
     
     set_seo_meta("#{t("common.search")}#{params[:s]} &raquo; #{t("menu.topics")}")
@@ -63,12 +61,13 @@ class TopicsController < ApplicationController
 
   def show
     @topic = Topic.includes(:user, :node).find(params[:id])
-    @topic.hits.incr(1)
     @node = @topic.node
-    @replies = @topic.replies.asc(:_id).all.includes(:user).cache.reject { |r| r.user.blank? }
+    @replies = @topic.replies.includes(:user)
     if current_user
       current_user.read_topic(@topic)
-      current_user.notifications.where(:reply_id.in => @replies.map(&:id), :read => false).update_all(:read => true)
+
+      # Mark all notifications from replies in this topic as read
+      current_user.notifications.where(:source_id => @replies.map(&:id), :source_type => "Reply").mark_all_as_read!
     end
     set_seo_meta("#{@topic.title} &raquo; #{t("menu.topics")}")
     drop_breadcrumb("#{@node.name}", node_topics_path(@node.id))
@@ -157,5 +156,8 @@ class TopicsController < ApplicationController
     end
     set_seo_meta(t("menu.topics"))
   end
-  
+
+  def add_visit
+    @topic.visit
+  end
 end

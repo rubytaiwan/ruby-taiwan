@@ -1,12 +1,6 @@
 # coding: utf-8
-class SiteNode
-  include Mongoid::Document
-  include Mongoid::BaseModel
-  
-  field :name
-  field :sites_count, :type => Integer
-  field :sort, :type => Integer, :default => 0
-  has_many :sites
+class SiteNode < ActiveRecord::Base
+  has_many :sites, :inverse_of => :site_node
   
   validates_presence_of :name
   validates_uniqueness_of :name

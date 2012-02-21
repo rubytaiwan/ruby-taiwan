@@ -20,7 +20,7 @@
     <td><%= user.login %></td>
     <td><%= user.email %></td>
     <td><%= user.location %></td>
-    <td><%= user.state %></td>
+    <td><%= render_user_state(user, false) %></td>
     <td><%= user.verified %></td>
     <td>
       <%= link_to '', edit_cpanel_user_path(user), :class => "icon small_edit" %>

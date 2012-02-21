@@ -3,7 +3,7 @@ class SitesController < ApplicationController
   load_and_authorize_resource
   
   def index
-    @site_nodes = SiteNode.desc('sort').includes(:sites)
+    @site_nodes = SiteNode.order("sort DESC").includes(:sites)
     drop_breadcrumb(t("menu.sites"))
     set_seo_meta("Ruby #{t("menu.sites")}")
   end
@@ -16,7 +16,7 @@ class SitesController < ApplicationController
   
   def create
     @site = Site.new(params[:site])
-    @site.user_id = current_user.id
+    @site.user = current_user
     if @site.save
       redirect_to(sites_path, :notice => '提交成功。谢谢。')
     else

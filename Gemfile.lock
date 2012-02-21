@@ -46,6 +46,14 @@ GIT
       activemodel (~> 3.0)
 
 GIT
+  remote: git://github.com/stipple/acts_as_archive.git
+  revision: bbb25836183a8fb5e59b82c0cea4030990fb2fc5
+  specs:
+    acts_as_archive (0.4.0)
+      also_migrate (~> 0.3)
+      mover (= 0.3.6)
+
+GIT
   remote: git://github.com/thetron/css3buttons_rails_helpers.git
   revision: e88e8353006c1d9fcd077a06c9cff43d032baf01
   specs:
@@ -97,10 +105,13 @@ GEM
     activesupport (3.2.1)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts-as-taggable-on (2.2.2)
+      rails (~> 3.0)
     addressable (2.2.6)
     airbrake (3.0.5)
       activesupport
       builder
+    also_migrate (0.3.6)
     arel (3.0.0)
     aws-ses (0.4.4)
       builder
@@ -125,9 +136,6 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     carrierwave (0.5.6)
       activesupport (~> 3.0)
-    carrierwave-mongoid (0.1.2)
-      carrierwave (>= 0.5.6)
-      mongoid (~> 2.1)
     cells (3.7.1)
       actionpack (~> 3.0)
       railties (~> 3.0)
@@ -158,7 +166,6 @@ GEM
       addressable (~> 2.2.6)
       multipart-post (~> 1.1.3)
       rack (>= 1.1.0, < 2)
-    fast-stemmer (1.0.0)
     fattr (2.2.1)
     ffi (1.0.11)
     fssm (0.2.7)
@@ -191,20 +198,15 @@ GEM
       subexec (~> 0.1.0)
     mongo (1.5.2)
       bson (= 1.5.2)
-    mongo-rails-instrumentation (0.2.4)
     mongoid (2.3.4)
       activemodel (~> 3.1)
       mongo (~> 1.3)
       tzinfo (~> 0.3.22)
-    mongoid_auto_increment_id (0.3.1)
-      mongoid (~> 2.3.0)
-    mongoid_search (0.2.7)
-      bson_ext (>= 1.2)
-      fast-stemmer (~> 1.0.0)
-      mongoid (>= 2.0.0)
+    mover (0.3.6)
     multi_json (1.0.4)
     multipart-post (1.1.4)
     mustache (0.99.4)
+    mysql2 (0.3.11)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -239,6 +241,8 @@ GEM
     options (2.3.0)
       fattr
     orm_adapter (0.0.5)
+    polyamorous (0.5.0)
+      activerecord (~> 3.0)
     polyglot (0.3.3)
     posix-spawn (0.3.6)
     progress_bar (0.4.0)
@@ -279,6 +283,10 @@ GEM
       thor (~> 0.14.6)
     raindrops (0.8.0)
     rake (0.9.2.2)
+    ransack (0.6.0)
+      actionpack (~> 3.0)
+      activerecord (~> 3.0)
+      polyamorous (~> 0.5.0)
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
     rdoc (3.12)
@@ -332,6 +340,7 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    state_machine (1.1.2)
     subexec (0.1.0)
     thor (0.14.6)
     tilt (1.3.3)
@@ -350,13 +359,15 @@ GEM
       rack (>= 1.0.0)
     warden (1.1.0)
       rack (>= 1.0)
-    will_paginate (3.0.pre4)
+    will_paginate (3.0.3)
     xml-simple (1.1.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts-as-taggable-on (~> 2.2.2)
+  acts_as_archive!
   airbrake
   anjlab-bootstrap-rails!
   aws-ses (~> 0.4.3)
@@ -365,7 +376,6 @@ DEPENDENCIES
   cancan (~> 1.6.7)
   capistrano (= 2.9.0)
   carrierwave (= 0.5.6)
-  carrierwave-mongoid (= 0.1.2)
   cells (= 3.7.1)
   chunky_png (= 1.2.5)
   coffee-rails (~> 3.2.1)
@@ -382,10 +392,8 @@ DEPENDENCIES
   mailman
   memcache-client (= 1.8.5)
   mini_magick (= 3.3)
-  mongo-rails-instrumentation (= 0.2.4)
   mongoid (= 2.3.4)
-  mongoid_auto_increment_id (= 0.3.1)
-  mongoid_search
+  mysql2
   newrelic_rpm
   nokogiri (= 1.5.0)
   omniauth (~> 1.0.1)
@@ -400,6 +408,7 @@ DEPENDENCIES
   rails (= 3.2.1)
   rails-i18n (= 0.1.8)
   rails_autolink (>= 1.0.4)
+  ransack
   rb-inotify
   redcarpet (~> 2.0.0)
   redis-namespace (~> 1.0.2)
@@ -412,6 +421,7 @@ DEPENDENCIES
   simple_form!
   social-share-button (~> 0.0.3)
   sprite-factory (= 1.4.1)
+  state_machine
   uglifier (>= 1.0.3)
   unicorn
-  will_paginate (= 3.0.pre4)
+  will_paginate (~> 3.0)
