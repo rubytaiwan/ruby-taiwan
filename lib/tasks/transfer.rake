@@ -147,7 +147,11 @@ namespace :transfer do
   # Interactions
   desc "Transfer Like"
   task :like => [:environment] do
-    transfer! Mongodb::Like, Like, :default => DEFAULT_TIMESTAMPS
+    transfer! Mongodb::Like, Like, :override => {
+      :updated_at => lambda {|mongodb_like|
+        mongodb_like.created_at
+      }
+    }
   end
 
   desc "Transfer Notification"
@@ -168,8 +172,11 @@ namespace :transfer do
         when Notification::Mention
           "Reply"
         end
+      }, 
+      :updated_at => lambda {|mongodb_notification_base|
+        mongodb_notification_base.created_at
       }
-    }, :default => DEFAULT_TIMESTAMPS
+    }
 
     # Skip Notifications other than Mention
   end
