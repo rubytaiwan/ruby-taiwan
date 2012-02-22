@@ -2,8 +2,8 @@
 class RepliesController < ApplicationController
 
   load_and_authorize_resource :reply
-
   before_filter :find_topic
+  
   def create
 
     @reply = @topic.replies.build(params[:reply])
@@ -12,7 +12,6 @@ class RepliesController < ApplicationController
     if @reply.save
       current_user.read_topic(@topic)
       @msg = t("topics.reply_success")
-
     else
       @msg = @reply.errors.full_messages.join("<br />")
     end

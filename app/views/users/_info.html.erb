@@ -11,21 +11,21 @@
     <ul>
         <li style="text-align:right;">第 <%= @user.id %> 位<%= t("menu.users")%></li>
         <li> <span>ID:</span><strong><%= @user.login %></strong></li>
-        <% if !@user.location.blank? %>
+        <% if @user.location.present? %>
              <li><span><%= t("users.city")%>:</span><%= render_user_location(@user) %></li>
         <% end %>
 
         <li><span><%= t("users.join_time")%>:</span><%= render_user_join_time(@user) %></li>
 
-        <% if !@user.tagline.blank? %>
+        <% if @user.tagline.present? %>
             <li><span><%= t("users.signature")%>:</span><%= render_user_tagline(@user) %></li>
         <% end %>
 
-        <% if !@user.github.blank? %>
+        <% if @user.github.present? %>
             <li><span>Github:</span><%= render_user_github_url(@user) %> </li>
         <% end %>
 
-        <% if !@user.website.blank? %>
+        <% if @user.website..present? %>
             <li><span><%= t("users.personal_website")%>:</span><%= render_user_personal_website(@user)%></li>
         <% end %>
     </ul>
@@ -34,7 +34,7 @@
 
 </div>
 
-<% if !@user.bio.blank? %>
+<% if @user.bio.present? %>
   <div class="bio box">
     <h5>個人介绍</h5>
     <p><%= auto_link(simple_format(@user.bio)) %></p>
