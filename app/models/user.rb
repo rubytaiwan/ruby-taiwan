@@ -222,16 +222,16 @@ class User < ActiveRecord::Base
   
   # 收藏东西
   def like(likeable)
-    Like.find_or_create_by(:likeable_id => likeable.id, 
-                           :likeable_type => likeable.class,
-                           :user_id => self.id)
+    Like.where(:likeable_id => likeable.id,
+               :likeable_type => likeable.class,
+               :user_id => self.id).first_or_create
   end
   
   # 取消收藏
   def unlike(likeable)
-    Like.destroy_all(:conditions => {:likeable_id => likeable.id, 
-                                     :likeable_type => likeable.class,
-                                     :user_id => self.id})
+    Like.destroy_all(:likeable_id => likeable.id,
+                     :likeable_type => likeable.class,
+                     :user_id => self.id)
   end
 end
 
