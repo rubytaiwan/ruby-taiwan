@@ -1,40 +1,23 @@
 <%= render "base" %>
 
 <div class="sidebar">
-    <%= render "sidebar_for_topic_index" if action_name == "index" %>
-    <%= render "sidebar_for_topic_recent" if action_name == "recent" %>
-    <%= render "sidebar_for_topic_node" if action_name == "node" %>
+    <%= render "sidebar_for_topic_index" %> 
 </div>
 
 <div class="content">
   <div class="box">
-    <div id="node_info">
-      <%= render "node_info", :node => @node %>
-    </div>
-
     <div class="topics">
-      <%= render :partial => "topics/topic", :collection => @topics %>
+        <%= render :partial => "topics/topic", :collection => @topics, :as => :topic %>
     </div>
      
-    <% if action_name == "index" %>
-      <div class="more">
-        <%= link_to(t("topics.check_recent_topics"), recent_topics_path)%>
-      </div>
-    <% else %>
-      <%= will_paginate @topics %>
-    <% end %>
+    <div class="more">
+      <%= link_to(t("topics.check_recent_topics"), recent_topics_path)%>
     </div>
     
-    <% if action_name == "index" %>
-      <%= render_cell :topics, :index_sections %>
-      <%= render_cell :topics, :index_locations %>
-    <% end %>
-
-    <% if !@node.blank? %>
-      <% content_for :node_feed_link do %>
-        <%= auto_discovery_link_tag(:rss, feed_node_topics_url, :title => "#{@node.name}節點最新話題") %>
-      <% end %>
-    <% end %>
+    </div>
+  
+    <%= render_cell :topics, :index_sections %>
+    <%= render_cell :topics, :index_locations %>
 
 </div>
 
