@@ -4,8 +4,14 @@ window.Topics =
   # 往话题编辑器里面插入图片代码
   appendImageFromUpload : (srcs) ->
     txtBox = $(".topic_editor")
+    caret_pos = txtBox.caretPos()
+    src_merged = ""
     for src in srcs
-      txtBox.val("#{txtBox.val()}[img]#{src}[/img]\n")
+      src_merged = "![](#{src})\n"
+    source = txtBox.val()
+    before_text = source.slice(0, caret_pos)
+    txtBox.val(before_text + src_merged + source.slice(caret_pos+1, source.count))
+    txtBox.caretPos(caret_pos+src_merged.length)
     txtBox.focus()
     $("#add_image").jDialog.close()
 
@@ -97,6 +103,12 @@ $(document).ready ->
 
   $("#new_reply").submit () ->
     $('#btn_reply').button('loading')
+
+  $("a.at_floor").live 'click', () ->
+    Topics.hightlightReply($(this).data("floor"))
+
+  $("a.small_reply").live 'click', () ->
+    Topics.reply($(this).data("floor"), $(this).data("login"))
   
   Topics.hookPreview($(".editor_toolbar"), $(".topic_editor"))
   
@@ -106,4 +118,19 @@ $(document).ready ->
       backdrop : true
       show : true
 
-  return
+  # @ Reply
+  logins = []
+  login_exists = []
+  author_val =
+    login : $("#topic_show .leader .name a").text(), 
+    name : $("#topic_show .leader .name a").data('name')
+  logins.push(author_val)
+  login_exists.push(author_val.login)
+  $('#replies span.name a').each (idx) ->
+    val = 
+      login : $(this).text()
+      name : $(this).data('name')
+    if $.inArray(val.login,login_exists) < 0
+      login_exists.push(val.login)
+      logins.push(val)
+  App.at_replyable("textarea", logins)

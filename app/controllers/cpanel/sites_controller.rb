@@ -1,8 +1,8 @@
 # coding: UTF-8
 class Cpanel::SitesController < Cpanel::ApplicationController
-  
+
   def index
-    @sites = Site.desc('_id').paginate(:page => params[:page], :per_page => 20)
+    @sites = Site.unscoped.recent.paginate(:page => params[:page], :per_page => 20)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -11,14 +11,14 @@ class Cpanel::SitesController < Cpanel::ApplicationController
   end
 
   def show
-    @site = Site.find(params[:id])
+    @site = Site.unscoped.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
       format.json
     end
   end
-  
+
   def new
     @site = Site.new
 
@@ -27,11 +27,11 @@ class Cpanel::SitesController < Cpanel::ApplicationController
       format.json
     end
   end
-  
+
   def edit
-    @site = Site.find(params[:id])
+    @site = Site.unscoped.find(params[:id])
   end
-  
+
   def create
     @site = Site.new(params[:site])
 
@@ -45,9 +45,9 @@ class Cpanel::SitesController < Cpanel::ApplicationController
       end
     end
   end
-  
+
   def update
-    @site = Site.find(params[:id])
+    @site = Site.unscoped.find(params[:id])
 
     respond_to do |format|
       if @site.update_attributes(params[:site])
@@ -59,9 +59,9 @@ class Cpanel::SitesController < Cpanel::ApplicationController
       end
     end
   end
-  
+
   def destroy
-    @site = Site.find(params[:id])
+    @site = Site.unscoped.find(params[:id])
     @site.destroy
 
     respond_to do |format|

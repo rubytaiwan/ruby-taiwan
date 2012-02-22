@@ -19,7 +19,7 @@
     dont_like_it: "Do not like it?"
     bind_another_account: "Bind another account"
     register_user: "Registration"
-    suggest_using_twitter_id: "Twitter ID is recommanded, as reply will automatically @ you on Twitter."
+    suggest_using_twitter_id: "Can modify after create."
     already_have_account: "Already have an account?"
     forget_password: "Forgor your password?"
     not_recieve_confirm_mail: "Havn't received your confirmation email?"
@@ -28,3 +28,4 @@
     users_joined: "users joined"
     hot_users: "Most active users"
     recent_joined: "Most recently joined users"
+    edit_on_gravatar: "Change you avatar you can go:"

@@ -2,7 +2,6 @@
 
 FactoryGirl.define do
   factory :site_node do
-    name "MyString"
-    sites_count 1
+    sequence(:name) { |n| "site node #{n}" }
   end
 end

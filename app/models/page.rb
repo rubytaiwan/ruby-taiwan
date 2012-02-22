@@ -4,10 +4,15 @@
 require "redcarpet"
 class Page
   include Mongoid::Document
-  include Mongoid::Timestamps  
+  include Mongoid::Timestamps
   include Mongoid::BaseModel
   include Mongoid::SoftDelete
+<<<<<<< HEAD
   
+=======
+  include Sunspot::Mongoid
+
+>>>>>>> ruby-china-origin
   # 页面地址
   field :slug
   field :title
@@ -20,11 +25,11 @@ class Page
   field :comments_count, :type => Integer, :default => 0
   # 目前版本号
   field :version, :type => Integer, :default => 0
-  
+
   index :slug
-  
+
   has_many :versions, :class_name => "PageVersion"
-  
+
   attr_accessor :user_id, :change_desc, :version_enable
   attr_protected :body_html, :locked, :editors
   validates_presence_of :slug, :title, :body
@@ -34,6 +39,15 @@ class Page
   validates_format_of :slug, :with => /^[a-z0-9\-_]+$/
   validates_uniqueness_of :slug
 
+<<<<<<< HEAD
+=======
+  searchable do
+    text :title, :body, :slug
+    integer :user_id
+    boolean :deleted_at
+  end
+
+>>>>>>> ruby-china-origin
   before_save :markdown_for_body_html
   def markdown_for_body_html
     return true if not self.body_changed?
@@ -42,14 +56,14 @@ class Page
   rescue => e
     Rails.logger.error("markdown_for_body_html failed: #{e}")
   end
-  
+
   before_save :append_editor
   def append_editor
     if not self.editor_ids.include?(self.user_id.to_i)
       self.editor_ids << self.user_id.to_i
     end
   end
-  
+
   # 记录更新版本
   after_save :create_version
   def create_version
@@ -68,7 +82,7 @@ class Page
                          :slug => self.slug)
     end
   end
-  
+
   # 撤掉到指定版本
   def revert_version(version)
     page_version = PageVersion.where(:page_id => self.id, :version => version).first
@@ -77,7 +91,7 @@ class Page
                            :title => page_version.title,
                            :slug => page_version.slug)
   end
-  
+
   def editors
     User.where(:_id.in => self.editor_ids)
   end

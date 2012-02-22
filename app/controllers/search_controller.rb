@@ -24,7 +24,6 @@ class SearchController < ApplicationController
     drop_breadcrumb("#{t("common.search")}: #{@q}")
 
    end
-
   def wiki
     if @q.present?
       @results = Wiki.search(@q)

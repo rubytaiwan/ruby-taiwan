@@ -69,17 +69,13 @@ namespace :my_tasks do
   end
 end
 
-
-
-namespace :remote_rake do
-  desc "Run a task on remote servers, ex: cap staging rake:invoke task=cache:clear"
-  task :invoke do
-    run "cd #{deploy_to}/current; RAILS_ENV=#{rails_env} bundle exec rake #{ENV['task']}"
-  end
+task :mongoid_create_indexes, :roles => :web do
+  run "cd #{deploy_to}/current/; RAILS_ENV=production bundle exec rake db:mongoid:create_indexes"
 end
 
-after "deploy:finalize_update", "my_tasks:symlink"
-after "deploy:finalize_update", "my_tasks:restart_mailman"
-#after "deploy:finalize_update", "my_tasks:mongoid_create_indexes"
-#after "deploy:restart", "my_tasks:restart_resque"
+task :mongoid_migrate_database, :roles => :web do
+  run "cd #{deploy_to}/current/; RAILS_ENV=production bundle exec rake db:migrate"
+end
+
+after "deploy:finalize_update","deploy:symlink", :init_shared_path, :link_shared_files, :install_gems, :compile_assets, :mongoid_create_indexes, :mongoid_migrate_database
 

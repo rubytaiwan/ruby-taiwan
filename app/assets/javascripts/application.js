@@ -15,4 +15,6 @@
 //= require jquery.highlight
 //= require jquery.autogrow-textarea
 //= require social-share-button
+//= require jquery.at.js
+//= require jquery.caret.js
 //= require app

@@ -2,10 +2,10 @@
 
 FactoryGirl.define do
   factory :site do
-    name "MyString"
-    url "MyString"
-    desc "MyString"
-    site_node nil
+    sequence(:name) { |n| "site #{n}" }
+    sequence(:url) { |n| "http://awesome-site-no-#{n}.com" }
+    sequence(:desc) { |n| "desc #{n}" }
+    association :site_node
     user nil
   end
 end

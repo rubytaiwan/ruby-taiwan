@@ -18,7 +18,7 @@ module Mongoid
           nil
         end
       end
-      
+
       def find_in_batches(opts = {})
         batch_size = opts[:batch_size] || 1000
         start = opts.delete(:start).to_i || 0
