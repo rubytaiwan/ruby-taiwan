@@ -3,9 +3,7 @@ class UsersController < ApplicationController
   before_filter :require_user, :only => "auth_unbind"
   before_filter :init_base_breadcrumb
   before_filter :set_menu_active
-  load_and_authorize_resource :find_by => :login,
-                              :except => [:auth_unbind, :location]
-  skip_authorize_resource :only => :index
+  load_resource :find_by => :login, :except => [:auth_unbind, :location]
 
   def index
     @total_user_count = User.count
