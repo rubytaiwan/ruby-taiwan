@@ -93,7 +93,6 @@
           <% if params[:by] == "pwd" %>
             <%= render "shared/error_messages", :target => resource %>
           <% end %>
-          <input type="hidden" name="user[:by]" value="pwd" />
           <div class="clearfix">
           <%= f.label :current_password %>
           <div class="input">
