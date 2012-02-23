@@ -18,6 +18,10 @@
       .title { font-size:14px; }
       .info { color:#999; margin-bottom:2px; }
       a:link, a:visited { color:#999; text-decoration: underline; }
+      a.wiki {
+        &.absent { color: #a00; }
+        &.present { color: #0069D6; }
+      }
       .replies { 
          width:70px; margin-right:10px; text-align:right; vertical-align:middle; 
          a.count,a.count:visited { line-height: 12px; font-weight: bold; color: white; 

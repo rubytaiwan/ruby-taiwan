@@ -38,6 +38,9 @@ module TopicsHelper
       # mention user by @
       token = link_mention_user(token, options[:mentioned_user_logins])
 
+      # [[wiki]] or [[Title|wiki]]
+      token = parse_wiki_page_link(token)
+
       token
     end
 
@@ -178,6 +181,28 @@ module TopicsHelper
       image_tag(src, :alt => title)
     end
     source
+  end
+
+  # [[slug]] => <a href="/wiki/slug">Page's Title</a>
+  # [[custom title|slug]] => <a href="/wiki/slug">Custom Title</a>
+  # The class name will be "wiki present" if wiki page exists,
+  #                        "wiki absent"  otherwise.
+  def parse_wiki_page_link(text)
+    valid_chars = /[^\]\|]/  # not ], not |
+    text.gsub(/\[\[((#{valid_chars}+?)\|)?(#{valid_chars}+?)\]\]/) do |matched|
+      _garbage, title, slug = $1, $2, $3
+
+      wiki = Wiki.find(slug)
+      if !wiki
+        # absent
+        title = slug if title.blank?
+        link_to(title, giki_path(slug), :class => 'wiki absent')
+      else
+        # present
+        title = wiki.name if title.blank?
+        link_to(title, giki_path(wiki.name), :class => 'wiki present')
+      end
+    end
   end
 
   def link_mention_floor(text)
