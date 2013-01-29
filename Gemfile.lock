@@ -11,6 +11,16 @@ GIT
     quiet_assets (0.0.1)
 
 GIT
+  remote: git://github.com/anjlab/bootstrap-rails.git
+  revision: 41bcbfdb36a2c18af9bbe77c4f3eec9310e405b8
+  ref: 41bcbfdb36a2c18af9bbe77c4f3eec9310e405b8
+  specs:
+    anjlab-bootstrap-rails (1.4.0.13)
+      railties (~> 3.0)
+      sass
+      thor (~> 0.14)
+
+GIT
   remote: git://github.com/ballantyne/omniauth-douban.git
   revision: 7affc4a09216f1c82a271a691ade3ba990e20a24
   specs:
@@ -95,9 +105,6 @@ GEM
       activesupport
       builder
     also_migrate (0.3.6)
-    anjlab-bootstrap-rails (2.0.4.4)
-      railties (>= 3.0)
-      sass
     annotate (2.4.0)
     arel (3.0.2)
     aws-ses (0.4.4)
@@ -351,7 +358,7 @@ DEPENDENCIES
   acts-as-taggable-on (~> 2.2.2)
   acts_as_archive!
   airbrake
-  anjlab-bootstrap-rails (= 2.0.4.4)
+  anjlab-bootstrap-rails!
   annotate
   aws-ses (~> 0.4.3)
   bootstrap_helper (= 1.4.1)
