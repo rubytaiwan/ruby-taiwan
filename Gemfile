@@ -82,7 +82,7 @@ gem "open_graph_helper"
 # Simple form last commit: 2011-12-03 
 
 gem "simple_form", ">= 2.0.0"
-gem "anjlab-bootstrap-rails", "2.0.2"
+gem "anjlab-bootstrap-rails", "2.0.4.4"
 gem "bootstrap_helper", "1.4.1"
 gem "airbrake"
 
