@@ -34,11 +34,12 @@ class Wiki
     end
   end
 
-  def update_attributes(hash,commit)
+  def update_attributes(wiki, hash,commit)
     raw_data = hash[:raw_data]
     name = hash[:name]
-    data = DATA.page(name)
-    DATA.update_page(data, name,:markdown, raw_data, commit )
+    page = DATA.page(wiki.name)
+    wiki.name = name
+    DATA.update_page(page, name,:markdown, raw_data, commit )
   end
 
   def save(commit)
