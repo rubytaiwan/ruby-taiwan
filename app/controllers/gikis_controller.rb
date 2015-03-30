@@ -35,7 +35,7 @@ class GikisController < ApplicationController
     
     commit = { :name => current_user.login, :email => current_user.email, :message => params[:wiki][:change_desc]}
     
-    if @wiki.update_attributes(params[:wiki], commit)
+    if @wiki.update_attributes(@wiki, params[:wiki], commit)
       redirect_to giki_path(@wiki.name)
     else
       render :edit
