@@ -40,7 +40,7 @@ gem "redis-objects", "0.5.2"
 gem "redcarpet", "~> 2.0.0"
 gem "pygments.rb"
 # HTML 处理
-gem "nokogiri", "1.5.0"
+gem "nokogiri", "1.12.5"
 gem "hpricot"
 gem "jquery-rails", "1.0.16"
 # Auto link
@@ -97,7 +97,7 @@ end
 group :mailman do
   gem "rb-inotify"
   gem "mailman"
-  gem "nokogiri", "1.5.0"
+  gem "nokogiri", "1.12.5"
   gem "daemon-spawn", "~> 0.4.2"
   gem "resque", :require => "resque/server"
 end
