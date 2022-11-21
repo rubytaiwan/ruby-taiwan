@@ -140,7 +140,7 @@ GEM
     coffee-script-source (1.2.0)
     connection_pool (0.9.2)
     daemon-spawn (0.4.2)
-    dalli (1.1.1)
+    dalli (3.2.3)
     devise (1.5.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -377,7 +377,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   css3buttons!
   daemon-spawn (~> 0.4.2)
-  dalli (= 1.1.1)
+  dalli (= 3.2.3)
   devise (= 1.5.2)
   factory_girl_rails
   gollum!

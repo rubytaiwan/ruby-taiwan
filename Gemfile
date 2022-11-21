@@ -120,6 +120,6 @@ group :test do
 end
 
 group :production do
-  gem "dalli", "1.1.1"
+  gem "dalli", "3.2.3"
   gem "newrelic_rpm"
 end
